@@ -2,7 +2,7 @@
 
 namespace HomeCompassApi.Models
 {
-    public class User
+    public class ApplicationUser
     {
         [Key]
         public Guid Id { get; set; }
@@ -23,7 +23,7 @@ namespace HomeCompassApi.Models
         public string Password { get; set; }
 
         [DataType(DataType.ImageUrl)]
-        public string PhotoUrl { get; set; }
+        public Uri PhotoUrl { get; set; }
 
         public string Address { get; set; }
 
@@ -33,5 +33,8 @@ namespace HomeCompassApi.Models
         public int Age { get; set; }
 
         public string Gender { get; set; }
+
+        // public ICollection<Post> Posts { get; set; }
+        // public ICollection<Comment> Comments { get; set; }
     }
 }

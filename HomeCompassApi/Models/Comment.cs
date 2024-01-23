@@ -19,6 +19,6 @@ namespace HomeCompassApi.Models
         public Guid UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
-        public User User {get; set;}
+        public ApplicationUser User { get; set; }
     }
 }

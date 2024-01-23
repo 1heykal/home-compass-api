@@ -4,7 +4,7 @@ namespace HomeCompassApi.Models
 {
     public class ApplicationDbContext : DbContext
     {
-        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<ApplicationUser> Users { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
 
         public virtual DbSet<Comment> Comments { get; set; }
