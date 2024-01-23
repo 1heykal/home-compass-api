@@ -6,7 +6,6 @@ namespace HomeCompassApi.Models
     {
         public virtual DbSet<ApplicationUser> Users { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
-
         public virtual DbSet<Comment> Comments { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
@@ -15,9 +14,10 @@ namespace HomeCompassApi.Models
         }
 
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    base.OnConfiguring(optionsBuilder);
-        //}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            // optionsBuilder.UseSqlServer("Server = ")
+            base.OnConfiguring(optionsBuilder);
+        }
     }
 }

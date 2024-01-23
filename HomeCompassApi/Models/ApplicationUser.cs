@@ -30,11 +30,12 @@ namespace HomeCompassApi.Models
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
 
+        [Range(minimum: 17, maximum: 100)]
         public int Age { get; set; }
 
         public string Gender { get; set; }
 
-        // public ICollection<Post> Posts { get; set; }
-        // public ICollection<Comment> Comments { get; set; }
+        public ICollection<Post> Posts { get; set; }
+        public ICollection<Comment> Comments { get; set; }
     }
 }

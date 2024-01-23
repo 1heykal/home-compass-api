@@ -1,33 +1,36 @@
 ﻿using HomeCompassApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace HomeCompassApi.BLL
 {
     public class CommentRepository : IRepository<Comment, Guid>
     {
         private readonly ApplicationDbContext _context;
+
+        public CommentRepository(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         public void Create(Comment entity)
         {
-            throw new NotImplementedException();
+            _context.Comments.Add(entity);
+        }
+
+        public IEnumerable<Comment> GetAll() => _context.Comments.ToList();
+
+        public Comment GetById(Guid id) => _context.Comments.FirstOrDefault(c => c.Id == id);
+
+
+        public void Update(Comment entity)
+        {
+            _context.Comments.Update(entity);
         }
 
         public void Delete(Guid id)
         {
-            throw new NotImplementedException();
+            _context.Comments.Remove(GetById(id));
         }
 
-        public IEnumerable<Comment> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Comment GetById(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(Comment entity)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
