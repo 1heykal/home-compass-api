@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HomeCompassApi.Models
+namespace HomeCompassApi.Models.Feed
 {
     public class Post
     {

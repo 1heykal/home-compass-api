@@ -1,4 +1,5 @@
 ﻿using HomeCompassApi.Models;
+using HomeCompassApi.Models.Feed;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeCompassApi.BLL
@@ -12,7 +13,7 @@ namespace HomeCompassApi.BLL
             _context = context;
         }
 
-        public void Create(Post entity)
+        public void Add(Post entity)
         {
             _context.Posts.Add(entity);
         }

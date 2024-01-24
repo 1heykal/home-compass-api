@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using HomeCompassApi.Models.Feed;
 
 namespace HomeCompassApi.Models
 {

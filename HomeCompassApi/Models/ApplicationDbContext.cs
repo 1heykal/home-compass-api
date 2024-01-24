@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using HomeCompassApi.Models.Feed;
+using Microsoft.EntityFrameworkCore;
 
 namespace HomeCompassApi.Models
 {
@@ -8,16 +9,21 @@ namespace HomeCompassApi.Models
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        private readonly IConfiguration _configuration;
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration) : base(options)
         {
-
+            _configuration = configuration;
         }
-
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // optionsBuilder.UseSqlServer("Server = ")
-            base.OnConfiguring(optionsBuilder);
+            if (!optionsBuilder.IsConfigured)
+            {
+                string connectionString = _configuration.GetConnectionString("SqlServer");
+                optionsBuilder.UseSqlServer(connectionString);
+                base.OnConfiguring(optionsBuilder);
+            }
         }
     }
 }

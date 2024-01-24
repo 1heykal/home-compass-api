@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HomeCompassApi.Models
+namespace HomeCompassApi.Models.Feed
 {
     public class Comment
     {
@@ -10,7 +10,6 @@ namespace HomeCompassApi.Models
 
         [Required]
         public string Content { get; set; }
-
         public Guid PostId { get; set; }
 
         [ForeignKey(nameof(PostId))]

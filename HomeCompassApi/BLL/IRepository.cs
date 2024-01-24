@@ -2,7 +2,7 @@
 {
     public interface IRepository<T, T1>
     {
-        void Create(T entity);
+        void Add(T entity);
         IEnumerable<T> GetAll();
         T GetById(T1 id);
         void Update(T entity);
