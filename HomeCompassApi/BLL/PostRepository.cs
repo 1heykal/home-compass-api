@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HomeCompassApi.BLL
 {
-    public class PostRepository : IRepository<Post, Guid>
+    public class PostRepository : IRepository<Post>
     {
         private readonly ApplicationDbContext _context;
 
@@ -18,16 +18,16 @@ namespace HomeCompassApi.BLL
             _context.Posts.Add(entity);
         }
 
-        public IEnumerable<Post> GetAll() => _context.Posts.ToList();
+        public IEnumerable<Post> GetAll() => _context.Posts.Include(p => p.Comments).ToList();
 
-        public Post GetById(Guid id) => _context.Posts.FirstOrDefault(p => p.Id == id);
+        public Post GetById(int id) => _context.Posts.Include(p => p.Comments).FirstOrDefault(p => p.Id == id);
 
         public void Update(Post entity)
         {
             _context.Posts.Update(entity);
         }
 
-        public void Delete(Guid id)
+        public void Delete(int id)
         {
             using (var transaction = _context.Database.BeginTransaction())
             {

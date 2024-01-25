@@ -9,9 +9,9 @@ namespace HomeCompassApi.Controllers.Feed
     [Route("[controller]")]
     public class PostController : Controller
     {
-        private readonly IRepository<Post, Guid> _repository;
+        private readonly IRepository<Post> _repository;
 
-        public PostController(IRepository<Post, Guid> repository)
+        public PostController(IRepository<Post> repository)
         {
             _repository = repository;
         }
@@ -30,7 +30,7 @@ namespace HomeCompassApi.Controllers.Feed
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Post> Get(Guid id)
+        public ActionResult<Post> Get(int id)
         {
             var post = _repository.GetById(id);
 
@@ -40,24 +40,26 @@ namespace HomeCompassApi.Controllers.Feed
             return post;
         }
 
-        [HttpPost]
+        [HttpPut]
         public IActionResult Update(Post post)
         {
-            if (post is null || _repository.GetById(post.Id) is null)
+            if (post is null)
                 return BadRequest();
+
+            if (_repository.GetById(post.Id) is null)
+                return NotFound(post);
 
             _repository.Update(post);
             return NoContent();
         }
 
-        [HttpPost]
-        public IActionResult Delete(Guid id)
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
         {
             var post = _repository.GetById(id);
             if (post is null)
-            {
                 return NotFound(id);
-            }
+            
 
             _repository.Delete(id);
             return NoContent();

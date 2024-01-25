@@ -1,11 +1,11 @@
 ﻿namespace HomeCompassApi.BLL
 {
-    public interface IRepository<T, T1>
+    public interface IRepository<T>
     {
         void Add(T entity);
         IEnumerable<T> GetAll();
-        T GetById(T1 id);
+        T GetById(int id);
         void Update(T entity);
-        void Delete(T1 id);
+        void Delete(int id);
     }
 }

@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HomeCompassApi.Controllers.Feed
 {
+    [ApiController]
+    [Route("[controller]")]
     public class CommentController : Controller
     {
-        private readonly IRepository<Comment, Guid> _repository;
+        private readonly IRepository<Comment> _repository;
 
-        public CommentController(IRepository<Comment, Guid> repository)
+        public CommentController(IRepository<Comment> repository)
         {
             _repository = repository;
         }
@@ -23,11 +25,16 @@ namespace HomeCompassApi.Controllers.Feed
             return CreatedAtAction(nameof(Get), new { Id = comment.Id }, comment);
         }
 
-        // [HttpGet("{postId}")]
+        [HttpGet]
         public ActionResult<List<Comment>> Get() => _repository.GetAll().ToList();
 
 
-        public IActionResult Delete(Guid id)
+        [HttpGet("{id}")]
+        public ActionResult<Comment> Get(int id) => _repository.GetById(id);
+
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
         {
             var comment = _repository.GetById(id);
             if (comment is null)
@@ -37,7 +44,7 @@ namespace HomeCompassApi.Controllers.Feed
             return NoContent();
         }
 
-        [HttpPost] // ("{id}")
+        [HttpPut] // ("{id}")
         public IActionResult Update(Comment comment)
         {
             if (comment is null || _repository.GetById(comment.Id) is null)

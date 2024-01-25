@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using HomeCompassApi.Models.Feed;
 
 namespace HomeCompassApi.Models
@@ -6,7 +7,8 @@ namespace HomeCompassApi.Models
     public class ApplicationUser
     {
         [Key]
-        public Guid Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string Id { get; set; }
 
         [Required]
         public string FirstName { get; set; }
