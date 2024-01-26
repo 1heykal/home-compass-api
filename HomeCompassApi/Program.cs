@@ -1,5 +1,9 @@
 using HomeCompassApi.BLL;
+using HomeCompassApi.BLL.Cases;
+using HomeCompassApi.BLL.Facilities;
 using HomeCompassApi.Models;
+using HomeCompassApi.Models.Cases;
+using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Models.Feed;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography.Xml;
@@ -14,8 +18,19 @@ builder.Services.AddControllers();
 string ConnectionString = builder.Configuration.GetConnectionString("SqlServer");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(ConnectionString));
 
+// Feed
 builder.Services.AddScoped<IRepository<Post>, PostRepository>();
 builder.Services.AddScoped<IRepository<Comment>, CommentRepository>();
+
+// Cases
+builder.Services.AddScoped<IRepository<Homeless>, HomelessRepository>();
+builder.Services.AddScoped<IRepository<Missing>, MissingRepository>();
+
+// Facility
+builder.Services.AddScoped<IRepository<Facility>, FacilityRepository>();
+builder.Services.AddScoped<IRepository<Resource>, ResourceRepository>();
+
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
