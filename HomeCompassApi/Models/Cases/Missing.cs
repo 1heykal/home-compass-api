@@ -7,7 +7,6 @@ namespace HomeCompassApi.Models.Cases
         public DateTime DateOfDisappearance { get; set; }
         public string LastKnownLocation { get; set; }
         public string PhysicalDescription { get; set; }
-        public string AdditionalDetails { get; set; }
 
         [DataType(DataType.PhoneNumber)]
         [Required]

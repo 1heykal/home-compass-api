@@ -16,6 +16,7 @@ namespace HomeCompassApi.BLL
         public void Add(Comment entity)
         {
             _context.Comments.Add(entity);
+            _context.SaveChanges();
         }
 
         public IEnumerable<Comment> GetAll() => _context.Comments.ToList();
@@ -26,11 +27,13 @@ namespace HomeCompassApi.BLL
         public void Update(Comment entity)
         {
             _context.Comments.Update(entity);
+            _context.SaveChanges();
         }
 
         public void Delete(int id)
         {
             _context.Comments.Remove(GetById(id));
+            _context.SaveChanges();
         }
 
     }

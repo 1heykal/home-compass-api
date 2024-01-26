@@ -1,13 +1,31 @@
-﻿using HomeCompassApi.Models.Feed;
+﻿using HomeCompassApi.Models.Cases;
+using HomeCompassApi.Models.Facilities;
+using HomeCompassApi.Models.Feed;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeCompassApi.Models
 {
     public class ApplicationDbContext : DbContext
     {
+
+
+
+        // Users
         // public virtual DbSet<ApplicationUser> Users { get; set; }
+
+        // Cases
+        public virtual DbSet<Homeless> Homeless { get; set; }
+        public virtual DbSet<Missing> Missings { get; set; }
+
+        // Facilities
+        public virtual DbSet<Facility> Facilities { get; set; }
+        public virtual DbSet<Resource> Resources { get; set; }
+
+
+        // Feed 
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
+
 
         private readonly IConfiguration _configuration;
 
