@@ -11,7 +11,7 @@ namespace HomeCompassApi.Models
 
 
         // Users
-        // public virtual DbSet<ApplicationUser> Users { get; set; }
+        public virtual DbSet<ApplicationUser> Users { get; set; }
 
         // Cases
         public virtual DbSet<Homeless> Homeless { get; set; }
@@ -20,6 +20,8 @@ namespace HomeCompassApi.Models
         // Facilities
         public virtual DbSet<Facility> Facilities { get; set; }
         public virtual DbSet<Resource> Resources { get; set; }
+
+        public virtual DbSet<Category> Categories { get; set; }
 
 
         // Feed 

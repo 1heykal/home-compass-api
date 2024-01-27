@@ -16,9 +16,6 @@ namespace HomeCompassApi.Controllers.Feed
             _repository = repository;
         }
 
-        [HttpGet]
-        public ActionResult<List<Post>> Get() => _repository.GetAll().ToList();
-
         [HttpPost]
         public IActionResult Create(Post post)
         {
@@ -28,6 +25,10 @@ namespace HomeCompassApi.Controllers.Feed
             _repository.Add(post);
             return CreatedAtAction(nameof(Get), new { id = post.Id }, post);
         }
+
+
+        [HttpGet]
+        public ActionResult<List<Post>> Get() => _repository.GetAll().ToList();
 
         [HttpGet("{id}")]
         public ActionResult<Post> Get(int id)
@@ -59,7 +60,7 @@ namespace HomeCompassApi.Controllers.Feed
             var post = _repository.GetById(id);
             if (post is null)
                 return NotFound(id);
-            
+
 
             _repository.Delete(id);
             return NoContent();
