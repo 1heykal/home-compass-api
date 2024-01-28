@@ -29,6 +29,7 @@ builder.Services.AddScoped<IRepository<Missing>, MissingRepository>();
 // Facility
 builder.Services.AddScoped<IRepository<Facility>, FacilityRepository>();
 builder.Services.AddScoped<IRepository<Resource>, ResourceRepository>();
+builder.Services.AddScoped<IRepository<Category>, CategoryRepository>();
 
 
 
