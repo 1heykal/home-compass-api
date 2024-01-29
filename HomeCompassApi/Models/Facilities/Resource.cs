@@ -13,7 +13,6 @@ namespace HomeCompassApi.Models.Facilities
         public string Name { get; set; }
         [Required]
         public bool IsAvailable { get; set; }
-
-        public ICollection<Facility> Facilities { get; set; }
+        public List<Facility> Facilities { get; set; }
     }
 }

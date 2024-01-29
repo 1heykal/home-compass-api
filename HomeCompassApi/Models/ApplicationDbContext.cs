@@ -20,7 +20,6 @@ namespace HomeCompassApi.Models
         // Facilities
         public virtual DbSet<Facility> Facilities { get; set; }
         public virtual DbSet<Resource> Resources { get; set; }
-
         public virtual DbSet<Category> Categories { get; set; }
 
 

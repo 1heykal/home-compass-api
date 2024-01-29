@@ -23,6 +23,20 @@ namespace HomeCompassApi.BLL.Facilities
         }
 
         public IEnumerable<Facility> GetAll() => _context.Facilities.ToList();
+        #region DTO
+        /*
+           var facilities = _context.Facilities.Select(f =>
+
+           new FacilityDTO
+           {
+               Name = f.Name,
+               Address = f.Location,
+               PhoneNumber = f.ContactInformaton
+           }
+
+           );
+           return facilities.Tolist(); */
+        #endregion
 
         public Facility GetById(int id) => _context.Facilities.FirstOrDefault(f => f.Id == id);
 

@@ -11,6 +11,8 @@ namespace HomeCompassApi.Models.Facilities
 
         [Required]
         public string Name { get; set; }
-        public ICollection<Category> Categories { get; set; }
+        public List<Facility> Facilities { get; set; }
+
+        //public ICollection<Resource> Resources { get; set; }    
     }
 }

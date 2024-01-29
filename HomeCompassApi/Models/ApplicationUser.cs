@@ -8,9 +8,6 @@ namespace HomeCompassApi.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        //[Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        //public int Id { get; set; }
 
         [Required]
         public string FirstName { get; set; }
@@ -18,22 +15,10 @@ namespace HomeCompassApi.Models
         [Required]
         public string LastName { get; set; }
 
-        //[DataType(DataType.EmailAddress)]
-        //[Required]
-        //public string Email { get; set; }
-
-
-        //[DataType(DataType.Password)]
-        //[Required]
-        //public string Password { get; set; }
-
         [DataType(DataType.ImageUrl)]
         public string PhotoUrl { get; set; }
 
         public string Address { get; set; }
-
-        //[DataType(DataType.PhoneNumber)]
-        //public string PhoneNumber { get; set; }
 
         [Range(minimum: 17, maximum: 100)]
         public int Age { get; set; }
