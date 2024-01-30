@@ -1,11 +1,12 @@
 ﻿using HomeCompassApi.Models.Cases;
 using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Models.Feed;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeCompassApi.Models
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
 
 
