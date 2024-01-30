@@ -16,7 +16,7 @@ namespace HomeCompassApi.Models.Facilities
         public string Description { get; set; }
         public int CategoryId { get; set; }
 
-        [ForeignKey(nameof(Category))]
+        [ForeignKey(nameof(CategoryId))]
         public Category Category { get; set; }
         public string Target { get; set; }
         public List<Resource> Resources { get; set; }
@@ -27,7 +27,7 @@ namespace HomeCompassApi.Models.Facilities
         public string ContactInformaton { get; set; }
 
         [Required]
-        public int ContributorId { get; set; }
+        public string ContributorId { get; set; }
 
         [ForeignKey(nameof(ContributorId))]
         public ApplicationUser Contributor { get; set; }

@@ -18,10 +18,10 @@ namespace HomeCompassApi.Models.Feed
         public DateTime PublisedOn { get; set; }
 
         public bool Archived { get; set; } = false;
-        //public int UserId { get; set; }
+        public string UserId { get; set; }
 
-        //[ForeignKey(nameof(UserId))]
-        //public ApplicationUser User { get; set; }
+        [ForeignKey(nameof(UserId))]
+        public ApplicationUser User { get; set; }
 
         public ICollection<Comment> Comments { get; set; }
     }

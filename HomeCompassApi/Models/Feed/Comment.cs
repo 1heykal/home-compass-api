@@ -18,9 +18,9 @@ namespace HomeCompassApi.Models.Feed
         [ForeignKey(nameof(PostId))]
         public Post Post { get; set; }
 
-        //public int UserId { get; set; }
+        public string UserId { get; set; }
 
-        //[ForeignKey(nameof(UserId))]
-        //public ApplicationUser User { get; set; }
+        [ForeignKey(nameof(UserId))]
+        public ApplicationUser User { get; set; }
     }
 }

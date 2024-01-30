@@ -22,7 +22,7 @@ namespace HomeCompassApi.Models.Cases
         public string AdditionalDetails { get; set; }
 
         [Required]
-        public int ReporterId { get; set; }
+        public string ReporterId { get; set; }
 
         [ForeignKey(nameof(ReporterId))]
         public ApplicationUser Reporter { get; set; }

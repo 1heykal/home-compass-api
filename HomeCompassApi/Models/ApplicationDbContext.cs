@@ -6,13 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HomeCompassApi.Models
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-
-
-
-        // Users
-        public virtual DbSet<ApplicationUser> Users { get; set; }
 
         // Cases
         public virtual DbSet<Homeless> Homeless { get; set; }
