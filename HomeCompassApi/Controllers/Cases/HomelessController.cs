@@ -1,11 +1,13 @@
 ﻿using HomeCompassApi.BLL;
 using HomeCompassApi.Models.Cases;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeCompassApi.Controllers.Cases
 {
     [ApiController]
     [Route("[controller]")]
+
     public class HomelessController : Controller
     {
         private readonly IRepository<Homeless> _repository;

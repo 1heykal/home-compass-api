@@ -43,11 +43,11 @@ namespace HomeCompassApi.Controllers.Facilities
             return facility;
         }
 
-        [HttpGet("/Category/{id}")]
-        public ActionResult<List<Facility>> GetByCategory(int categoryId)
-        {
-            return _repository.GetAll().Where(f => f.CategoryId == categoryId).ToList();
-        }
+        //[HttpGet("/Category/{id}")]
+        //public ActionResult<List<Facility>> GetByCategory(int categoryId)
+        //{
+        //    return _repository.GetAll().Where(f => f.CategoryId == categoryId).ToList();
+        //}
 
         [HttpPut]
         public IActionResult Update(Facility facility)

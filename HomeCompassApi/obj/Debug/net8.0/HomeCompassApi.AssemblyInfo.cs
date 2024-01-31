@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HomeCompassApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3cb99ae2aebf397ecb37f493862976ea3cda8803")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5a19629150ceed365aeb3001b7b724e75322723c")]
 [assembly: System.Reflection.AssemblyProductAttribute("HomeCompassApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HomeCompassApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

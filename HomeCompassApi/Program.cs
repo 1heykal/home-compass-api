@@ -61,7 +61,6 @@ builder.Services.AddAuthentication(options =>
 string ConnectionString = builder.Configuration.GetConnectionString("SqlServer");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(ConnectionString));
 
-
 // Feed
 builder.Services.AddScoped<IRepository<Post>, PostRepository>();
 builder.Services.AddScoped<IRepository<Comment>, CommentRepository>();
@@ -83,7 +82,6 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-//app.MapIdentityApi<ApplicationUser>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -92,7 +90,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapSwagger(); //  .RequireAuthorization(); "Admin"
+app.MapSwagger();
 
 app.UseHttpsRedirection();
 
