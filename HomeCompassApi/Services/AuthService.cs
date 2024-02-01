@@ -41,6 +41,17 @@ namespace HomeCompassApi.Services
 
         }
 
+        //public async Task<string> LogoutAsync(AuthModel model)
+        //{
+        //    var user = await _userManager.FindByIdAsync(model.Username);
+        //    if (user is null)
+        //        return "Thers is no account with this userID";
+
+        //    if (model.IsAuthenticated)
+        //        await _userManager.RemoveAuthenticationTokenAsync(user);
+
+        //}
+
         public async Task<AuthModel> LoginAsync(LoginModel model)
         {
             var authModel = new AuthModel();

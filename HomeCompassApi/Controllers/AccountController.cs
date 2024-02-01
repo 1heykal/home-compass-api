@@ -1,5 +1,6 @@
 ﻿using HomeCompassApi.Models;
 using HomeCompassApi.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeCompassApi.Controllers
@@ -9,10 +10,12 @@ namespace HomeCompassApi.Controllers
     public class AccountController : Controller
     {
         private readonly IAuthService _authService;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public AccountController(IAuthService authService)
+        public AccountController(IAuthService authService, SignInManager<ApplicationUser> signInManager)
         {
             _authService = authService;
+            _signInManager = signInManager;
         }
 
         [HttpPost("register")]
@@ -56,6 +59,13 @@ namespace HomeCompassApi.Controllers
 
             return Ok(model);
         }
+
+        //[HttpPost("logout")]
+        //public async Task<IActionResult> LogoutAsync([FromBody] string userId)
+        //{
+        //    await _authService.LogoutAsync();
+        //    return RedirectToAction("Login");
+        //}
 
 
     }
