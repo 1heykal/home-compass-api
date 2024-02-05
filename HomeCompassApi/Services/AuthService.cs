@@ -52,7 +52,7 @@ namespace HomeCompassApi.Services
 
         //}
 
-        public async Task<AuthModel> LoginAsync(LoginModel model)
+        public async Task<AuthModel> GetTokenAsync(TokenRequestModel model)
         {
             var authModel = new AuthModel();
 
@@ -71,8 +71,23 @@ namespace HomeCompassApi.Services
             authModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
             authModel.Email = user.Email;
             authModel.Username = user.UserName;
-            authModel.ExpiresOn = jwtSecurityToken.ValidTo;
+            // authModel.ExpiresOn = jwtSecurityToken.ValidTo;
             authModel.Roles = roles.ToList();
+
+            if (user.RefreshTokens.Any(t => t.IsActive))
+            {
+                var activeRefreshToken = user.RefreshTokens.FirstOrDefault(t => t.IsActive);
+                authModel.RefreshToken = activeRefreshToken.Token;
+                authModel.RefreshTokenExpiration = activeRefreshToken.ExpiresOn;
+            }
+            else
+            {
+                var RefreshToken = GenerateRefrshToken();
+                authModel.RefreshToken = RefreshToken.Token;
+                authModel.RefreshTokenExpiration = RefreshToken.ExpiresOn;
+                user.RefreshTokens.Add(RefreshToken);
+                await _userManager.UpdateAsync(user);
+            }
 
             return authModel;
 
@@ -122,7 +137,7 @@ namespace HomeCompassApi.Services
             var authModel = new AuthModel
             {
                 Email = user.Email,
-                ExpiresOn = jwtSecurityToken.ValidTo,
+                // ExpiresOn = jwtSecurityToken.ValidTo,
                 IsAuthenticated = true,
                 Roles = new List<string> { "User" },
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
@@ -167,6 +182,23 @@ namespace HomeCompassApi.Services
 
 
             return jwtSecurityToken;
+
+        }
+
+        private RefreshToken GenerateRefrshToken()
+        {
+            var randomNumber = new byte[32];
+
+            using var generator = new RNGCryptoServiceProvider();
+
+            generator.GetBytes(randomNumber);
+
+            return new RefreshToken
+            {
+                Token = Convert.ToBase64String(randomNumber),
+                ExpiresOn = DateTime.UtcNow.AddDays(10),
+                CreatedOn = DateTime.UtcNow
+            };
 
         }
     }

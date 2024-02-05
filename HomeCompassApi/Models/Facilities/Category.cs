@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace HomeCompassApi.Models.Facilities
 {
@@ -11,6 +12,8 @@ namespace HomeCompassApi.Models.Facilities
 
         [Required]
         public string Name { get; set; }
+
+        [JsonIgnore]
         public List<Facility> Facilities { get; set; }
 
         //public ICollection<Resource> Resources { get; set; }    

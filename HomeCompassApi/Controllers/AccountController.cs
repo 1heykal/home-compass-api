@@ -33,15 +33,20 @@ namespace HomeCompassApi.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> LoginAsync([FromBody] LoginModel model)
+        public async Task<IActionResult> LoginAsync([FromBody] TokenRequestModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var result = await _authService.LoginAsync(model);
+            var result = await _authService.GetTokenAsync(model);
 
             if (!result.IsAuthenticated)
                 return BadRequest(result.Message);
+
+            if (!string.IsNullOrEmpty(result.RefreshToken))
+            {
+                SetRefreshTokenInCookie(result.RefreshToken, result.RefreshTokenExpiration);
+            }
 
             return Ok(result);
         }
@@ -58,6 +63,17 @@ namespace HomeCompassApi.Controllers
                 return BadRequest(result);
 
             return Ok(model);
+        }
+
+        private void SetRefreshTokenInCookie(string refreshToken, DateTime expires)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = expires
+            };
+
+            Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
         }
 
         //[HttpPost("logout")]

@@ -22,11 +22,10 @@ namespace HomeCompassApi.Models
 
         [Range(minimum: 17, maximum: 100)]
         public int Age { get; set; }
-
         public string Gender { get; set; }
-
         public string Role { get; set; }
 
+        public List<RefreshToken> RefreshTokens { get; set; }
         public ICollection<Post> Posts { get; set; }
         public ICollection<Comment> Comments { get; set; }
         public ICollection<Facility> Facilities { get; set; }

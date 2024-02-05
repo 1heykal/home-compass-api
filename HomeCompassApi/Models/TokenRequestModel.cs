@@ -2,7 +2,7 @@
 
 namespace HomeCompassApi.Models
 {
-    public class LoginModel
+    public class TokenRequestModel
     {
 
         [Required]
