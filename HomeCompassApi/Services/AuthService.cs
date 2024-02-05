@@ -93,6 +93,11 @@ namespace HomeCompassApi.Services
 
         }
 
+        public Task<AuthModel> RefreshTokenAsync(string token)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<AuthModel> RegisterAsync(RegisterModel model)
         {
             if (await _userManager.FindByEmailAsync(model.Email) is not null)

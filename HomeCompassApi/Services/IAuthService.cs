@@ -9,5 +9,7 @@ namespace HomeCompassApi.Services
         Task<AuthModel> GetTokenAsync(TokenRequestModel model);
 
         Task<string> AddRoleAsync(AddRoleModel model);
+
+        Task<AuthModel> RefreshTokenAsync(string token);
     }
 }

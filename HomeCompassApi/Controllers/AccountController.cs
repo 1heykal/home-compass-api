@@ -70,7 +70,7 @@ namespace HomeCompassApi.Controllers
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Expires = expires
+                Expires = expires.ToLocalTime()
             };
 
             Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
