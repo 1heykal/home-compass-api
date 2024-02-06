@@ -1,6 +1,6 @@
-﻿using HomeCompassApi.Models;
+﻿using HomeCompassApi.Models.Auth;
 
-namespace HomeCompassApi.Services
+namespace HomeCompassApi.Services.Auth
 {
     public interface IAuthService
     {
@@ -11,5 +11,6 @@ namespace HomeCompassApi.Services
         Task<string> AddRoleAsync(AddRoleModel model);
 
         Task<AuthModel> RefreshTokenAsync(string token);
+        Task<bool> RevokeTokenAsync(string token);
     }
 }

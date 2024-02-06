@@ -1,5 +1,6 @@
 ﻿using HomeCompassApi.Models;
-using HomeCompassApi.Services;
+using HomeCompassApi.Models.Auth;
+using HomeCompassApi.Services.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,12 +11,10 @@ namespace HomeCompassApi.Controllers
     public class AccountController : Controller
     {
         private readonly IAuthService _authService;
-        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public AccountController(IAuthService authService, SignInManager<ApplicationUser> signInManager)
+        public AccountController(IAuthService authService)
         {
             _authService = authService;
-            _signInManager = signInManager;
         }
 
         [HttpPost("register")]
@@ -28,6 +27,8 @@ namespace HomeCompassApi.Controllers
 
             if (!result.IsAuthenticated)
                 return BadRequest(result.Message);
+
+            SetRefreshTokenInCookie(result.RefreshToken, result.RefreshTokenExpiration);
 
             return Ok(result);
         }
@@ -64,6 +65,21 @@ namespace HomeCompassApi.Controllers
 
             return Ok(model);
         }
+        [HttpGet("refreshToken")]
+        public async Task<IActionResult> RefreshToken()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+
+            var result = await _authService.RefreshTokenAsync(refreshToken);
+
+            if (!result.IsAuthenticated)
+                return BadRequest(result);
+
+            SetRefreshTokenInCookie(result.RefreshToken, result.RefreshTokenExpiration);
+
+            return Ok(result);
+
+        }
 
         private void SetRefreshTokenInCookie(string refreshToken, DateTime expires)
         {
@@ -76,13 +92,22 @@ namespace HomeCompassApi.Controllers
             Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
         }
 
-        //[HttpPost("logout")]
-        //public async Task<IActionResult> LogoutAsync([FromBody] string userId)
-        //{
-        //    await _authService.LogoutAsync();
-        //    return RedirectToAction("Login");
-        //}
+        [HttpPost("revokeToken")]
+        public async Task<IActionResult> RevokeToken([FromBody] RevokeToken model)
+        {
+            var token = model.Token ?? Request.Cookies["refreshToken"];
 
+            if (string.IsNullOrEmpty(token))
+                return BadRequest("Token is requird.");
+
+            var result = await _authService.RevokeTokenAsync(token);
+
+            if (!result)
+                return BadRequest("The token is invalid.");
+
+            return Ok();
+
+        }
 
     }
 }

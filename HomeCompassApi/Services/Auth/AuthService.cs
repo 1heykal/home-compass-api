@@ -1,7 +1,9 @@
 ﻿using HomeCompassApi.Helpers;
 using HomeCompassApi.Models;
+using HomeCompassApi.Models.Auth;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,7 +11,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace HomeCompassApi.Services
+namespace HomeCompassApi.Services.Auth
 {
     public class AuthService : IAuthService
     {
@@ -37,20 +39,9 @@ namespace HomeCompassApi.Services
 
             var result = await _userManager.AddToRoleAsync(user, model.Role);
 
-            return result.Succeeded ? String.Empty : "Something went wrong.";
+            return result.Succeeded ? string.Empty : "Something went wrong.";
 
         }
-
-        //public async Task<string> LogoutAsync(AuthModel model)
-        //{
-        //    var user = await _userManager.FindByIdAsync(model.Username);
-        //    if (user is null)
-        //        return "Thers is no account with this userID";
-
-        //    if (model.IsAuthenticated)
-        //        await _userManager.RemoveAuthenticationTokenAsync(user);
-
-        //}
 
         public async Task<AuthModel> GetTokenAsync(TokenRequestModel model)
         {
@@ -71,7 +62,7 @@ namespace HomeCompassApi.Services
             authModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
             authModel.Email = user.Email;
             authModel.Username = user.UserName;
-            // authModel.ExpiresOn = jwtSecurityToken.ValidTo;
+            authModel.ExpiresOn = jwtSecurityToken.ValidTo;
             authModel.Roles = roles.ToList();
 
             if (user.RefreshTokens.Any(t => t.IsActive))
@@ -93,9 +84,42 @@ namespace HomeCompassApi.Services
 
         }
 
-        public Task<AuthModel> RefreshTokenAsync(string token)
+        public async Task<AuthModel> RefreshTokenAsync(string token)
         {
-            throw new NotImplementedException();
+            var authModel = new AuthModel();
+
+            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token == token));
+            if (user is null)
+            {
+                authModel.Message = "Invalid Token";
+                return authModel;
+            }
+
+            var refreshToken = user.RefreshTokens.Single(t => t.Token == token);
+            if (!refreshToken.IsActive)
+            {
+                authModel.Message = "Inactive Token";
+                return authModel;
+            }
+
+            refreshToken.RevokedOn = DateTime.UtcNow;
+
+            var newRefreshToken = GenerateRefrshToken();
+            user.RefreshTokens.Add(newRefreshToken);
+            await _userManager.UpdateAsync(user);
+
+            var jwtToken = await CreateJwtToken(user);
+            authModel.IsAuthenticated = true;
+            authModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtToken);
+            authModel.Email = user.Email;
+            authModel.Username = user.UserName;
+
+            var roles = await _userManager.GetRolesAsync(user);
+            authModel.Roles = roles.ToList();
+            authModel.RefreshToken = newRefreshToken.Token;
+            authModel.RefreshTokenExpiration = newRefreshToken.ExpiresOn;
+
+            return authModel;
         }
 
         public async Task<AuthModel> RegisterAsync(RegisterModel model)
@@ -125,7 +149,7 @@ namespace HomeCompassApi.Services
 
             if (!result.Succeeded)
             {
-                var errors = String.Empty;
+                var errors = string.Empty;
 
                 foreach (var error in result.Errors)
                 {
@@ -142,7 +166,7 @@ namespace HomeCompassApi.Services
             var authModel = new AuthModel
             {
                 Email = user.Email,
-                // ExpiresOn = jwtSecurityToken.ValidTo,
+                ExpiresOn = jwtSecurityToken.ValidTo,
                 IsAuthenticated = true,
                 Roles = new List<string> { "User" },
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
@@ -155,6 +179,23 @@ namespace HomeCompassApi.Services
 
         }
 
+        public async Task<bool> RevokeTokenAsync(string token)
+        {
+            var authModel = new AuthModel();
+
+            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token == token));
+            if (user is null)
+                return false;
+
+            var refreshToken = user.RefreshTokens.Single(t => t.Token == token);
+            if (!refreshToken.IsActive)
+                return false;
+
+            refreshToken.RevokedOn = DateTime.UtcNow;
+            await _userManager.UpdateAsync(user);
+
+            return true;
+        }
 
         private async Task<JwtSecurityToken> CreateJwtToken(ApplicationUser user)
         {

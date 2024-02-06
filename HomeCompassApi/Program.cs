@@ -6,7 +6,7 @@ using HomeCompassApi.Models;
 using HomeCompassApi.Models.Cases;
 using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Models.Feed;
-using HomeCompassApi.Services;
+using HomeCompassApi.Services.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -53,10 +53,6 @@ builder.Services.AddAuthentication(options =>
         };
 
     });
-
-
-
-
 
 
 string ConnectionString = builder.Configuration.GetConnectionString("SqlServer");

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace HomeCompassApi.Models
+namespace HomeCompassApi.Models.Auth
 {
     public class AuthModel
     {
@@ -11,7 +11,7 @@ namespace HomeCompassApi.Models
         public List<string> Roles { get; set; }
         public string Token { get; set; }
 
-        // public DateTime ExpiresOn { get; set; }
+        public DateTime ExpiresOn { get; set; }
 
         [JsonIgnore]
         public string RefreshToken { get; set; }

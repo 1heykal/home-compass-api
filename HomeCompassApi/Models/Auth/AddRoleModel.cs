@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace HomeCompassApi.Models
+namespace HomeCompassApi.Models.Auth
 {
     public class AddRoleModel
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace HomeCompassApi.Models
+namespace HomeCompassApi.Models.Auth
 {
     [Owned]
     public class RefreshToken

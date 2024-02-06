@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using HomeCompassApi.Models.Auth;
 using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Models.Feed;
 using Microsoft.AspNetCore.Identity;
