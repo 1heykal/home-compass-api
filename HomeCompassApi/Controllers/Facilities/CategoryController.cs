@@ -18,15 +18,15 @@ namespace HomeCompassApi.Controllers.Facilities
         [HttpPost]
         public IActionResult Create(Category category)
         {
-            if (category is null)
-                return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             _repository.Add(category);
             return CreatedAtAction(nameof(Get), new { Id = category.Id }, category);
         }
 
         [HttpGet]
-        public ActionResult<List<Category>> Get() => _repository.GetAll().ToList();
+        public ActionResult<List<Category>> Get() => Ok(_repository.GetAll().ToList());
 
         [HttpGet("{id}")]
         public ActionResult<Category> Get(int id)
@@ -37,19 +37,19 @@ namespace HomeCompassApi.Controllers.Facilities
             var category = _repository.GetById(id);
 
             if (category is null)
-                return NotFound();
+                return NotFound($"There is no category with the specified Id: {category.Id}");
 
-            return category;
+            return Ok(category);
         }
 
         [HttpPut]
         public IActionResult Update(Category category)
         {
-            if (category is null)
-                return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             if (_repository.GetById(category.Id) is null)
-                return NotFound();
+                return NotFound($"There is no category with the specified Id: {category.Id}");
 
             _repository.Update(category);
 
@@ -63,7 +63,7 @@ namespace HomeCompassApi.Controllers.Facilities
                 return BadRequest();
 
             if (_repository.GetById(id) is null)
-                return NotFound();
+                return NotFound($"There is no category with the specified Id: {id}");
 
             _repository.Delete(id);
             return NoContent();

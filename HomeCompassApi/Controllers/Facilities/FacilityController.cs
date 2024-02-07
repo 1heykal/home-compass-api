@@ -19,8 +19,8 @@ namespace HomeCompassApi.Controllers.Facilities
         [HttpPost]
         public IActionResult Create(Facility facility)
         {
-            if (facility is null)
-                return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             _repository.Add(facility);
 
@@ -30,33 +30,37 @@ namespace HomeCompassApi.Controllers.Facilities
         [HttpGet]
         public ActionResult<List<Facility>> Get()
         {
-            return _repository.GetAll().ToList();
+            return Ok(_repository.GetAll().ToList());
         }
 
         [HttpGet("{id}")]
         public ActionResult<Facility> Get(int id)
         {
-            var facility = _repository.GetById(id);
-            if (facility is null)
-                return NotFound();
+            if (id <= 0)
+                return BadRequest();
 
-            return facility;
+            var facility = _repository.GetById(id);
+
+            if (facility is null)
+                return NotFound($"There is no facility with the specified Id: {id}");
+
+            return Ok(facility);
         }
 
-        //[HttpGet("/Category/{id}")]
-        //public ActionResult<List<Facility>> GetByCategory(int categoryId)
-        //{
-        //    return _repository.GetAll().Where(f => f.CategoryId == categoryId).ToList();
-        //}
+        [HttpGet("bycategory/{id}")]
+        public ActionResult<List<Facility>> GetByCategory(int categoryId)
+        {
+            return Ok(_repository.GetAll().Where(f => f.CategoryId == categoryId).ToList());
+        }
 
         [HttpPut]
         public IActionResult Update(Facility facility)
         {
-            if (facility is null)
-                return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             if (_repository.GetById(facility.Id) is null)
-                return NotFound();
+                return NotFound($"There is no facility with the specified Id: {facility.Id}");
 
             _repository.Update(facility);
             return NoContent();
@@ -65,12 +69,15 @@ namespace HomeCompassApi.Controllers.Facilities
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var facility = _repository.GetById(id);
-            if (facility is null)
-                return NotFound();
-
             if (id <= 0)
                 return BadRequest();
+
+            var facility = _repository.GetById(id);
+
+            if (facility is null)
+                return NotFound($"There is no facility with the specified Id: {id}");
+
+
 
             _repository.Delete(id);
             return NoContent();

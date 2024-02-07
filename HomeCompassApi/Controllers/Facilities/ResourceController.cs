@@ -1,4 +1,5 @@
 ﻿using HomeCompassApi.BLL;
+using HomeCompassApi.Models.Cases;
 using HomeCompassApi.Models.Facilities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,8 +20,8 @@ namespace HomeCompassApi.Controllers.Facilities
         [HttpPost]
         public IActionResult Create(Resource resource)
         {
-            if (resource is null)
-                return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             _repository.Add(resource);
             return CreatedAtAction(nameof(Get), new { Id = resource.Id }, resource);
@@ -29,7 +30,7 @@ namespace HomeCompassApi.Controllers.Facilities
         [HttpGet]
         public ActionResult<List<Resource>> Get()
         {
-            return _repository.GetAll().ToList();
+            return Ok(_repository.GetAll().ToList());
         }
 
         [HttpGet("{id}")]
@@ -41,19 +42,19 @@ namespace HomeCompassApi.Controllers.Facilities
             var resource = _repository.GetById(id);
 
             if (resource is null)
-                return NotFound();
+                return NotFound($"There is no resource with the specified Id: {id}");
 
-            return resource;
+            return Ok(resource);
         }
 
         [HttpPut]
         public IActionResult Update(Resource resource)
         {
-            if (resource is null)
-                return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             if (_repository.GetById(resource.Id) is null)
-                return NotFound();
+                return NotFound($"There is no resource with the specified Id: {resource.Id}");
 
             _repository.Update(resource);
 
@@ -67,7 +68,7 @@ namespace HomeCompassApi.Controllers.Facilities
                 return BadRequest();
 
             if (_repository.GetById(id) is null)
-                return NotFound();
+                return NotFound($"There is no resource with the specified Id: {id}");
 
             _repository.Delete(id);
 

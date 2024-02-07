@@ -18,45 +18,43 @@ namespace HomeCompassApi.Controllers.Cases
         [HttpPost]
         public IActionResult Create(Missing missing)
         {
-            if (missing is null)
-                return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             _repository.Add(missing);
 
-            // Know more about the following sentence it has no id basically
-            // Why get in nameof(get)
             return CreatedAtAction(nameof(Get), new { Id = missing.Id }, missing);
         }
 
         [HttpGet]
         public ActionResult<List<Missing>> Get()
         {
-            return _repository.GetAll().ToList();
+            return Ok(_repository.GetAll().ToList());
         }
 
         [HttpGet("{id}")]
         public ActionResult<Missing> Get(int id)
         {
-            var missing = _repository.GetById(id);
-
             if (id <= 0)
                 return BadRequest();
 
-            if (missing is null)
-                return NotFound();
+            var missing = _repository.GetById(id);
 
-            return missing;
+            if (missing is null)
+                return NotFound($"There is no record with the specified Id: {id}");
+
+            return Ok(missing);
         }
 
 
         [HttpPut]
         public IActionResult Update(Missing missing)
         {
-            if (missing is null || missing.Id <= 0)
-                return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             if (_repository.GetById(missing.Id) is null)
-                return NotFound();
+                return NotFound($"There is no record with the specified Id: {missing.Id}");
 
             _repository.Update(missing);
 
@@ -66,9 +64,13 @@ namespace HomeCompassApi.Controllers.Cases
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
+            if (id <= 0)
+                return BadRequest();
+
             var missing = _repository.GetById(id);
+
             if (missing is null)
-                return NotFound();
+                return NotFound($"There is no record with the specified Id: {id}");
 
             _repository.Delete(id);
             return NoContent();

@@ -1,4 +1,5 @@
 ﻿using HomeCompassApi.BLL;
+using HomeCompassApi.Models.Cases;
 using HomeCompassApi.Models.Feed;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -19,8 +20,8 @@ namespace HomeCompassApi.Controllers.Feed
         [HttpPost]
         public IActionResult Create(Post post)
         {
-            if (post is null)
-                return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             _repository.Add(post);
             return CreatedAtAction(nameof(Get), new { id = post.Id }, post);
@@ -28,27 +29,30 @@ namespace HomeCompassApi.Controllers.Feed
 
 
         [HttpGet]
-        public ActionResult<List<Post>> Get() => _repository.GetAll().ToList();
+        public ActionResult<List<Post>> Get() => Ok(_repository.GetAll().ToList());
 
         [HttpGet("{id}")]
         public ActionResult<Post> Get(int id)
         {
+            if (id <= 0)
+                return BadRequest();
+
             var post = _repository.GetById(id);
 
             if (post is null)
-                return NotFound(id);
+                return NotFound($"There is no post with the specified Id: {id}");
 
-            return post;
+            return Ok(post);
         }
 
         [HttpPut]
         public IActionResult Update(Post post)
         {
-            if (post is null)
-                return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             if (_repository.GetById(post.Id) is null)
-                return NotFound(post);
+                return NotFound($"There is no post with the specified Id: {post.Id}");
 
             _repository.Update(post);
             return NoContent();
@@ -57,9 +61,13 @@ namespace HomeCompassApi.Controllers.Feed
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
+            if (id <= 0)
+                return BadRequest();
+
             var post = _repository.GetById(id);
+
             if (post is null)
-                return NotFound(id);
+                return NotFound($"There is no post with the specified Id: {id}");
 
 
             _repository.Delete(id);
