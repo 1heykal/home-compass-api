@@ -21,6 +21,7 @@ namespace HomeCompassApi.Models.Feed
         public string UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
+        [JsonIgnore]
         public ApplicationUser User { get; set; }
 
         public ICollection<Comment> Comments { get; set; }

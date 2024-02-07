@@ -16,6 +16,5 @@ namespace HomeCompassApi.Models.Facilities
         [JsonIgnore]
         public List<Facility> Facilities { get; set; }
 
-        //public ICollection<Resource> Resources { get; set; }    
     }
 }

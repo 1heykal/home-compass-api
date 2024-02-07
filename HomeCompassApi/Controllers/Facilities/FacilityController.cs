@@ -47,7 +47,7 @@ namespace HomeCompassApi.Controllers.Facilities
             return Ok(facility);
         }
 
-        [HttpGet("bycategory/{id}")]
+        [HttpGet("bycategory/{categoryId}")]
         public ActionResult<List<Facility>> GetByCategory(int categoryId)
         {
             return Ok(_repository.GetAll().Where(f => f.CategoryId == categoryId).ToList());

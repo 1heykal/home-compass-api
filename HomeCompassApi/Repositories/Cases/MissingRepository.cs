@@ -23,9 +23,9 @@ namespace HomeCompassApi.BLL.Cases
             _context.SaveChanges();
         }
 
-        public IEnumerable<Missing> GetAll() => _context.Missings.ToList();
+        public IEnumerable<Missing> GetAll() => _context.Missings.AsNoTracking().ToList();
 
-        public Missing GetById(int id) => _context.Missings.FirstOrDefault(m => m.Id == id);
+        public Missing GetById(int id) => _context.Missings.AsNoTracking().FirstOrDefault(m => m.Id == id);
 
         public void Update(Missing entity)
         {

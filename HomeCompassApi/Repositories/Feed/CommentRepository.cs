@@ -19,9 +19,9 @@ namespace HomeCompassApi.BLL
             _context.SaveChanges();
         }
 
-        public IEnumerable<Comment> GetAll() => _context.Comments.ToList();
+        public IEnumerable<Comment> GetAll() => _context.Comments.AsNoTracking().ToList();
 
-        public Comment GetById(int id) => _context.Comments.FirstOrDefault(c => c.Id == id);
+        public Comment GetById(int id) => _context.Comments.AsNoTracking().FirstOrDefault(c => c.Id == id);
 
 
         public void Update(Comment entity)

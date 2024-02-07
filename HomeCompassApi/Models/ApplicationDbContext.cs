@@ -26,6 +26,7 @@ namespace HomeCompassApi.Models
 
         private readonly IConfiguration _configuration;
 
+        public ApplicationDbContext() { }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration) : base(options)
         {
             _configuration = configuration;

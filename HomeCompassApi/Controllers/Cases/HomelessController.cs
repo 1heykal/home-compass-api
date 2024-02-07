@@ -41,9 +41,6 @@ namespace HomeCompassApi.Controllers.Cases
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (_repository.GetById(homeless.Id) is null)
-                return NotFound($"There is no record with the specified Id: {homeless.Id}");
-
             _repository.Add(homeless);
             return CreatedAtAction(nameof(Get), new { id = homeless.Id }, homeless);
         }

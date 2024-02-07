@@ -20,7 +20,7 @@ namespace HomeCompassApi.Models.Cases
         public string PhotoUrl { get; set; }
 
         [Required]
-        public bool Archived { get; set; }
+        public bool Archived { get; set; } = false;
         public string AdditionalDetails { get; set; }
 
         [Required]

@@ -1,5 +1,6 @@
 ﻿using HomeCompassApi.Models;
 using HomeCompassApi.Models.Facilities;
+using Microsoft.EntityFrameworkCore;
 
 namespace HomeCompassApi.BLL.Facilities
 {
@@ -22,10 +23,9 @@ namespace HomeCompassApi.BLL.Facilities
             _context.SaveChanges();
         }
 
-        public IEnumerable<Category> GetAll() => _context.Categories.ToList();
+        public IEnumerable<Category> GetAll() => _context.Categories.AsNoTracking().ToList();
 
-        public Category GetById(int id) => _context.Categories.FirstOrDefault(c => c.Id == id);
-
+        public Category GetById(int id) => _context.Categories.AsNoTracking().FirstOrDefault(c => c.Id == id);
 
         public void Update(Category entity)
         {

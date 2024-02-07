@@ -1,5 +1,6 @@
 ﻿using HomeCompassApi.Models;
 using HomeCompassApi.Models.Cases;
+using Microsoft.EntityFrameworkCore;
 
 namespace HomeCompassApi.BLL.Cases
 {
@@ -22,9 +23,9 @@ namespace HomeCompassApi.BLL.Cases
             _context.SaveChanges();
         }
 
-        public IEnumerable<Homeless> GetAll() => _context.Homeless.ToList();
+        public IEnumerable<Homeless> GetAll() => _context.Homeless.AsNoTracking().ToList();
 
-        public Homeless GetById(int id) => _context.Homeless.FirstOrDefault(h => h.Id == id);
+        public Homeless GetById(int id) => _context.Homeless.AsNoTracking().FirstOrDefault(h => h.Id == id);
 
 
         public void Update(Homeless entity)

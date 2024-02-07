@@ -1,6 +1,7 @@
 ﻿using HomeCompassApi.BLL;
 using HomeCompassApi.Models.Cases;
 using HomeCompassApi.Models.Feed;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
