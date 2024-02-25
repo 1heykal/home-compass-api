@@ -7,7 +7,7 @@ namespace HomeCompassApi.Controllers.Feed
 {
     [ApiController]
     [Route("[controller]")]
-    public class CommentController : Controller
+    public class CommentController : ControllerBase
     {
         private readonly IRepository<Comment> _commentRepository;
         private readonly UserRepository _userRepository;

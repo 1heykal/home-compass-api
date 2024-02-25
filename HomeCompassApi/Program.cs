@@ -6,6 +6,7 @@ using HomeCompassApi.Models;
 using HomeCompassApi.Models.Cases;
 using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Models.Feed;
+using HomeCompassApi.Repositories;
 using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -53,8 +54,7 @@ builder.Services.AddAuthentication(options =>
             ClockSkew = TimeSpan.Zero
         };
 
-    });
-
+        });
 
 string ConnectionString = builder.Configuration.GetConnectionString("SqlServer");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(ConnectionString));
@@ -74,6 +74,8 @@ builder.Services.AddScoped<IRepository<Missing>, MissingRepository>();
 builder.Services.AddScoped<IRepository<Facility>, FacilityRepository>();
 builder.Services.AddScoped<IRepository<Resource>, ResourceRepository>();
 builder.Services.AddScoped<IRepository<Category>, CategoryRepository>();
+
+builder.Services.AddScoped<IRepository<Info>, InfoRepository>();
 
 
 

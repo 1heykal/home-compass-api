@@ -12,7 +12,7 @@ namespace HomeCompassApi.Controllers.Feed
 {
     [ApiController]
     [Route("[controller]")]
-    public class PostController : Controller
+    public class PostController : ControllerBase
     {
         private readonly IRepository<Post> _postRepository;
         private readonly UserRepository _userRepository;

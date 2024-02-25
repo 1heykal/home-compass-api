@@ -6,7 +6,7 @@ namespace HomeCompassApi.Controllers.Facilities
 {
     [ApiController]
     [Route("[controller]")]
-    public class CategoryController : Controller
+    public class CategoryController : ControllerBase
     {
         private readonly IRepository<Category> _repository;
 

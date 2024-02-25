@@ -10,7 +10,7 @@ namespace HomeCompassApi.Controllers.Facilities
 {
     [ApiController]
     [Route("[controller]")]
-    public class ResourceController : Controller
+    public class ResourceController : ControllerBase
     {
         private readonly IRepository<Resource> _resourceRepository;
         public ResourceController(IRepository<Resource> resourceRepository)

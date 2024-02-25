@@ -9,7 +9,7 @@ namespace HomeCompassApi.Controllers.Facilities
 {
     [ApiController]
     [Route("[controller]")]
-    public class FacilityController : Controller
+    public class FacilityController : ControllerBase
     {
         private readonly IRepository<Facility> _facilityRepository;
         private readonly UserRepository _userRepository;

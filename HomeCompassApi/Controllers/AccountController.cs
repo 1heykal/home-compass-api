@@ -8,7 +8,7 @@ namespace HomeCompassApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AccountController : Controller
+    public class AccountController : ControllerBase
     {
         private readonly IAuthService _authService;
 
