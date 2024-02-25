@@ -1,5 +1,7 @@
 ﻿using HomeCompassApi.BLL;
 using HomeCompassApi.Models.Facilities;
+using HomeCompassApi.Models.Feed;
+using HomeCompassApi.Repositories.User;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
 
@@ -9,12 +11,15 @@ namespace HomeCompassApi.Controllers.Facilities
     [Route("[controller]")]
     public class FacilityController : Controller
     {
-        private readonly IRepository<Facility> _repository;
+        private readonly IRepository<Facility> _facilityRepository;
+        private readonly UserRepository _userRepository;
 
-        public FacilityController(IRepository<Facility> repository)
+        public FacilityController(IRepository<Facility> facilityRepository, UserRepository userRepository)
         {
-            _repository = repository;
+            _facilityRepository = facilityRepository;
+            _userRepository = userRepository;
         }
+
 
         [HttpPost]
         public IActionResult Create(Facility facility)
@@ -22,7 +27,7 @@ namespace HomeCompassApi.Controllers.Facilities
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            _repository.Add(facility);
+            _facilityRepository.Add(facility);
 
             return CreatedAtAction(nameof(Get), new { Id = facility.Id }, facility);
         }
@@ -30,7 +35,7 @@ namespace HomeCompassApi.Controllers.Facilities
         [HttpGet]
         public ActionResult<List<Facility>> Get()
         {
-            return Ok(_repository.GetAll().ToList());
+            return Ok(_facilityRepository.GetAll().ToList());
         }
 
         [HttpGet("{id}")]
@@ -39,7 +44,7 @@ namespace HomeCompassApi.Controllers.Facilities
             if (id <= 0)
                 return BadRequest();
 
-            var facility = _repository.GetById(id);
+            var facility = _facilityRepository.GetById(id);
 
             if (facility is null)
                 return NotFound($"There is no facility with the specified Id: {id}");
@@ -47,10 +52,23 @@ namespace HomeCompassApi.Controllers.Facilities
             return Ok(facility);
         }
 
+        [HttpGet("contributor/{id}")]
+        public ActionResult<List<Post>> GetByContributorId(string id)
+        {
+            if (id is null || id == string.Empty)
+                return BadRequest();
+
+            if (_userRepository.GetById(id) is null)
+                return NotFound("There is no contributor with the specified id.");
+
+            return Ok(_facilityRepository.GetAll().Where(f => f.ContributorId == id).ToList());
+
+        }
+
         [HttpGet("bycategory/{categoryId}")]
         public ActionResult<List<Facility>> GetByCategory(int categoryId)
         {
-            return Ok(_repository.GetAll().Where(f => f.CategoryId == categoryId).ToList());
+            return Ok(_facilityRepository.GetAll().Where(f => f.CategoryId == categoryId).ToList());
         }
 
         [HttpPut]
@@ -59,10 +77,10 @@ namespace HomeCompassApi.Controllers.Facilities
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (_repository.GetById(facility.Id) is null)
+            if (_facilityRepository.GetById(facility.Id) is null)
                 return NotFound($"There is no facility with the specified Id: {facility.Id}");
 
-            _repository.Update(facility);
+            _facilityRepository.Update(facility);
             return NoContent();
         }
 
@@ -72,14 +90,14 @@ namespace HomeCompassApi.Controllers.Facilities
             if (id <= 0)
                 return BadRequest();
 
-            var facility = _repository.GetById(id);
+            var facility = _facilityRepository.GetById(id);
 
             if (facility is null)
                 return NotFound($"There is no facility with the specified Id: {id}");
 
 
 
-            _repository.Delete(id);
+            _facilityRepository.Delete(id);
             return NoContent();
         }
     }

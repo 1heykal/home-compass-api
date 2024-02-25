@@ -23,6 +23,9 @@ namespace HomeCompassApi.Models
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
 
+        // Info
+        public virtual DbSet<Info> Info { get; set; }
+
 
         private readonly IConfiguration _configuration;
 

@@ -1,6 +1,9 @@
 ﻿using HomeCompassApi.BLL;
+using HomeCompassApi.BLL.Facilities;
 using HomeCompassApi.Models.Cases;
 using HomeCompassApi.Models.Facilities;
+using HomeCompassApi.Models.Feed;
+using HomeCompassApi.Repositories.User;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeCompassApi.Controllers.Facilities
@@ -9,11 +12,11 @@ namespace HomeCompassApi.Controllers.Facilities
     [Route("[controller]")]
     public class ResourceController : Controller
     {
-        private readonly IRepository<Resource> _repository;
-
-        public ResourceController(IRepository<Resource> repository)
+        private readonly IRepository<Resource> _resourceRepository;
+        public ResourceController(IRepository<Resource> resourceRepository)
         {
-            _repository = repository;
+            _resourceRepository = resourceRepository;
+
         }
 
 
@@ -23,14 +26,14 @@ namespace HomeCompassApi.Controllers.Facilities
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            _repository.Add(resource);
+            _resourceRepository.Add(resource);
             return CreatedAtAction(nameof(Get), new { Id = resource.Id }, resource);
         }
 
         [HttpGet]
         public ActionResult<List<Resource>> Get()
         {
-            return Ok(_repository.GetAll().ToList());
+            return Ok(_resourceRepository.GetAll().ToList());
         }
 
         [HttpGet("{id}")]
@@ -39,7 +42,7 @@ namespace HomeCompassApi.Controllers.Facilities
             if (id <= 0)
                 return BadRequest();
 
-            var resource = _repository.GetById(id);
+            var resource = _resourceRepository.GetById(id);
 
             if (resource is null)
                 return NotFound($"There is no resource with the specified Id: {id}");
@@ -53,10 +56,10 @@ namespace HomeCompassApi.Controllers.Facilities
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (_repository.GetById(resource.Id) is null)
+            if (_resourceRepository.GetById(resource.Id) is null)
                 return NotFound($"There is no resource with the specified Id: {resource.Id}");
 
-            _repository.Update(resource);
+            _resourceRepository.Update(resource);
 
             return NoContent();
         }
@@ -67,10 +70,10 @@ namespace HomeCompassApi.Controllers.Facilities
             if (id <= 0)
                 return BadRequest();
 
-            if (_repository.GetById(id) is null)
+            if (_resourceRepository.GetById(id) is null)
                 return NotFound($"There is no resource with the specified Id: {id}");
 
-            _repository.Delete(id);
+            _resourceRepository.Delete(id);
 
             return NoContent();
         }

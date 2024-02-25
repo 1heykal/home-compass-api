@@ -6,6 +6,7 @@ using HomeCompassApi.Models;
 using HomeCompassApi.Models.Cases;
 using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Models.Feed;
+using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -57,6 +58,9 @@ builder.Services.AddAuthentication(options =>
 
 string ConnectionString = builder.Configuration.GetConnectionString("SqlServer");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(ConnectionString));
+
+// User
+builder.Services.AddScoped<UserRepository, UserRepository>();
 
 // Feed
 builder.Services.AddScoped<IRepository<Post>, PostRepository>();

@@ -1,7 +1,9 @@
 ﻿using HomeCompassApi.BLL;
 using HomeCompassApi.Models.Cases;
+using HomeCompassApi.Repositories.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace HomeCompassApi.Controllers.Cases
 {
@@ -10,16 +12,18 @@ namespace HomeCompassApi.Controllers.Cases
 
     public class HomelessController : Controller
     {
-        private readonly IRepository<Homeless> _repository;
-        public HomelessController(IRepository<Homeless> repository)
+        private readonly IRepository<Homeless> _homelessRepository;
+        private readonly UserRepository _userRepository;
+        public HomelessController(IRepository<Homeless> homelessRepository, UserRepository userRepository)
         {
-            _repository = repository;
+            _homelessRepository = homelessRepository;
+            _userRepository = userRepository;
         }
 
         [HttpGet]
         public ActionResult<List<Homeless>> Get()
         {
-            return Ok(_repository.GetAll().ToList());
+            return Ok(_homelessRepository.GetAll().ToList());
         }
 
         [HttpGet("{id}")]
@@ -28,11 +32,24 @@ namespace HomeCompassApi.Controllers.Cases
             if (id <= 0)
                 return BadRequest();
 
-            var homeless = _repository.GetById(id);
+            var homeless = _homelessRepository.GetById(id);
+
             if (homeless is null)
                 return NotFound($"There is no record with the specified Id: {id}");
 
             return Ok(homeless);
+        }
+
+        [HttpGet("reporter/{id}")]
+        public ActionResult<List<Homeless>> GetByReporterId(string id)
+        {
+            if (id is null || id == string.Empty)
+                return BadRequest();
+
+            if (_userRepository.GetById(id) is null)
+                return NotFound("There is no reporter with the specified id.");
+
+            return Ok(_homelessRepository.GetAll().Where(h => h.ReporterId == id).ToList());
         }
 
         [HttpPost]
@@ -41,7 +58,9 @@ namespace HomeCompassApi.Controllers.Cases
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            _repository.Add(homeless);
+            // if (homeless.ReporterId)
+
+            _homelessRepository.Add(homeless);
             return CreatedAtAction(nameof(Get), new { id = homeless.Id }, homeless);
         }
 
@@ -51,10 +70,10 @@ namespace HomeCompassApi.Controllers.Cases
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (_repository.GetById(homeless.Id) is null)
+            if (_homelessRepository.GetById(homeless.Id) is null)
                 return NotFound($"There is no record with the specified Id: {homeless.Id}");
 
-            _repository.Update(homeless);
+            _homelessRepository.Update(homeless);
 
             return NoContent();
         }
@@ -65,12 +84,12 @@ namespace HomeCompassApi.Controllers.Cases
             if (id <= 0)
                 return BadRequest();
 
-            var homeless = _repository.GetById(id);
+            var homeless = _homelessRepository.GetById(id);
 
             if (homeless is null)
                 return NotFound($"There is no record with the specified Id: {id}");
 
-            _repository.Delete(id);
+            _homelessRepository.Delete(id);
 
             return NoContent();
         }
