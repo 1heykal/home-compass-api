@@ -27,6 +27,9 @@ namespace HomeCompassApi.BLL.Facilities
 
         public Category GetById(int id) => _context.Categories.AsNoTracking().FirstOrDefault(c => c.Id == id);
 
+        public bool IsExisted(Category category) => _context.Categories.Contains(category);
+
+
         public void Update(Category entity)
         {
             _context.Categories.Update(entity);

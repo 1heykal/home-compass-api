@@ -7,5 +7,6 @@
         T GetById(int id);
         void Update(T entity);
         void Delete(int id);
+        bool IsExisted(T entity);
     }
 }

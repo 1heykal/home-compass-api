@@ -34,6 +34,11 @@ namespace HomeCompassApi.Repositories
             return _context.Info.FirstOrDefault(i => i.Id == id);
         }
 
+        public bool IsExisted(Info entity)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Update(Info entity)
         {
             _context.Info.Update(entity);

@@ -27,6 +27,8 @@ namespace HomeCompassApi.BLL.Cases
 
         public Homeless GetById(int id) => _context.Homeless.AsNoTracking().FirstOrDefault(h => h.Id == id);
 
+        public bool IsExisted(Homeless homeless) => _context.Homeless.Contains(homeless);
+
 
         public void Update(Homeless entity)
         {

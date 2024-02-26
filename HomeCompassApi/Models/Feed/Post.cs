@@ -26,6 +26,6 @@ namespace HomeCompassApi.Models.Feed
 
         public ICollection<Comment> Comments { get; set; }
 
-        public List<Like> Likes { get; set; }
+        public ICollection<Like> Likes { get; set; }
     }
 }

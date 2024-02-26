@@ -1,5 +1,6 @@
 ﻿using HomeCompassApi.BLL;
 using HomeCompassApi.Models.Facilities;
+using HomeCompassApi.Models.Feed;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeCompassApi.Controllers.Facilities
@@ -8,11 +9,11 @@ namespace HomeCompassApi.Controllers.Facilities
     [Route("[controller]")]
     public class CategoryController : ControllerBase
     {
-        private readonly IRepository<Category> _repository;
+        private readonly IRepository<Category> _categoryRepository;
 
-        public CategoryController(IRepository<Category> repository)
+        public CategoryController(IRepository<Category> categoryRepository)
         {
-            _repository = repository;
+            _categoryRepository = categoryRepository;
         }
 
         [HttpPost]
@@ -21,12 +22,12 @@ namespace HomeCompassApi.Controllers.Facilities
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            _repository.Add(category);
+            _categoryRepository.Add(category);
             return CreatedAtAction(nameof(Get), new { Id = category.Id }, category);
         }
 
         [HttpGet]
-        public ActionResult<List<Category>> Get() => Ok(_repository.GetAll().ToList());
+        public ActionResult<List<Category>> Get() => Ok(_categoryRepository.GetAll().ToList());
 
         [HttpGet("{id}")]
         public ActionResult<Category> Get(int id)
@@ -34,7 +35,7 @@ namespace HomeCompassApi.Controllers.Facilities
             if (id <= 0)
                 return BadRequest();
 
-            var category = _repository.GetById(id);
+            var category = _categoryRepository.GetById(id);
 
             if (category is null)
                 return NotFound($"There is no category with the specified Id: {category.Id}");
@@ -48,10 +49,10 @@ namespace HomeCompassApi.Controllers.Facilities
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (_repository.GetById(category.Id) is null)
+            if (!_categoryRepository.IsExisted(category))
                 return NotFound($"There is no category with the specified Id: {category.Id}");
 
-            _repository.Update(category);
+            _categoryRepository.Update(category);
 
             return NoContent();
         }
@@ -62,10 +63,10 @@ namespace HomeCompassApi.Controllers.Facilities
             if (id <= 0)
                 return BadRequest();
 
-            if (_repository.GetById(id) is null)
+            if (_categoryRepository.GetById(id) is null)
                 return NotFound($"There is no category with the specified Id: {id}");
 
-            _repository.Delete(id);
+            _categoryRepository.Delete(id);
             return NoContent();
         }
     }

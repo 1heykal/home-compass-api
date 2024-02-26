@@ -22,7 +22,7 @@ namespace HomeCompassApi.BLL
         public IEnumerable<Comment> GetAll() => _context.Comments.AsNoTracking().ToList();
 
         public Comment GetById(int id) => _context.Comments.AsNoTracking().FirstOrDefault(c => c.Id == id);
-
+        public bool IsExisted(Comment comment) => _context.Comments.Contains(comment);
 
         public void Update(Comment entity)
         {
@@ -35,6 +35,7 @@ namespace HomeCompassApi.BLL
             _context.Comments.Remove(GetById(id));
             _context.SaveChanges();
         }
+
 
     }
 }

@@ -41,6 +41,8 @@ namespace HomeCompassApi.BLL.Facilities
 
         public Facility GetById(int id) => _context.Facilities.AsNoTracking().FirstOrDefault(f => f.Id == id);
 
+        public bool IsExisted(Facility facility) => _context.Facilities.Contains(facility);
+
 
         public void Update(Facility entity)
         {

@@ -27,6 +27,8 @@ namespace HomeCompassApi.BLL.Cases
 
         public Missing GetById(int id) => _context.Missings.AsNoTracking().FirstOrDefault(m => m.Id == id);
 
+        public bool IsExisted(Missing missing) => _context.Missings.Contains(missing);
+
         public void Update(Missing entity)
         {
             _context.Missings.Update(entity);

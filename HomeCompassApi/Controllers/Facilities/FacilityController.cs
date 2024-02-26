@@ -1,4 +1,5 @@
 ﻿using HomeCompassApi.BLL;
+using HomeCompassApi.Models;
 using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Repositories.User;
@@ -58,8 +59,8 @@ namespace HomeCompassApi.Controllers.Facilities
             if (id is null || id == string.Empty)
                 return BadRequest();
 
-            if (_userRepository.GetById(id) is null)
-                return NotFound("There is no contributor with the specified id.");
+            if (!_userRepository.IsExisted(new ApplicationUser { Id = id }))
+                return NotFound($"There is no contibutor with the specified id: {id}");
 
             return Ok(_facilityRepository.GetAll().Where(f => f.ContributorId == id).ToList());
 
@@ -71,13 +72,23 @@ namespace HomeCompassApi.Controllers.Facilities
             return Ok(_facilityRepository.GetAll().Where(f => f.CategoryId == categoryId).ToList());
         }
 
+        [HttpGet("page/{page}/size/{pageSize}")]
+        public ActionResult<List<Facility>> GetByPage(int page, int pageSize)
+        {
+            if (page < 0 || pageSize <= 0)
+                return BadRequest();
+
+            return Ok(_facilityRepository.GetAll().Skip(page).Take(pageSize).ToList());
+        }
+
+
         [HttpPut]
         public IActionResult Update(Facility facility)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (_facilityRepository.GetById(facility.Id) is null)
+            if (!_facilityRepository.IsExisted(facility))
                 return NotFound($"There is no facility with the specified Id: {facility.Id}");
 
             _facilityRepository.Update(facility);
@@ -90,12 +101,8 @@ namespace HomeCompassApi.Controllers.Facilities
             if (id <= 0)
                 return BadRequest();
 
-            var facility = _facilityRepository.GetById(id);
-
-            if (facility is null)
+            if (!_facilityRepository.IsExisted(new Facility { Id = id }))
                 return NotFound($"There is no facility with the specified Id: {id}");
-
-
 
             _facilityRepository.Delete(id);
             return NoContent();

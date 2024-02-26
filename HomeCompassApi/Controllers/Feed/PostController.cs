@@ -57,11 +57,20 @@ namespace HomeCompassApi.Controllers.Feed
             if (id is null || id == string.Empty)
                 return BadRequest();
 
-            if (_userRepository.GetById(id) is null)
-                return NotFound("There is no user with the specified id.");
+            if (!_userRepository.IsExisted(new ApplicationUser { Id = id }))
+                return NotFound($"There is no user with the specified id: {id}");
 
             return Ok(_postRepository.GetAll().Where(p => p.UserId == id).ToList());
 
+        }
+
+        [HttpGet("page/{page}/size/{pageSize}")]
+        public ActionResult<List<Post>> GetByPage(int page, int pageSize)
+        {
+            if (page < 0 || pageSize <= 0)
+                return BadRequest();
+
+            return Ok(_postRepository.GetAll().Skip(page).Take(pageSize).ToList());
         }
 
 
@@ -72,7 +81,7 @@ namespace HomeCompassApi.Controllers.Feed
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (_postRepository.GetById(post.Id) is null)
+            if (!_postRepository.IsExisted(post))
                 return NotFound($"There is no post with the specified Id: {post.Id}");
 
             _postRepository.Update(post);
@@ -85,9 +94,7 @@ namespace HomeCompassApi.Controllers.Feed
             if (id <= 0)
                 return BadRequest();
 
-            var post = _postRepository.GetById(id);
-
-            if (post is null)
+            if (!_postRepository.IsExisted(new Post { Id = id }))
                 return NotFound($"There is no post with the specified Id: {id}");
 
 

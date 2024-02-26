@@ -27,6 +27,10 @@ namespace HomeCompassApi.BLL.Facilities
 
         public Resource GetById(int id) => _context.Resources.AsNoTracking().FirstOrDefault(r => r.Id == id);
 
+        public bool IsExisted(Resource resource) => _context.Resources.Contains(resource);
+
+
+
         public void Update(Resource entity)
         {
             _context.Resources.Update(entity);

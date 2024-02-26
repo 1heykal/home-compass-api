@@ -50,13 +50,23 @@ namespace HomeCompassApi.Controllers.Facilities
             return Ok(resource);
         }
 
+        [HttpGet("page/{page}/size/{pageSize}")]
+        public ActionResult<List<Resource>> GetByPage(int page, int pageSize)
+        {
+            if (page < 0 || pageSize <= 0)
+                return BadRequest();
+
+            return Ok(_resourceRepository.GetAll().Skip(page).Take(pageSize).ToList());
+        }
+
+
         [HttpPut]
         public IActionResult Update(Resource resource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (_resourceRepository.GetById(resource.Id) is null)
+            if (!_resourceRepository.IsExisted(resource))
                 return NotFound($"There is no resource with the specified Id: {resource.Id}");
 
             _resourceRepository.Update(resource);
@@ -70,7 +80,7 @@ namespace HomeCompassApi.Controllers.Facilities
             if (id <= 0)
                 return BadRequest();
 
-            if (_resourceRepository.GetById(id) is null)
+            if (!_resourceRepository.IsExisted(new Resource { Id = id }))
                 return NotFound($"There is no resource with the specified Id: {id}");
 
             _resourceRepository.Delete(id);

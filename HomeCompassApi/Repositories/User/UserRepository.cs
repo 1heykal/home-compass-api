@@ -1,5 +1,6 @@
 ﻿using HomeCompassApi.BLL;
 using HomeCompassApi.Models;
+using HomeCompassApi.Models.Feed;
 
 namespace HomeCompassApi.Repositories.User
 {
@@ -27,6 +28,9 @@ namespace HomeCompassApi.Repositories.User
         {
             return _context.Users.FirstOrDefault(u => u.Id == id);
         }
+
+        public bool IsExisted(ApplicationUser user) => _context.Users.Contains(user);
+
 
 
     }

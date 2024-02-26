@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using HomeCompassApi.Models;
+using HomeCompassApi.Models.Feed;
 
 namespace HomeCompassApi.Controllers.Info
 {
@@ -50,6 +51,16 @@ namespace HomeCompassApi.Controllers.Info
 
         }
 
+        [HttpGet("page/{page}/size/{pageSize}")]
+        public ActionResult<List<Models.Info>> GetByPage(int page, int pageSize)
+        {
+            if (page < 0 || pageSize <= 0)
+                return BadRequest();
+
+            return Ok(_infoRepository.GetAll().Skip(page).Take(pageSize).ToList());
+        }
+
+
         [HttpPost]
         public IActionResult Create(Models.Info info)
         {
@@ -70,9 +81,7 @@ namespace HomeCompassApi.Controllers.Info
             if (entity.Id <= 0)
                 return BadRequest("Id must be greater than Zero.");
 
-            var info = _infoRepository.GetById(entity.Id);
-
-            if (info is null)
+            if (!_infoRepository.IsExisted(entity))
                 return NotFound($"There is no info with the specified id: {entity.Id}");
 
             _infoRepository.Update(entity);
@@ -86,7 +95,7 @@ namespace HomeCompassApi.Controllers.Info
             if (id <= 0)
                 return BadRequest("Id must be greater than Zero.");
 
-            if (_infoRepository.GetById(id) is null)
+            if (!_infoRepository.IsExisted(new Models.Info { Id = id }))
                 return NotFound($"There is no info with the specified id: {id}");
 
             _infoRepository.Delete(id);
