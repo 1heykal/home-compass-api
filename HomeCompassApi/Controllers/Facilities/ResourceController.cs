@@ -34,7 +34,7 @@ namespace HomeCompassApi.Controllers.Facilities
         [HttpGet]
         public ActionResult<List<Resource>> Get()
         {
-            return Ok(_resourceRepository.GetAll().ToList());
+            return Ok(_resourceRepository.GetAll());
         }
 
         [HttpGet("{id}")]
@@ -51,7 +51,7 @@ namespace HomeCompassApi.Controllers.Facilities
             return Ok(resource);
         }
 
-        [HttpGet("page")]
+        [HttpPost("page")]
         public ActionResult<List<Resource>> GetByPage([FromBody] PageDTO page)
         {
             if (!ModelState.IsValid)

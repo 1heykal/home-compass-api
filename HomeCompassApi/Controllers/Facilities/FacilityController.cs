@@ -1,4 +1,5 @@
 ﻿using HomeCompassApi.BLL;
+using HomeCompassApi.BLL.Facilities;
 using HomeCompassApi.Models;
 using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Models.Feed;
@@ -13,10 +14,10 @@ namespace HomeCompassApi.Controllers.Facilities
     [Route("[controller]")]
     public class FacilityController : ControllerBase
     {
-        private readonly IRepository<Facility> _facilityRepository;
+        private readonly FacilityRepository _facilityRepository;
         private readonly UserRepository _userRepository;
 
-        public FacilityController(IRepository<Facility> facilityRepository, UserRepository userRepository)
+        public FacilityController(FacilityRepository facilityRepository, UserRepository userRepository)
         {
             _facilityRepository = facilityRepository;
             _userRepository = userRepository;
@@ -37,7 +38,7 @@ namespace HomeCompassApi.Controllers.Facilities
         [HttpGet]
         public ActionResult<List<Facility>> Get()
         {
-            return Ok(_facilityRepository.GetAll().ToList());
+            return Ok(_facilityRepository.GetAllReduced());
         }
 
         [HttpGet("{id}")]
@@ -73,7 +74,7 @@ namespace HomeCompassApi.Controllers.Facilities
             return Ok(_facilityRepository.GetAll().Where(f => f.CategoryId == categoryId).ToList());
         }
 
-        [HttpGet("page")]
+        [HttpPost("page")]
         public ActionResult<List<Facility>> GetByPage([FromBody] PageDTO page)
         {
             if (!ModelState.IsValid)
@@ -83,7 +84,7 @@ namespace HomeCompassApi.Controllers.Facilities
             if (page.Index < 0 || page.Size <= 0)
                 return BadRequest();
 
-            return Ok(_facilityRepository.GetAll().Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
+            return Ok(_facilityRepository.GetAllReduced().Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
         }
 
 

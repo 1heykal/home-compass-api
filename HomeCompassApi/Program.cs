@@ -64,16 +64,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 builder.Services.AddScoped<UserRepository, UserRepository>();
 
 // Feed
-builder.Services.AddScoped<IRepository<Post>, PostRepository>();
-builder.Services.AddScoped<IRepository<Comment>, CommentRepository>();
+builder.Services.AddScoped<PostRepository, PostRepository>();
+builder.Services.AddScoped<CommentRepository, CommentRepository>();
 builder.Services.AddScoped<LikeRepository, LikeRepository>();
 
 // Cases
-builder.Services.AddScoped<IRepository<Homeless>, HomelessRepository>();
-builder.Services.AddScoped<IRepository<Missing>, MissingRepository>();
+builder.Services.AddScoped<HomelessRepository, HomelessRepository>();
+builder.Services.AddScoped<MissingRepository, MissingRepository>();
 
 // Facility
-builder.Services.AddScoped<IRepository<Facility>, FacilityRepository>();
+builder.Services.AddScoped<FacilityRepository, FacilityRepository>();
 builder.Services.AddScoped<IRepository<Resource>, ResourceRepository>();
 builder.Services.AddScoped<IRepository<Category>, CategoryRepository>();
 

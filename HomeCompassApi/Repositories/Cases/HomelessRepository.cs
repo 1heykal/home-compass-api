@@ -1,5 +1,6 @@
 ﻿using HomeCompassApi.Models;
 using HomeCompassApi.Models.Cases;
+using HomeCompassApi.Services.Cases;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeCompassApi.BLL.Cases
@@ -23,8 +24,20 @@ namespace HomeCompassApi.BLL.Cases
             _context.SaveChanges();
         }
 
-        public IEnumerable<Homeless> GetAll() => _context.Homeless.AsNoTracking().ToList();
+        public List<Homeless> GetAll() => _context.Homeless.AsNoTracking().ToList();
 
+        public List<HomelessDTO> GetAllReduced()
+        {
+            return _context.Homeless.Select(h => new HomelessDTO
+            {
+                Id = h.Id,
+                Name = h.FullName,
+                Address = h.CurrentLocation,
+                Description = h.AdditionalDetails,
+                PhotoURL = h.PhotoUrl
+            }
+            ).ToList();
+        }
         public Homeless GetById(int id) => _context.Homeless.AsNoTracking().FirstOrDefault(h => h.Id == id);
 
         public bool IsExisted(Homeless homeless) => _context.Homeless.Contains(homeless);

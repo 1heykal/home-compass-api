@@ -51,7 +51,7 @@ namespace HomeCompassApi.Controllers.Info
 
         }
 
-        [HttpGet("page")]
+        [HttpPost("page")]
         public ActionResult<List<Models.Info>> GetByPage([FromBody] PageDTO page)
         {
             if (!ModelState.IsValid)

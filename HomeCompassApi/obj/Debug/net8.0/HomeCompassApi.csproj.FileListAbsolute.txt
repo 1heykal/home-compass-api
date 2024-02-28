@@ -254,3 +254,4 @@ E:\Development\c#\HomeCompassApi\HomeCompassApi\obj\Debug\net8.0\refint\HomeComp
 E:\Development\c#\HomeCompassApi\HomeCompassApi\obj\Debug\net8.0\HomeCompassApi.pdb
 E:\Development\c#\HomeCompassApi\HomeCompassApi\obj\Debug\net8.0\HomeCompassApi.genruntimeconfig.cache
 E:\Development\c#\HomeCompassApi\HomeCompassApi\obj\Debug\net8.0\ref\HomeCompassApi.dll
+E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\AutoMapper.dll

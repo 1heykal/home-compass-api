@@ -11,10 +11,10 @@ namespace HomeCompassApi.Controllers.Cases
     [Route("[controller]")]
     public class MissingController : Controller
     {
-        private readonly IRepository<Missing> _missingRepository;
+        private readonly MissingRepository _missingRepository;
         private readonly UserRepository _userRepository;
 
-        public MissingController(IRepository<Missing> missingRepository, UserRepository userRepository)
+        public MissingController(MissingRepository missingRepository, UserRepository userRepository)
         {
             _missingRepository = missingRepository;
             _userRepository = userRepository;
@@ -34,7 +34,7 @@ namespace HomeCompassApi.Controllers.Cases
         [HttpGet]
         public ActionResult<List<Missing>> Get()
         {
-            return Ok(_missingRepository.GetAll().ToList());
+            return Ok(_missingRepository.GetAllReduced());
         }
 
         [HttpGet("{id}")]
@@ -51,7 +51,7 @@ namespace HomeCompassApi.Controllers.Cases
             return Ok(missing);
         }
 
-        [HttpGet("page")]
+        [HttpPost("page")]
         public ActionResult<List<Missing>> GetByPage([FromBody] PageDTO page)
         {
             if (!ModelState.IsValid)
@@ -61,7 +61,7 @@ namespace HomeCompassApi.Controllers.Cases
             if (page.Index < 0 || page.Size <= 0)
                 return BadRequest();
 
-            return Ok(_missingRepository.GetAll().Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
+            return Ok(_missingRepository.GetAllReduced().Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
         }
 
         [HttpGet("reporter/{id}")]

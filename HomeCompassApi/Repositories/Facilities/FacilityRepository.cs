@@ -1,5 +1,6 @@
 ﻿using HomeCompassApi.Models;
 using HomeCompassApi.Models.Facilities;
+using HomeCompassApi.Services.Facilities;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeCompassApi.BLL.Facilities
@@ -23,21 +24,22 @@ namespace HomeCompassApi.BLL.Facilities
             _context.SaveChanges();
         }
 
-        public IEnumerable<Facility> GetAll() => _context.Facilities.AsNoTracking().ToList();
-        #region DTO
-        /*
-           var facilities = _context.Facilities.Select(f =>
+        public List<Facility> GetAll() => _context.Facilities.AsNoTracking().ToList();
 
-           new FacilityDTO
-           {
-               Name = f.Name,
-               Address = f.Location,
-               PhoneNumber = f.ContactInformaton
-           }
+        public List<FacilityDTO> GetAllReduced()
+        {
+            return _context.Facilities.Select(f => new FacilityDTO
+            {
+                Id = f.Id,
+                Name = f.Name,
+                ContactInformation = f.ContactInformaton,
+                Description = f.Description,
+                Location = f.Location,
+                Resources = f.Resources,
+                Target = f.Target
 
-           );
-           return facilities.Tolist(); */
-        #endregion
+            }).ToList();
+        }
 
         public Facility GetById(int id) => _context.Facilities.AsNoTracking().FirstOrDefault(f => f.Id == id);
 

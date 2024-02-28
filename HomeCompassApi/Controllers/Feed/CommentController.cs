@@ -12,11 +12,11 @@ namespace HomeCompassApi.Controllers.Feed
     [Route("[controller]")]
     public class CommentController : ControllerBase
     {
-        private readonly IRepository<Comment> _commentRepository;
+        private readonly CommentRepository _commentRepository;
         private readonly UserRepository _userRepository;
-        private readonly IRepository<Post> _postRepository;
+        private readonly PostRepository _postRepository;
 
-        public CommentController(IRepository<Comment> commentRepository, UserRepository userRepository, IRepository<Post> postRepository)
+        public CommentController(CommentRepository commentRepository, UserRepository userRepository, PostRepository postRepository)
         {
             _commentRepository = commentRepository;
             _userRepository = userRepository;
@@ -34,7 +34,7 @@ namespace HomeCompassApi.Controllers.Feed
         }
 
         [HttpGet]
-        public ActionResult<List<Comment>> Get() => Ok(_commentRepository.GetAll().ToList());
+        public ActionResult<List<Comment>> Get() => Ok(_commentRepository.GetAllReduced());
 
         [HttpGet("post/{id}")]
         public ActionResult<List<Comment>> GetByPostId(int id)
@@ -63,7 +63,7 @@ namespace HomeCompassApi.Controllers.Feed
             return Ok(comment);
         }
 
-        [HttpGet("user/{id}")]
+        [HttpPost("user/{id}")]
         public ActionResult<List<Post>> GetByUserId(string id)
         {
             if (id is null || id == string.Empty)
@@ -76,7 +76,7 @@ namespace HomeCompassApi.Controllers.Feed
 
         }
 
-        [HttpGet("post/{postId}/page")]
+        [HttpPost("post/{postId}/page")]
         public ActionResult<List<Comment>> GetByPage(int postId, [FromBody] PageDTO page)
         {
             if (!ModelState.IsValid)

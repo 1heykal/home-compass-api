@@ -27,7 +27,7 @@ namespace HomeCompassApi.Controllers.Facilities
         }
 
         [HttpGet]
-        public ActionResult<List<Category>> Get() => Ok(_categoryRepository.GetAll().ToList());
+        public ActionResult<List<Category>> Get() => Ok(_categoryRepository.GetAll());
 
         [HttpGet("{id}")]
         public ActionResult<Category> Get(int id)

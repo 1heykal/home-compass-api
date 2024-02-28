@@ -20,7 +20,7 @@ namespace HomeCompassApi.Repositories.Feed
             _context.SaveChanges();
         }
 
-        public IEnumerable<Like> GetByPostId(int id) => _context.Likes.Where(l => l.PostId == id).AsNoTracking().ToList();
+        public List<Like> GetByPostId(int id) => _context.Likes.Where(l => l.PostId == id).AsNoTracking().ToList();
 
         public bool IsExisted(Like like) => _context.Likes.Contains(like);
 

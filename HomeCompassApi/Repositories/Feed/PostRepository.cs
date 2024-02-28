@@ -1,5 +1,6 @@
 ﻿using HomeCompassApi.Models;
 using HomeCompassApi.Models.Feed;
+using HomeCompassApi.Services.Feed;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeCompassApi.BLL
@@ -19,7 +20,28 @@ namespace HomeCompassApi.BLL
             _context.SaveChanges();
         }
 
-        public IEnumerable<Post> GetAll() => _context.Posts.AsNoTracking().ToList();
+        public List<Post> GetAll() => _context.Posts.AsNoTracking().ToList();
+
+        public List<PostDTO> GetAllReduced()
+        {
+            return _context.Posts.Select(p => new PostDTO
+            {
+                Id = p.Id,
+                AuthorName = $"{p.User.FirstName} {p.User.LastName}",
+                Content = p.Content,
+                Title = p.Title,
+                LikesCount = p.Likes.Count,
+                AuthorPhotoUrl = p.User.PhotoUrl,
+                CommentsCount = p.Comments.Count
+            }
+            ).ToList();
+        }
+
+        //public IEnumerable<PostDTO> GetByPage() 
+        //{ 
+
+
+        //}
 
         public Post GetById(int id) => _context.Posts.AsNoTracking().FirstOrDefault(p => p.Id == id);
 

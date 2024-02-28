@@ -15,9 +15,9 @@ namespace HomeCompassApi.Controllers.Feed
     {
         private readonly LikeRepository _likeRepository;
         private readonly UserRepository _userRepository;
-        private readonly IRepository<Post> _postRepository;
+        private readonly PostRepository _postRepository;
 
-        public LikeController(LikeRepository likeRepository, UserRepository userRepository, IRepository<Post> postRepository)
+        public LikeController(LikeRepository likeRepository, UserRepository userRepository, PostRepository postRepository)
         {
             _likeRepository = likeRepository;
             _userRepository = userRepository;
@@ -50,7 +50,7 @@ namespace HomeCompassApi.Controllers.Feed
         [HttpGet("post/{postId}")]
         public ActionResult<List<Like>> GetByPostId(int postId) => Ok(_likeRepository.GetByPostId(postId).ToList());
 
-        [HttpGet("post/{postId}/page")]
+        [HttpPost("post/{postId}/page")]
         public ActionResult<List<Like>> GetByPage(int postId, [FromBody] PageDTO page)
         {
             if (!ModelState.IsValid)

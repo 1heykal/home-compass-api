@@ -23,7 +23,7 @@ namespace HomeCompassApi.BLL.Facilities
             _context.SaveChanges();
         }
 
-        public IEnumerable<Category> GetAll() => _context.Categories.AsNoTracking().ToList();
+        public List<Category> GetAll() => _context.Categories.AsNoTracking().ToList();
 
         public Category GetById(int id) => _context.Categories.AsNoTracking().FirstOrDefault(c => c.Id == id);
 

@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "1tuLwPUQu3ugSWAa7CjF8w+76gurmr4NRc0CX3W51UoHO1P8632mqhSyh65ULtU17QUPAMMPhtYCWCxZwX5CdQ==",
+  "dgSpecHash": "l7amQmepQKNejLOHxKMjogmSbiR5y55yds/gyqJdWSlyJuAQb6B9r71QQ4GDUVDBcmNy+IuvqqASU7/A2ylH2A==",
   "success": true,
   "projectFilePath": "E:\\Development\\c#\\HomeCompassApi\\HomeCompassApi\\HomeCompassApi.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\1heykal\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\1heykal\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\1heykal\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
     "C:\\Users\\1heykal\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",

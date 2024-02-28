@@ -1,5 +1,6 @@
 ﻿using HomeCompassApi.Models;
 using HomeCompassApi.Models.Cases;
+using HomeCompassApi.Services.Cases;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeCompassApi.BLL.Cases
@@ -23,7 +24,21 @@ namespace HomeCompassApi.BLL.Cases
             _context.SaveChanges();
         }
 
-        public IEnumerable<Missing> GetAll() => _context.Missings.AsNoTracking().ToList();
+        public List<Missing> GetAll() => _context.Missings.AsNoTracking().ToList();
+
+        public List<MissingDTO> GetAllReduced()
+        {
+            return _context.Missings.Select(m => new MissingDTO
+            {
+                Id = m.Id,
+                Address = m.HomeAddress,
+                Description = m.PhysicalDescription,
+                MissingDate = m.DateOfDisappearance,
+                Name = m.FullName,
+                PhotoURL = m.PhotoUrl
+            })
+            .ToList();
+        }
 
         public Missing GetById(int id) => _context.Missings.AsNoTracking().FirstOrDefault(m => m.Id == id);
 

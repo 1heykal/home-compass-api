@@ -24,7 +24,7 @@ namespace HomeCompassApi.Repositories
             _context.SaveChanges();
         }
 
-        public IEnumerable<Info> GetAll()
+        public List<Info> GetAll()
         {
             return _context.Info.ToList();
         }

@@ -23,7 +23,7 @@ namespace HomeCompassApi.BLL.Facilities
             _context.SaveChanges();
         }
 
-        public IEnumerable<Resource> GetAll() => _context.Resources.AsNoTracking().ToList();
+        public List<Resource> GetAll() => _context.Resources.AsNoTracking().ToList();
 
         public Resource GetById(int id) => _context.Resources.AsNoTracking().FirstOrDefault(r => r.Id == id);
 

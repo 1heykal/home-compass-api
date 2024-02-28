@@ -1,4 +1,5 @@
 ﻿using HomeCompassApi.BLL;
+using HomeCompassApi.BLL.Cases;
 using HomeCompassApi.Models.Cases;
 using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Repositories.User;
@@ -14,9 +15,9 @@ namespace HomeCompassApi.Controllers.Cases
 
     public class HomelessController : Controller
     {
-        private readonly IRepository<Homeless> _homelessRepository;
+        private readonly HomelessRepository _homelessRepository;
         private readonly UserRepository _userRepository;
-        public HomelessController(IRepository<Homeless> homelessRepository, UserRepository userRepository)
+        public HomelessController(HomelessRepository homelessRepository, UserRepository userRepository)
         {
             _homelessRepository = homelessRepository;
             _userRepository = userRepository;
@@ -25,7 +26,7 @@ namespace HomeCompassApi.Controllers.Cases
         [HttpGet]
         public ActionResult<List<Homeless>> Get()
         {
-            return Ok(_homelessRepository.GetAll().ToList());
+            return Ok(_homelessRepository.GetAllReduced());
         }
 
         [HttpGet("{id}")]
@@ -43,7 +44,7 @@ namespace HomeCompassApi.Controllers.Cases
         }
 
 
-        [HttpGet("page")]
+        [HttpPost("page")]
         public ActionResult<List<Homeless>> GetByPage([FromBody] PageDTO page)
         {
             if (!ModelState.IsValid)
@@ -53,7 +54,7 @@ namespace HomeCompassApi.Controllers.Cases
             if (page.Index < 0 || page.Size <= 0)
                 return BadRequest();
 
-            return Ok(_homelessRepository.GetAll().Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
+            return Ok(_homelessRepository.GetAllReduced().Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
         }
 
         [HttpGet("reporter/{id}")]

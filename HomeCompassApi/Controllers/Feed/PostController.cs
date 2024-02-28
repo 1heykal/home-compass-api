@@ -15,10 +15,10 @@ namespace HomeCompassApi.Controllers.Feed
     [Route("[controller]")]
     public class PostController : ControllerBase
     {
-        private readonly IRepository<Post> _postRepository;
+        private readonly PostRepository _postRepository;
         private readonly UserRepository _userRepository;
 
-        public PostController(IRepository<Post> postRepository, UserRepository userRepository)
+        public PostController(PostRepository postRepository, UserRepository userRepository)
         {
             _postRepository = postRepository;
             _userRepository = userRepository;
@@ -36,7 +36,7 @@ namespace HomeCompassApi.Controllers.Feed
 
 
         [HttpGet]
-        public ActionResult<List<Post>> Get() => Ok(_postRepository.GetAll().ToList());
+        public ActionResult<List<Post>> Get() => Ok(_postRepository.GetAllReduced());
 
         [HttpGet("{id}")]
         public ActionResult<Post> Get(int id)
@@ -65,7 +65,7 @@ namespace HomeCompassApi.Controllers.Feed
 
         }
 
-        [HttpGet("page")]
+        [HttpPost("page")]
         public ActionResult<List<Post>> GetByPage([FromBody] PageDTO page)
         {
             if (!ModelState.IsValid)
@@ -75,7 +75,7 @@ namespace HomeCompassApi.Controllers.Feed
             if (page.Index < 0 || page.Size <= 0)
                 return BadRequest();
 
-            return Ok(_postRepository.GetAll().Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
+            return Ok(_postRepository.GetAllReduced().Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
         }
 
 
