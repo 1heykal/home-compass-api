@@ -2,6 +2,7 @@
 using HomeCompassApi.BLL.Cases;
 using HomeCompassApi.Models.Cases;
 using HomeCompassApi.Repositories.User;
+using HomeCompassApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeCompassApi.Controllers.Cases
@@ -48,6 +49,19 @@ namespace HomeCompassApi.Controllers.Cases
                 return NotFound($"There is no record with the specified Id: {id}");
 
             return Ok(missing);
+        }
+
+        [HttpGet("page")]
+        public ActionResult<List<Missing>> GetByPage([FromBody] PageDTO page)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+
+            if (page.Index < 0 || page.Size <= 0)
+                return BadRequest();
+
+            return Ok(_missingRepository.GetAll().Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
         }
 
         [HttpGet("reporter/{id}")]

@@ -1,8 +1,8 @@
 ﻿using HomeCompassApi.BLL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using HomeCompassApi.Models;
 using HomeCompassApi.Models.Feed;
+using HomeCompassApi.Services;
 
 namespace HomeCompassApi.Controllers.Info
 {
@@ -51,13 +51,17 @@ namespace HomeCompassApi.Controllers.Info
 
         }
 
-        [HttpGet("page/{page}/size/{pageSize}")]
-        public ActionResult<List<Models.Info>> GetByPage(int page, int pageSize)
+        [HttpGet("page")]
+        public ActionResult<List<Models.Info>> GetByPage([FromBody] PageDTO page)
         {
-            if (page < 0 || pageSize <= 0)
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+
+            if (page.Index < 0 || page.Size <= 0)
                 return BadRequest();
 
-            return Ok(_infoRepository.GetAll().Skip(page).Take(pageSize).ToList());
+            return Ok(_infoRepository.GetAll().Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
         }
 
 

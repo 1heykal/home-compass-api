@@ -4,6 +4,7 @@ using HomeCompassApi.Models.Cases;
 using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Repositories.User;
+using HomeCompassApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeCompassApi.Controllers.Facilities
@@ -50,13 +51,17 @@ namespace HomeCompassApi.Controllers.Facilities
             return Ok(resource);
         }
 
-        [HttpGet("page/{page}/size/{pageSize}")]
-        public ActionResult<List<Resource>> GetByPage(int page, int pageSize)
+        [HttpGet("page")]
+        public ActionResult<List<Resource>> GetByPage([FromBody] PageDTO page)
         {
-            if (page < 0 || pageSize <= 0)
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+
+            if (page.Index < 0 || page.Size <= 0)
                 return BadRequest();
 
-            return Ok(_resourceRepository.GetAll().Skip(page).Take(pageSize).ToList());
+            return Ok(_resourceRepository.GetAll().Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
         }
 
 

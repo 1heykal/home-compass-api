@@ -3,6 +3,7 @@ using HomeCompassApi.Models;
 using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Repositories.Feed;
 using HomeCompassApi.Repositories.User;
+using HomeCompassApi.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -49,13 +50,17 @@ namespace HomeCompassApi.Controllers.Feed
         [HttpGet("post/{postId}")]
         public ActionResult<List<Like>> GetByPostId(int postId) => Ok(_likeRepository.GetByPostId(postId).ToList());
 
-        [HttpGet("post/{postId}/page/{page}/size/{pageSize}")] // create a dto model
-        public ActionResult<List<Like>> GetByPage(int postId, int page, int pageSize)
+        [HttpGet("post/{postId}/page")]
+        public ActionResult<List<Like>> GetByPage(int postId, [FromBody] PageDTO page)
         {
-            if (page < 0 || pageSize <= 0)
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+
+            if (page.Index < 0 || page.Size <= 0)
                 return BadRequest();
 
-            return Ok(_likeRepository.GetByPostId(postId).Skip(page).Take(pageSize).ToList());
+            return Ok(_likeRepository.GetByPostId(postId).Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
         }
 
         [HttpDelete]

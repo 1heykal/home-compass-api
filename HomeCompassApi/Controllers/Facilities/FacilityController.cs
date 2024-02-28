@@ -3,6 +3,7 @@ using HomeCompassApi.Models;
 using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Repositories.User;
+using HomeCompassApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
 
@@ -72,13 +73,17 @@ namespace HomeCompassApi.Controllers.Facilities
             return Ok(_facilityRepository.GetAll().Where(f => f.CategoryId == categoryId).ToList());
         }
 
-        [HttpGet("page/{page}/size/{pageSize}")]
-        public ActionResult<List<Facility>> GetByPage(int page, int pageSize)
+        [HttpGet("page")]
+        public ActionResult<List<Facility>> GetByPage([FromBody] PageDTO page)
         {
-            if (page < 0 || pageSize <= 0)
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+
+            if (page.Index < 0 || page.Size <= 0)
                 return BadRequest();
 
-            return Ok(_facilityRepository.GetAll().Skip(page).Take(pageSize).ToList());
+            return Ok(_facilityRepository.GetAll().Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
         }
 
 

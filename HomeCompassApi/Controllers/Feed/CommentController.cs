@@ -1,7 +1,9 @@
 ﻿using HomeCompassApi.BLL;
 using HomeCompassApi.Models;
 using HomeCompassApi.Models.Feed;
+using HomeCompassApi.Repositories.Feed;
 using HomeCompassApi.Repositories.User;
+using HomeCompassApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeCompassApi.Controllers.Feed
@@ -74,13 +76,17 @@ namespace HomeCompassApi.Controllers.Feed
 
         }
 
-        [HttpGet("post/{postId}/page/{page}/size/{pageSize}")]
-        public ActionResult<List<Comment>> GetByPage(int postId, int page, int pageSize)
+        [HttpGet("post/{postId}/page")]
+        public ActionResult<List<Comment>> GetByPage(int postId, [FromBody] PageDTO page)
         {
-            if (page < 0 || pageSize <= 0)
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+
+            if (page.Index < 0 || page.Size <= 0)
                 return BadRequest();
 
-            return Ok(_commentRepository.GetAll().Where(c => c.PostId == postId).Skip(page).Take(pageSize).ToList());
+            return Ok(_commentRepository.GetAll().Where(c => c.PostId == postId).Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
         }
 
 

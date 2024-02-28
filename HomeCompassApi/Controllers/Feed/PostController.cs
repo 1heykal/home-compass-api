@@ -3,6 +3,7 @@ using HomeCompassApi.Models;
 using HomeCompassApi.Models.Cases;
 using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Repositories.User;
+using HomeCompassApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -64,15 +65,18 @@ namespace HomeCompassApi.Controllers.Feed
 
         }
 
-        [HttpGet("page/{page}/size/{pageSize}")]
-        public ActionResult<List<Post>> GetByPage(int page, int pageSize)
+        [HttpGet("page")]
+        public ActionResult<List<Post>> GetByPage([FromBody] PageDTO page)
         {
-            if (page < 0 || pageSize <= 0)
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+
+            if (page.Index < 0 || page.Size <= 0)
                 return BadRequest();
 
-            return Ok(_postRepository.GetAll().Skip(page).Take(pageSize).ToList());
+            return Ok(_postRepository.GetAll().Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
         }
-
 
 
         [HttpPut]

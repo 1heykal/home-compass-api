@@ -1,6 +1,8 @@
 ﻿using HomeCompassApi.BLL;
 using HomeCompassApi.Models.Cases;
+using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Repositories.User;
+using HomeCompassApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -38,6 +40,20 @@ namespace HomeCompassApi.Controllers.Cases
                 return NotFound($"There is no record with the specified Id: {id}");
 
             return Ok(homeless);
+        }
+
+
+        [HttpGet("page")]
+        public ActionResult<List<Homeless>> GetByPage([FromBody] PageDTO page)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+
+            if (page.Index < 0 || page.Size <= 0)
+                return BadRequest();
+
+            return Ok(_homelessRepository.GetAll().Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
         }
 
         [HttpGet("reporter/{id}")]
