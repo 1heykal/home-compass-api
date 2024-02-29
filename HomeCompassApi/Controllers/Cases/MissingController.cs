@@ -3,12 +3,14 @@ using HomeCompassApi.BLL.Cases;
 using HomeCompassApi.Models.Cases;
 using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeCompassApi.Controllers.Cases
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class MissingController : Controller
     {
         private readonly MissingRepository _missingRepository;

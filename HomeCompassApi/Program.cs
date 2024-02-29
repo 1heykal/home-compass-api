@@ -67,6 +67,7 @@ builder.Services.AddScoped<UserRepository, UserRepository>();
 builder.Services.AddScoped<PostRepository, PostRepository>();
 builder.Services.AddScoped<CommentRepository, CommentRepository>();
 builder.Services.AddScoped<LikeRepository, LikeRepository>();
+builder.Services.AddScoped<ReportRepository, ReportRepository>();
 
 // Cases
 builder.Services.AddScoped<HomelessRepository, HomelessRepository>();

@@ -2,6 +2,7 @@
 using HomeCompassApi.Models;
 using HomeCompassApi.Models.Cases;
 using HomeCompassApi.Models.Feed;
+using HomeCompassApi.Repositories.Feed;
 using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -17,11 +18,13 @@ namespace HomeCompassApi.Controllers.Feed
     {
         private readonly PostRepository _postRepository;
         private readonly UserRepository _userRepository;
+        private readonly ReportRepository _reportRepository;
 
-        public PostController(PostRepository postRepository, UserRepository userRepository)
+        public PostController(PostRepository postRepository, UserRepository userRepository, ReportRepository reportRepository)
         {
             _postRepository = postRepository;
             _userRepository = userRepository;
+            _reportRepository = reportRepository;
         }
 
         [HttpPost]
@@ -104,6 +107,21 @@ namespace HomeCompassApi.Controllers.Feed
 
             _postRepository.Delete(id);
             return NoContent();
+        }
+
+        [HttpPost("report")]
+        public IActionResult Report([FromBody] Report report)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (_postRepository.IsExisted(report.Post))
+                return NotFound($"There is no post with the specified Id: {report.PostId}");
+
+            report.Date = DateTime.Now;
+            _reportRepository.Add(report);
+
+            return Created();
         }
     }
 }

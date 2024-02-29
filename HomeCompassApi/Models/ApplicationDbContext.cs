@@ -23,6 +23,7 @@ namespace HomeCompassApi.Models
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<Like> Likes { get; set; }
+        public virtual DbSet<Report> Reports { get; set; }
 
         // Info
         public virtual DbSet<Info> Info { get; set; }

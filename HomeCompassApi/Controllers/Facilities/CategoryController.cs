@@ -1,6 +1,7 @@
 ﻿using HomeCompassApi.BLL;
 using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Models.Feed;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeCompassApi.Controllers.Facilities
