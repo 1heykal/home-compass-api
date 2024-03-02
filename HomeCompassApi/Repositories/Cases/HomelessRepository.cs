@@ -12,23 +12,23 @@ namespace HomeCompassApi.BLL.Cases
         {
             _context = context;
         }
-        public void Add(Homeless entity)
+        public async Task Add(Homeless entity)
         {
-            _context.Homeless.Add(entity);
-            _context.SaveChanges();
+            await _context.Homeless.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            _context.Homeless.Remove(GetById(id));
-            _context.SaveChanges();
+            _context.Homeless.Remove(await GetById(id));
+            await _context.SaveChangesAsync();
         }
 
-        public List<Homeless> GetAll() => _context.Homeless.AsNoTracking().ToList();
+        public async Task<List<Homeless>> GetAll() => await _context.Homeless.AsNoTracking().ToListAsync();
 
-        public List<HomelessDTO> GetAllReduced()
+        public async Task<List<HomelessDTO>> GetAllReduced()
         {
-            return _context.Homeless.Select(h => new HomelessDTO
+            return await _context.Homeless.Select(h => new HomelessDTO
             {
                 Id = h.Id,
                 Name = h.FullName,
@@ -36,17 +36,17 @@ namespace HomeCompassApi.BLL.Cases
                 Description = h.AdditionalDetails,
                 PhotoURL = h.PhotoUrl
             }
-            ).ToList();
+            ).ToListAsync();
         }
-        public Homeless GetById(int id) => _context.Homeless.AsNoTracking().FirstOrDefault(h => h.Id == id);
+        public async Task<Homeless> GetById(int id) => await _context.Homeless.AsNoTracking().FirstOrDefaultAsync(h => h.Id == id);
 
-        public bool IsExisted(Homeless homeless) => _context.Homeless.Contains(homeless);
+        public async Task<bool> IsExisted(Homeless homeless) => await _context.Homeless.ContainsAsync(homeless);
 
 
-        public void Update(Homeless entity)
+        public async Task Update(Homeless entity)
         {
             _context.Homeless.Update(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
         }
     }

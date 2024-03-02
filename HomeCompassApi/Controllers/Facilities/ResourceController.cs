@@ -5,6 +5,7 @@ using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
+using HomeCompassApi.Services.Facilities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeCompassApi.Controllers.Facilities
@@ -22,28 +23,28 @@ namespace HomeCompassApi.Controllers.Facilities
 
 
         [HttpPost]
-        public IActionResult Create(Resource resource)
+        public async Task<IActionResult> CreateAsync(Resource resource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            _resourceRepository.Add(resource);
-            return CreatedAtAction(nameof(Get), new { Id = resource.Id }, resource);
+            await _resourceRepository.Add(resource);
+            return CreatedAtAction(nameof(GetAsync), new { Id = resource.Id }, resource);
         }
 
         [HttpGet]
-        public ActionResult<List<Resource>> Get()
+        public async Task<ActionResult<List<ResourceDTO>>> GetAsync()
         {
-            return Ok(_resourceRepository.GetAll());
+            return Ok(await _resourceRepository.GetAll());
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Resource> Get(int id)
+        public async Task<ActionResult<Resource>> GetAsync(int id)
         {
             if (id <= 0)
                 return BadRequest();
 
-            var resource = _resourceRepository.GetById(id);
+            var resource = await _resourceRepository.GetById(id);
 
             if (resource is null)
                 return NotFound($"There is no resource with the specified Id: {id}");
@@ -52,7 +53,7 @@ namespace HomeCompassApi.Controllers.Facilities
         }
 
         [HttpPost("page")]
-        public ActionResult<List<Resource>> GetByPage([FromBody] PageDTO page)
+        public async Task<ActionResult<List<ResourceDTO>>> GetByPageAsync([FromBody] PageDTO page)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -61,34 +62,34 @@ namespace HomeCompassApi.Controllers.Facilities
             if (page.Index < 0 || page.Size <= 0)
                 return BadRequest();
 
-            return Ok(_resourceRepository.GetAll().Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
+            return Ok((await _resourceRepository.GetAll()).Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
         }
 
 
         [HttpPut]
-        public IActionResult Update(Resource resource)
+        public async Task<IActionResult> UpdateAsync(Resource resource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!_resourceRepository.IsExisted(resource))
+            if (!await _resourceRepository.IsExisted(resource))
                 return NotFound($"There is no resource with the specified Id: {resource.Id}");
 
-            _resourceRepository.Update(resource);
+            await _resourceRepository.Update(resource);
 
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
             if (id <= 0)
                 return BadRequest();
 
-            if (!_resourceRepository.IsExisted(new Resource { Id = id }))
+            if (!await _resourceRepository.IsExisted(new Resource { Id = id }))
                 return NotFound($"There is no resource with the specified Id: {id}");
 
-            _resourceRepository.Delete(id);
+            await _resourceRepository.Delete(id);
 
             return NoContent();
         }

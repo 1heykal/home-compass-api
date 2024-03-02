@@ -62,8 +62,11 @@ namespace HomeCompassApi.Services.Auth
             authModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
             authModel.Email = user.Email;
             authModel.Username = user.UserName;
+            authModel.UserId = user.Id;
             authModel.ExpiresOn = jwtSecurityToken.ValidTo;
             authModel.Roles = roles.ToList();
+
+
 
             if (user.RefreshTokens.Any(t => t.IsActive))
             {
@@ -247,6 +250,7 @@ namespace HomeCompassApi.Services.Auth
             };
 
         }
+
     }
 }
 

@@ -24,18 +24,18 @@ namespace HomeCompassApi.Controllers.Cases
         }
 
         [HttpGet]
-        public ActionResult<List<Homeless>> Get()
+        public async Task<ActionResult<List<Homeless>>> GetAsync()
         {
-            return Ok(_homelessRepository.GetAllReduced());
+            return Ok(await _homelessRepository.GetAllReduced());
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Homeless> Get(int id)
+        public async Task<ActionResult<Homeless>> GetAsync(int id)
         {
             if (id <= 0)
                 return BadRequest();
 
-            var homeless = _homelessRepository.GetById(id);
+            var homeless = await _homelessRepository.GetById(id);
 
             if (homeless is null)
                 return NotFound($"There is no record with the specified Id: {id}");
@@ -45,7 +45,7 @@ namespace HomeCompassApi.Controllers.Cases
 
 
         [HttpPost("page")]
-        public ActionResult<List<Homeless>> GetByPage([FromBody] PageDTO page)
+        public async Task<ActionResult<List<Homeless>>> GetByPageAsync([FromBody] PageDTO page)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -54,59 +54,59 @@ namespace HomeCompassApi.Controllers.Cases
             if (page.Index < 0 || page.Size <= 0)
                 return BadRequest();
 
-            return Ok(_homelessRepository.GetAllReduced().Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
+            return Ok((await _homelessRepository.GetAllReduced()).Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
         }
 
         [HttpGet("reporter/{id}")]
-        public ActionResult<List<Homeless>> GetByReporterId(string id)
+        public async Task<ActionResult<List<Homeless>>> GetByReporterId(string id)
         {
             if (id is null || id == string.Empty)
                 return BadRequest();
 
-            if (_userRepository.GetById(id) is null)
+            if (await _userRepository.GetById(id) is null)
                 return NotFound("There is no reporter with the specified id.");
 
-            return Ok(_homelessRepository.GetAll().Where(h => h.ReporterId == id).ToList());
+            return Ok((await _homelessRepository.GetAll()).Where(h => h.ReporterId == id).ToList());
         }
 
         [HttpPost]
-        public IActionResult Create(Homeless homeless)
+        public async Task<IActionResult> Create(Homeless homeless)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             // if (homeless.ReporterId)
 
-            _homelessRepository.Add(homeless);
-            return CreatedAtAction(nameof(Get), new { id = homeless.Id }, homeless);
+            await _homelessRepository.Add(homeless);
+            return CreatedAtAction(nameof(GetAsync), new { id = homeless.Id }, homeless);
         }
 
         [HttpPut]
-        public IActionResult Update(Homeless homeless)
+        public async Task<IActionResult> Update(Homeless homeless)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (_homelessRepository.GetById(homeless.Id) is null)
+            if (await _homelessRepository.GetById(homeless.Id) is null)
                 return NotFound($"There is no record with the specified Id: {homeless.Id}");
 
-            _homelessRepository.Update(homeless);
+            await _homelessRepository.Update(homeless);
 
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0)
                 return BadRequest();
 
-            var homeless = _homelessRepository.GetById(id);
+            var homeless = await _homelessRepository.GetById(id);
 
             if (homeless is null)
                 return NotFound($"There is no record with the specified Id: {id}");
 
-            _homelessRepository.Delete(id);
+            await _homelessRepository.Delete(id);
 
             return NoContent();
         }

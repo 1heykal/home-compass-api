@@ -1,6 +1,7 @@
 ﻿using HomeCompassApi.BLL;
 using HomeCompassApi.Models;
 using HomeCompassApi.Models.Feed;
+using Microsoft.EntityFrameworkCore;
 
 namespace HomeCompassApi.Repositories.User
 {
@@ -14,22 +15,22 @@ namespace HomeCompassApi.Repositories.User
             _context = context;
         }
 
-        public void Delete(string id)
+        public async Task Delete(string id)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
             if (user is not null)
             {
                 _context.Users.Remove(user);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
 
-        public ApplicationUser GetById(string id)
+        public async Task<ApplicationUser> GetById(string id)
         {
-            return _context.Users.FirstOrDefault(u => u.Id == id);
+            return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public bool IsExisted(ApplicationUser user) => _context.Users.Contains(user);
+        public async Task<bool> IsExisted(ApplicationUser user) => await _context.Users.ContainsAsync(user);
 
 
 

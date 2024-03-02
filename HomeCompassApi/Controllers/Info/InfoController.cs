@@ -18,18 +18,18 @@ namespace HomeCompassApi.Controllers.Info
         }
 
         [HttpGet]
-        public ActionResult<List<Models.Info>> Get()
+        public async Task<ActionResult<List<Models.Info>>> GetAsync()
         {
-            return Ok(_infoRepository.GetAll().ToList());
+            return Ok((await _infoRepository.GetAll()).ToList());
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Models.Info> GetById(int id)
+        public async Task<ActionResult<Models.Info>> GetByIdAsync(int id)
         {
             if (id <= 0)
                 return BadRequest();
 
-            var info = _infoRepository.GetById(id);
+            var info = await _infoRepository.GetById(id);
             if (info is null)
                 return NotFound($"There is no info with the specified id: {id}");
 
@@ -37,12 +37,12 @@ namespace HomeCompassApi.Controllers.Info
         }
 
         [HttpGet("bycategory/category")]
-        public ActionResult<List<Models.Info>> GetByCategory(string category)
+        public async Task<ActionResult<List<Models.Info>>> GetByCategoryAsync(string category)
         {
             if (category is null || category == string.Empty)
                 return BadRequest();
 
-            var info = _infoRepository.GetAll().Where(i => i.Category.ToLower() == category.ToLower()).ToList();
+            var info = (await _infoRepository.GetAll()).Where(i => i.Category.ToLower() == category.ToLower()).ToList();
 
             if (info is null || info.Count == 0)
                 return NotFound($"There is no info with the specified category: {category}");
@@ -52,7 +52,7 @@ namespace HomeCompassApi.Controllers.Info
         }
 
         [HttpPost("page")]
-        public ActionResult<List<Models.Info>> GetByPage([FromBody] PageDTO page)
+        public async Task<ActionResult<List<Models.Info>>> GetByPageAsync([FromBody] PageDTO page)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -61,23 +61,23 @@ namespace HomeCompassApi.Controllers.Info
             if (page.Index < 0 || page.Size <= 0)
                 return BadRequest();
 
-            return Ok(_infoRepository.GetAll().Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
+            return Ok((await _infoRepository.GetAll()).Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
         }
 
 
         [HttpPost]
-        public IActionResult Create(Models.Info info)
+        public async Task<IActionResult> CreateAsync(Models.Info info)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            _infoRepository.Add(info);
+            await _infoRepository.Add(info);
 
-            return CreatedAtAction(nameof(Get), new { id = info.Id }, info);
+            return CreatedAtAction(nameof(GetAsync), new { id = info.Id }, info);
         }
 
         [HttpPut]
-        public IActionResult Update(Models.Info entity)
+        public async Task<IActionResult> UpdateAsync(Models.Info entity)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -85,24 +85,24 @@ namespace HomeCompassApi.Controllers.Info
             if (entity.Id <= 0)
                 return BadRequest("Id must be greater than Zero.");
 
-            if (!_infoRepository.IsExisted(entity))
+            if (!await _infoRepository.IsExisted(entity))
                 return NotFound($"There is no info with the specified id: {entity.Id}");
 
-            _infoRepository.Update(entity);
+            await _infoRepository.Update(entity);
 
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
             if (id <= 0)
                 return BadRequest("Id must be greater than Zero.");
 
-            if (!_infoRepository.IsExisted(new Models.Info { Id = id }))
+            if (!await _infoRepository.IsExisted(new Models.Info { Id = id }))
                 return NotFound($"There is no info with the specified id: {id}");
 
-            _infoRepository.Delete(id);
+            await _infoRepository.Delete(id);
 
             return NoContent();
         }

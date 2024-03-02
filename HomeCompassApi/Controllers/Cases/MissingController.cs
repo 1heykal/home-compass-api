@@ -23,29 +23,29 @@ namespace HomeCompassApi.Controllers.Cases
         }
 
         [HttpPost]
-        public IActionResult Create(Missing missing)
+        public async Task<IActionResult> CreateAsync(Missing missing)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            _missingRepository.Add(missing);
+            await _missingRepository.Add(missing);
 
-            return CreatedAtAction(nameof(Get), new { Id = missing.Id }, missing);
+            return CreatedAtAction(nameof(GetAsync), new { Id = missing.Id }, missing);
         }
 
         [HttpGet]
-        public ActionResult<List<Missing>> Get()
+        public async Task<ActionResult<List<Missing>>> GetAsync()
         {
-            return Ok(_missingRepository.GetAllReduced());
+            return Ok(await _missingRepository.GetAllReduced());
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Missing> Get(int id)
+        public async Task<ActionResult<Missing>> GetAsync(int id)
         {
             if (id <= 0)
                 return BadRequest();
 
-            var missing = _missingRepository.GetById(id);
+            var missing = await _missingRepository.GetById(id);
 
             if (missing is null)
                 return NotFound($"There is no record with the specified Id: {id}");
@@ -54,7 +54,7 @@ namespace HomeCompassApi.Controllers.Cases
         }
 
         [HttpPost("page")]
-        public ActionResult<List<Missing>> GetByPage([FromBody] PageDTO page)
+        public async Task<ActionResult<List<Missing>>> GetByPageAsync([FromBody] PageDTO page)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -63,48 +63,48 @@ namespace HomeCompassApi.Controllers.Cases
             if (page.Index < 0 || page.Size <= 0)
                 return BadRequest();
 
-            return Ok(_missingRepository.GetAllReduced().Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
+            return Ok((await _missingRepository.GetAllReduced()).Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
         }
 
         [HttpGet("reporter/{id}")]
-        public ActionResult<List<Missing>> GetByReporterId(string id)
+        public async Task<ActionResult<List<Missing>>> GetByReporterIdAsync(string id)
         {
             if (id is null || id == string.Empty)
                 return BadRequest();
 
-            if (_userRepository.GetById(id) is null)
+            if (await _userRepository.GetById(id) is null)
                 return NotFound("There is no reporter with the specified id.");
 
-            return Ok(_missingRepository.GetAll().Where(m => m.ReporterId == id).ToList());
+            return Ok((await _missingRepository.GetAll()).Where(m => m.ReporterId == id).ToList());
         }
 
 
         [HttpPut]
-        public IActionResult Update(Missing missing)
+        public async Task<IActionResult> UpdateAsync(Missing missing)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (_missingRepository.GetById(missing.Id) is null)
+            if (await _missingRepository.GetById(missing.Id) is null)
                 return NotFound($"There is no record with the specified Id: {missing.Id}");
 
-            _missingRepository.Update(missing);
+            await _missingRepository.Update(missing);
 
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
             if (id <= 0)
                 return BadRequest();
 
-            var missing = _missingRepository.GetById(id);
+            var missing = await _missingRepository.GetById(id);
 
             if (missing is null)
                 return NotFound($"There is no record with the specified Id: {id}");
 
-            _missingRepository.Delete(id);
+            await _missingRepository.Delete(id);
             return NoContent();
         }
     }

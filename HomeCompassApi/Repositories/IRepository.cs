@@ -2,11 +2,11 @@
 {
     public interface IRepository<T>
     {
-        void Add(T entity);
-        List<T> GetAll();
-        T GetById(int id);
-        void Update(T entity);
-        void Delete(int id);
-        bool IsExisted(T entity);
+        Task Add(T entity);
+        Task<List<T>> GetAll();
+        Task<T> GetById(int id);
+        Task Update(T entity);
+        Task Delete(int id);
+        Task<bool> IsExisted(T entity);
     }
 }

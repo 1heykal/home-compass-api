@@ -1,8 +1,10 @@
 ﻿using HomeCompassApi.BLL;
 using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Models.Feed;
+using HomeCompassApi.Services.Facilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace HomeCompassApi.Controllers.Facilities
 {
@@ -18,25 +20,32 @@ namespace HomeCompassApi.Controllers.Facilities
         }
 
         [HttpPost]
-        public IActionResult Create(Category category)
+        public async Task<IActionResult> CreateAsync(CreateCategoryDTO category)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            _categoryRepository.Add(category);
-            return CreatedAtAction(nameof(Get), new { Id = category.Id }, category);
+            await _categoryRepository.Add(new Category { Name = category.Name });
+            return CreatedAtAction(nameof(GetAsync), category);
         }
 
         [HttpGet]
-        public ActionResult<List<Category>> Get() => Ok(_categoryRepository.GetAll());
+        public async Task<ActionResult<List<CategoryDTO>>> GetAsync()
+        {
+            return Ok((await _categoryRepository.GetAll()).Select(c => new CategoryDTO
+            {
+                Id = c.Id,
+                Name = c.Name
+            }));
+        }
 
         [HttpGet("{id}")]
-        public ActionResult<Category> Get(int id)
+        public async Task<ActionResult<Category>> GetAsync(int id)
         {
             if (id <= 0)
                 return BadRequest();
 
-            var category = _categoryRepository.GetById(id);
+            var category = await _categoryRepository.GetById(id);
 
             if (category is null)
                 return NotFound($"There is no category with the specified Id: {category.Id}");
@@ -45,29 +54,29 @@ namespace HomeCompassApi.Controllers.Facilities
         }
 
         [HttpPut]
-        public IActionResult Update(Category category)
+        public async Task<IActionResult> UpdateAsync(Category category)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!_categoryRepository.IsExisted(category))
+            if (!await _categoryRepository.IsExisted(category))
                 return NotFound($"There is no category with the specified Id: {category.Id}");
 
-            _categoryRepository.Update(category);
+            await _categoryRepository.Update(category);
 
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
             if (id <= 0)
                 return BadRequest();
 
-            if (_categoryRepository.GetById(id) is null)
+            if (await _categoryRepository.GetById(id) is null)
                 return NotFound($"There is no category with the specified Id: {id}");
 
-            _categoryRepository.Delete(id);
+            await _categoryRepository.Delete(id);
             return NoContent();
         }
     }

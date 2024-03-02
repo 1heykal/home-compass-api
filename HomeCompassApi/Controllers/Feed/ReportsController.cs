@@ -19,18 +19,18 @@ namespace HomeCompassApi.Controllers.Feed
         }
 
         [HttpGet]
-        public ActionResult<List<Report>> Get()
+        public async Task<ActionResult<List<Report>>> GetAsync()
         {
-            return Ok(_reportRepository.GetAll());
+            return Ok(await _reportRepository.GetAll());
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Report> GetById(int id)
+        public async Task<ActionResult<Report>> GetByIdAsync(int id)
         {
             if (id <= 0)
                 return BadRequest();
 
-            var report = _reportRepository.GetById(id);
+            var report = await _reportRepository.GetById(id);
             if (report is null)
                 return NotFound($"There is no report with the specified id: {id}");
 
@@ -39,7 +39,7 @@ namespace HomeCompassApi.Controllers.Feed
 
 
         [HttpPost("page")]
-        public ActionResult<List<Report>> GetByPage([FromBody] PageDTO page)
+        public async Task<ActionResult<List<Report>>> GetByPageAsync([FromBody] PageDTO page)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -48,25 +48,25 @@ namespace HomeCompassApi.Controllers.Feed
             if (page.Index < 0 || page.Size <= 0)
                 return BadRequest();
 
-            return Ok(_reportRepository.GetAll().Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
+            return Ok((await _reportRepository.GetAll()).Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
         }
 
 
         [HttpPost]
-        public IActionResult Create(Report report)
+        public async Task<IActionResult> CreateAsync(Report report)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             report.Date = DateTime.Now;
 
-            _reportRepository.Add(report);
+            await _reportRepository.Add(report);
 
-            return CreatedAtAction(nameof(Get), new { id = report.Id }, report);
+            return CreatedAtAction(nameof(GetAsync), new { id = report.Id }, report);
         }
 
         [HttpPut]
-        public IActionResult Update(Report report)
+        public async Task<IActionResult> UpdateAsync(Report report)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -74,24 +74,24 @@ namespace HomeCompassApi.Controllers.Feed
             if (report.Id <= 0)
                 return BadRequest("Id must be greater than Zero.");
 
-            if (!_reportRepository.IsExisted(report))
+            if (!await _reportRepository.IsExisted(report))
                 return NotFound($"There is no report with the specified id: {report.Id}");
 
-            _reportRepository.Update(report);
+            await _reportRepository.Update(report);
 
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
             if (id <= 0)
                 return BadRequest("Id must be greater than Zero.");
 
-            if (!_reportRepository.IsExisted(new Report { Id = id }))
+            if (!await _reportRepository.IsExisted(new Report { Id = id }))
                 return NotFound($"There is no report with the specified id: {id}");
 
-            _reportRepository.Delete(id);
+            await _reportRepository.Delete(id);
 
             return NoContent();
         }

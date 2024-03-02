@@ -13,7 +13,6 @@ namespace HomeCompassApi.Models.Facilities
         [Required]
         public string Name { get; set; }
 
-        [JsonIgnore]
         public List<Facility> Facilities { get; set; }
 
     }

@@ -1,5 +1,6 @@
 ﻿using HomeCompassApi.BLL;
 using HomeCompassApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace HomeCompassApi.Repositories.Feed
 {
@@ -12,38 +13,38 @@ namespace HomeCompassApi.Repositories.Feed
             _context = context;
         }
 
-        public void Add(Report entity)
+        public async Task Add(Report entity)
         {
-            _context.Reports.Add(entity);
-            _context.SaveChanges();
+            await _context.Reports.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public List<Report> GetAll()
+        public async Task<List<Report>> GetAll()
         {
-            return _context.Reports.ToList();
+            return await _context.Reports.ToListAsync();
         }
 
-        public Report GetById(int id)
+        public async Task<Report> GetById(int id)
         {
-            return _context.Reports.FirstOrDefault(r => r.Id == id);
+            return await _context.Reports.FirstOrDefaultAsync(r => r.Id == id);
         }
 
-        public void Update(Report entity)
+        public async Task Update(Report entity)
         {
             _context.Reports.Update(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            var report = GetById(id);
+            var report = await GetById(id);
             _context.Reports.Remove(report);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public bool IsExisted(Report entity)
+        public async Task<bool> IsExisted(Report entity)
         {
-            return _context.Reports.Contains(entity);
+            return await _context.Reports.ContainsAsync(entity);
         }
     }
 }

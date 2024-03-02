@@ -27,7 +27,6 @@ namespace HomeCompassApi.Models.Cases
         public string ReporterId { get; set; }
 
         [ForeignKey(nameof(ReporterId))]
-        [JsonIgnore]
         public ApplicationUser Reporter { get; set; }
 
     }

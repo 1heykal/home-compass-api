@@ -25,7 +25,7 @@ namespace HomeCompassApi.Controllers.Feed
         }
 
         [HttpPost]
-        public ActionResult Create(Like like)
+        public async Task<ActionResult> CreateAsync(Like like)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -33,25 +33,25 @@ namespace HomeCompassApi.Controllers.Feed
             if (like.PostId <= 0 || like.UserId == string.Empty)
                 return BadRequest();
 
-            if (!_postRepository.IsExisted(new Post { Id = like.PostId }))
+            if (!await _postRepository.IsExisted(new Post { Id = like.PostId }))
                 return NotFound($"There is no Post with the specified Id: {like.PostId}");
 
-            if (!_userRepository.IsExisted(new ApplicationUser { Id = like.UserId }))
+            if (!await _userRepository.IsExisted(new ApplicationUser { Id = like.UserId }))
                 return NotFound($"There is no User with the specified Id: {like.UserId}");
 
-            if (_likeRepository.IsExisted(like))
+            if (await _likeRepository.IsExisted(like))
                 return NoContent();
 
 
-            _likeRepository.Add(like);
-            return CreatedAtAction(nameof(Create), like);
+            await _likeRepository.Add(like);
+            return CreatedAtAction(nameof(CreateAsync), like);
         }
 
         [HttpGet("post/{postId}")]
-        public ActionResult<List<Like>> GetByPostId(int postId) => Ok(_likeRepository.GetByPostId(postId).ToList());
+        public async Task<ActionResult<List<Like>>> GetByPostIdAsync(int postId) => Ok((await _likeRepository.GetByPostId(postId)).ToList());
 
         [HttpPost("post/{postId}/page")]
-        public ActionResult<List<Like>> GetByPage(int postId, [FromBody] PageDTO page)
+        public async Task<ActionResult<List<Like>>> GetByPageAsync(int postId, [FromBody] PageDTO page)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -60,11 +60,11 @@ namespace HomeCompassApi.Controllers.Feed
             if (page.Index < 0 || page.Size <= 0)
                 return BadRequest();
 
-            return Ok(_likeRepository.GetByPostId(postId).Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
+            return Ok((await _likeRepository.GetByPostId(postId)).Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
         }
 
         [HttpDelete]
-        public IActionResult Delete(Like like)
+        public async Task<IActionResult> DeleteAsync(Like like)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -72,10 +72,10 @@ namespace HomeCompassApi.Controllers.Feed
             if (like.PostId <= 0 || like.UserId == string.Empty)
                 return BadRequest();
 
-            if (!_likeRepository.IsExisted(like))
+            if (!await _likeRepository.IsExisted(like))
                 return NotFound("There is no such a record with the specified Ids");
 
-            _likeRepository.Delete(like);
+            await _likeRepository.Delete(like);
             return NoContent();
         }
 

@@ -12,23 +12,23 @@ namespace HomeCompassApi.BLL.Facilities
         {
             _context = context;
         }
-        public void Add(Facility entity)
+        public async Task Add(Facility entity)
         {
-            _context.Facilities.Add(entity);
-            _context.SaveChanges();
+            await _context.Facilities.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            _context.Facilities.Remove(GetById(id));
-            _context.SaveChanges();
+            _context.Facilities.Remove(await GetById(id));
+            await _context.SaveChangesAsync();
         }
 
-        public List<Facility> GetAll() => _context.Facilities.AsNoTracking().ToList();
+        public async Task<List<Facility>> GetAll() => await _context.Facilities.AsNoTracking().ToListAsync();
 
-        public List<FacilityDTO> GetAllReduced()
+        public async Task<List<FacilityDTO>> GetAllReduced()
         {
-            return _context.Facilities.Select(f => new FacilityDTO
+            return await _context.Facilities.Select(f => new FacilityDTO
             {
                 Id = f.Id,
                 Name = f.Name,
@@ -38,18 +38,18 @@ namespace HomeCompassApi.BLL.Facilities
                 Resources = f.Resources,
                 Target = f.Target
 
-            }).ToList();
+            }).ToListAsync();
         }
 
-        public Facility GetById(int id) => _context.Facilities.AsNoTracking().FirstOrDefault(f => f.Id == id);
+        public async Task<Facility> GetById(int id) => await _context.Facilities.AsNoTracking().FirstOrDefaultAsync(f => f.Id == id);
 
-        public bool IsExisted(Facility facility) => _context.Facilities.Contains(facility);
+        public async Task<bool> IsExisted(Facility facility) => await _context.Facilities.ContainsAsync(facility);
 
 
-        public void Update(Facility entity)
+        public async Task Update(Facility entity)
         {
             _context.Facilities.Update(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

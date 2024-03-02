@@ -11,28 +11,28 @@ namespace HomeCompassApi.BLL.Facilities
         {
             _context = context;
         }
-        public void Add(Resource entity)
+        public async Task Add(Resource entity)
         {
-            _context.Resources.Add(entity);
-            _context.SaveChanges();
+            await _context.Resources.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            _context.Resources.Remove(GetById(id));
-            _context.SaveChanges();
+            _context.Resources.Remove(await GetById(id));
+            await _context.SaveChangesAsync();
         }
 
-        public List<Resource> GetAll() => _context.Resources.AsNoTracking().ToList();
+        public async Task<List<Resource>> GetAll() => await _context.Resources.AsNoTracking().ToListAsync();
 
-        public Resource GetById(int id) => _context.Resources.AsNoTracking().FirstOrDefault(r => r.Id == id);
+        public async Task<Resource> GetById(int id) => await _context.Resources.AsNoTracking().FirstOrDefaultAsync(r => r.Id == id);
 
-        public bool IsExisted(Resource resource) => _context.Resources.Contains(resource);
+        public async Task<bool> IsExisted(Resource resource) => await _context.Resources.ContainsAsync(resource);
 
-        public void Update(Resource entity)
+        public async Task Update(Resource entity)
         {
             _context.Resources.Update(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

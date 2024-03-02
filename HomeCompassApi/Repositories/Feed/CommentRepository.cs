@@ -14,39 +14,39 @@ namespace HomeCompassApi.BLL
             _context = context;
         }
 
-        public void Add(Comment entity)
+        public async Task Add(Comment entity)
         {
-            _context.Comments.Add(entity);
-            _context.SaveChanges();
+            await _context.Comments.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public List<Comment> GetAll() => _context.Comments.AsNoTracking().ToList();
+        public async Task<List<Comment>> GetAll() => await _context.Comments.AsNoTracking().ToListAsync();
 
-        public List<CommentDTO> GetAllReduced()
+        public async Task<List<CommentDTO>> GetAllReduced()
         {
-            return _context.Comments.Select(c => new CommentDTO
+            return await _context.Comments.Select(c => new CommentDTO
             {
                 Id = c.Id,
                 Content = c.Content,
                 AuthorName = $"{c.User.FirstName} {c.User.LastName}",
                 AuthorPhotoURL = c.User.PhotoUrl
             }
-            ).ToList();
+            ).ToListAsync();
         }
 
-        public Comment GetById(int id) => _context.Comments.AsNoTracking().FirstOrDefault(c => c.Id == id);
-        public bool IsExisted(Comment comment) => _context.Comments.Contains(comment);
+        public async Task<Comment> GetById(int id) => await _context.Comments.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
+        public async Task<bool> IsExisted(Comment comment) => await _context.Comments.ContainsAsync(comment);
 
-        public void Update(Comment entity)
+        public async Task Update(Comment entity)
         {
             _context.Comments.Update(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            _context.Comments.Remove(GetById(id));
-            _context.SaveChanges();
+            _context.Comments.Remove(await GetById(id));
+            await _context.SaveChangesAsync();
         }
 
 

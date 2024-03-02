@@ -1,5 +1,6 @@
 ﻿using HomeCompassApi.BLL;
 using HomeCompassApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace HomeCompassApi.Repositories
 {
@@ -12,37 +13,37 @@ namespace HomeCompassApi.Repositories
             _context = context;
         }
 
-        public void Add(Info entity)
+        public async Task Add(Info entity)
         {
-            _context.Info.Add(entity);
-            _context.SaveChanges();
+            await _context.Info.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            _context.Info.Remove(GetById(id));
-            _context.SaveChanges();
+            _context.Info.Remove(await GetById(id));
+            await _context.SaveChangesAsync();
         }
 
-        public List<Info> GetAll()
+        public async Task<List<Info>> GetAll()
         {
-            return _context.Info.ToList();
+            return await _context.Info.ToListAsync();
         }
 
-        public Info GetById(int id)
+        public async Task<Info> GetById(int id)
         {
-            return _context.Info.FirstOrDefault(i => i.Id == id);
+            return await _context.Info.FirstOrDefaultAsync(i => i.Id == id);
         }
 
-        public bool IsExisted(Info entity)
+        public async Task<bool> IsExisted(Info entity)
         {
-            throw new NotImplementedException();
+            return await _context.Info.ContainsAsync(entity);
         }
 
-        public void Update(Info entity)
+        public async Task Update(Info entity)
         {
             _context.Info.Update(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

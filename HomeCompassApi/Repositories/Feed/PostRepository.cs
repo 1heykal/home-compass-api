@@ -14,17 +14,17 @@ namespace HomeCompassApi.BLL
             _context = context;
         }
 
-        public void Add(Post entity)
+        public async Task Add(Post entity)
         {
-            _context.Posts.Add(entity);
-            _context.SaveChanges();
+            await _context.Posts.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public List<Post> GetAll() => _context.Posts.AsNoTracking().ToList();
+        public async Task<List<Post>> GetAll() => await _context.Posts.AsNoTracking().ToListAsync();
 
-        public List<PostDTO> GetAllReduced()
+        public async Task<List<PostDTO>> GetAllReduced()
         {
-            return _context.Posts.Select(p => new PostDTO
+            return await _context.Posts.Select(p => new PostDTO
             {
                 Id = p.Id,
                 AuthorName = $"{p.User.FirstName} {p.User.LastName}",
@@ -34,7 +34,7 @@ namespace HomeCompassApi.BLL
                 AuthorPhotoUrl = p.User.PhotoUrl,
                 CommentsCount = p.Comments.Count
             }
-            ).ToList();
+            ).ToListAsync();
         }
 
         //public IEnumerable<PostDTO> GetByPage() 
@@ -43,39 +43,39 @@ namespace HomeCompassApi.BLL
 
         //}
 
-        public Post GetById(int id) => _context.Posts.AsNoTracking().FirstOrDefault(p => p.Id == id);
+        public async Task<Post> GetById(int id) => await _context.Posts.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
 
-        public void Update(Post entity)
+        public async Task Update(Post entity)
         {
             _context.Posts.Update(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            using (var transaction = _context.Database.BeginTransaction())
+            using (var transaction = await _context.Database.BeginTransactionAsync())
             {
                 try
                 {
-                    var post = _context.Posts.FirstOrDefault(p => p.Id == id);
+                    var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
                     if (post != null)
                     {
                         _context.Comments.RemoveRange(_context.Comments.Where(c => c.PostId == post.Id));
                         _context.Likes.RemoveRange(_context.Likes.Where(l => l.PostId == post.Id));
                         _context.Posts.Remove(post);
-                        _context.SaveChanges();
-                        transaction.Commit();
+                        await _context.SaveChangesAsync();
+                        await transaction.CommitAsync();
                     }
 
                 }
                 catch (Exception ex)
                 {
-                    transaction.Rollback();
+                    await transaction.RollbackAsync();
                 }
             }
         }
 
-        public bool IsExisted(Post post) => _context.Posts.Contains(post);
+        public async Task<bool> IsExisted(Post post) => await _context.Posts.ContainsAsync(post);
 
     }
 }

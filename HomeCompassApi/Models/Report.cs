@@ -20,7 +20,6 @@ namespace HomeCompassApi.Models
         public int PostId { get; set; }
 
         [ForeignKey(nameof(PostId))]
-        [JsonIgnore]
         public Post Post { get; set; }
     }
 }

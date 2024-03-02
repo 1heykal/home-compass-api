@@ -14,20 +14,20 @@ namespace HomeCompassApi.Repositories.Feed
             _context = context;
         }
 
-        public void Add(Like entity)
+        public async Task Add(Like entity)
         {
-            _context.Likes.Add(entity);
-            _context.SaveChanges();
+            await _context.Likes.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public List<Like> GetByPostId(int id) => _context.Likes.Where(l => l.PostId == id).AsNoTracking().ToList();
+        public async Task<List<Like>> GetByPostId(int id) => await _context.Likes.Where(l => l.PostId == id).AsNoTracking().ToListAsync();
 
-        public bool IsExisted(Like like) => _context.Likes.Contains(like);
+        public async Task<bool> IsExisted(Like like) => await _context.Likes.ContainsAsync(like);
 
-        public void Delete(Like like)
+        public async Task Delete(Like like)
         {
             _context.Likes.Remove(like);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
 

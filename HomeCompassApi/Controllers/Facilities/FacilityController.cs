@@ -25,29 +25,29 @@ namespace HomeCompassApi.Controllers.Facilities
 
 
         [HttpPost]
-        public IActionResult Create(Facility facility)
+        public async Task<IActionResult> CreateAsync(Facility facility)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            _facilityRepository.Add(facility);
+            await _facilityRepository.Add(facility);
 
-            return CreatedAtAction(nameof(Get), new { Id = facility.Id }, facility);
+            return CreatedAtAction(nameof(GetAsync), new { Id = facility.Id }, facility);
         }
 
         [HttpGet]
-        public ActionResult<List<Facility>> Get()
+        public async Task<ActionResult<List<Facility>>> GetAsync()
         {
-            return Ok(_facilityRepository.GetAllReduced());
+            return Ok(await _facilityRepository.GetAllReduced());
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Facility> Get(int id)
+        public async Task<ActionResult<Facility>> GetAsync(int id)
         {
             if (id <= 0)
                 return BadRequest();
 
-            var facility = _facilityRepository.GetById(id);
+            var facility = await _facilityRepository.GetById(id);
 
             if (facility is null)
                 return NotFound($"There is no facility with the specified Id: {id}");
@@ -56,26 +56,26 @@ namespace HomeCompassApi.Controllers.Facilities
         }
 
         [HttpGet("contributor/{id}")]
-        public ActionResult<List<Post>> GetByContributorId(string id)
+        public async Task<ActionResult<List<Post>>> GetByContributorIdAsync(string id)
         {
             if (id is null || id == string.Empty)
                 return BadRequest();
 
-            if (!_userRepository.IsExisted(new ApplicationUser { Id = id }))
+            if (!await _userRepository.IsExisted(new ApplicationUser { Id = id }))
                 return NotFound($"There is no contibutor with the specified id: {id}");
 
-            return Ok(_facilityRepository.GetAll().Where(f => f.ContributorId == id).ToList());
+            return Ok((await _facilityRepository.GetAll()).Where(f => f.ContributorId == id).ToList());
 
         }
 
         [HttpGet("bycategory/{categoryId}")]
-        public ActionResult<List<Facility>> GetByCategory(int categoryId)
+        public async Task<ActionResult<List<Facility>>> GetByCategoryAsync(int categoryId)
         {
-            return Ok(_facilityRepository.GetAll().Where(f => f.CategoryId == categoryId).ToList());
+            return Ok((await _facilityRepository.GetAll()).Where(f => f.CategoryId == categoryId).ToList());
         }
 
         [HttpPost("page")]
-        public ActionResult<List<Facility>> GetByPage([FromBody] PageDTO page)
+        public async Task<ActionResult<List<Facility>>> GetByPageAsync([FromBody] PageDTO page)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -84,33 +84,33 @@ namespace HomeCompassApi.Controllers.Facilities
             if (page.Index < 0 || page.Size <= 0)
                 return BadRequest();
 
-            return Ok(_facilityRepository.GetAllReduced().Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
+            return Ok((await _facilityRepository.GetAllReduced()).Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
         }
 
 
         [HttpPut]
-        public IActionResult Update(Facility facility)
+        public async Task<IActionResult> UpdateAsync(Facility facility)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!_facilityRepository.IsExisted(facility))
+            if (!await _facilityRepository.IsExisted(facility))
                 return NotFound($"There is no facility with the specified Id: {facility.Id}");
 
-            _facilityRepository.Update(facility);
+            await _facilityRepository.Update(facility);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
             if (id <= 0)
                 return BadRequest();
 
-            if (!_facilityRepository.IsExisted(new Facility { Id = id }))
+            if (!await _facilityRepository.IsExisted(new Facility { Id = id }))
                 return NotFound($"There is no facility with the specified Id: {id}");
 
-            _facilityRepository.Delete(id);
+            await _facilityRepository.Delete(id);
             return NoContent();
         }
     }

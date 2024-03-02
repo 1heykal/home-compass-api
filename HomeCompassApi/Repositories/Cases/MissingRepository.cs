@@ -12,23 +12,23 @@ namespace HomeCompassApi.BLL.Cases
         {
             _context = context;
         }
-        public void Add(Missing entity)
+        public async Task Add(Missing entity)
         {
-            _context.Missings.Add(entity);
-            _context.SaveChanges();
+            await _context.Missings.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            _context.Missings.Remove(GetById(id));
-            _context.SaveChanges();
+            _context.Missings.Remove(await GetById(id));
+            await _context.SaveChangesAsync();
         }
 
-        public List<Missing> GetAll() => _context.Missings.AsNoTracking().ToList();
+        public async Task<List<Missing>> GetAll() => await _context.Missings.AsNoTracking().ToListAsync();
 
-        public List<MissingDTO> GetAllReduced()
+        public async Task<List<MissingDTO>> GetAllReduced()
         {
-            return _context.Missings.Select(m => new MissingDTO
+            return await _context.Missings.Select(m => new MissingDTO
             {
                 Id = m.Id,
                 Address = m.HomeAddress,
@@ -37,17 +37,17 @@ namespace HomeCompassApi.BLL.Cases
                 Name = m.FullName,
                 PhotoURL = m.PhotoUrl
             })
-            .ToList();
+            .ToListAsync();
         }
 
-        public Missing GetById(int id) => _context.Missings.AsNoTracking().FirstOrDefault(m => m.Id == id);
+        public async Task<Missing> GetById(int id) => await _context.Missings.AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
 
-        public bool IsExisted(Missing missing) => _context.Missings.Contains(missing);
+        public async Task<bool> IsExisted(Missing missing) => await _context.Missings.ContainsAsync(missing);
 
-        public void Update(Missing entity)
+        public async Task Update(Missing entity)
         {
             _context.Missings.Update(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }
