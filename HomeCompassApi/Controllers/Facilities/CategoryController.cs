@@ -20,13 +20,13 @@ namespace HomeCompassApi.Controllers.Facilities
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(CreateCategoryDTO category)
+        public async Task<IActionResult> CreateAsync(Category category)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            await _categoryRepository.Add(new Category { Name = category.Name });
-            return CreatedAtAction(nameof(GetAsync), category);
+            await _categoryRepository.Add(category);
+            return CreatedAtAction(nameof(Get), new { Id = category.Id }, category);
         }
 
         [HttpGet]
@@ -40,7 +40,7 @@ namespace HomeCompassApi.Controllers.Facilities
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetAsync(int id)
+        public async Task<ActionResult<Category>> Get(int id)
         {
             if (id <= 0)
                 return BadRequest();
@@ -53,14 +53,15 @@ namespace HomeCompassApi.Controllers.Facilities
             return Ok(category);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateAsync(Category category)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAsync(int id, Category category)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            category.Id = id;
             if (!await _categoryRepository.IsExisted(category))
-                return NotFound($"There is no category with the specified Id: {category.Id}");
+                return NotFound($"There is no category with the specified Id: {id}");
 
             await _categoryRepository.Update(category);
 

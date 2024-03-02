@@ -5,6 +5,7 @@ using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Repositories.Feed;
 using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
+using HomeCompassApi.Services.CRUD;
 using HomeCompassApi.Services.Feed;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -35,18 +36,18 @@ namespace HomeCompassApi.Controllers.Feed
                 return BadRequest(ModelState);
 
             await _postRepository.Add(post);
-            return CreatedAtAction(nameof(GetAsync), new { id = post.Id }, post);
+            return CreatedAtAction(nameof(Get), new { id = post.Id }, post);
         }
 
 
         [HttpGet]
-        public async Task<ActionResult<List<PostDTO>>> GetAsync()
+        public async Task<ActionResult<List<ReadAllPostsDTO>>> GetAllAsync()
         {
             return Ok(await _postRepository.GetAllReduced());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<PostDTO>> GetAsync(int id)
+        public async Task<ActionResult<ReadPostDTO>> Get(int id)
         {
             if (id <= 0)
                 return BadRequest();
@@ -60,7 +61,7 @@ namespace HomeCompassApi.Controllers.Feed
         }
 
         [HttpGet("user/{id}")]
-        public async Task<ActionResult<List<PostDTO>>> GetByUserIdAsync(string id)
+        public async Task<ActionResult<List<ReadAllPostsDTO>>> GetByUserIdAsync(string id)
         {
             if (id is null || id == string.Empty)
                 return BadRequest();
@@ -73,7 +74,7 @@ namespace HomeCompassApi.Controllers.Feed
         }
 
         [HttpPost("page")]
-        public async Task<ActionResult<List<PostDTO>>> GetByPageAsync([FromBody] PageDTO page)
+        public async Task<ActionResult<List<ReadAllPostsDTO>>> GetByPageAsync([FromBody] PageDTO page)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -86,16 +87,18 @@ namespace HomeCompassApi.Controllers.Feed
         }
 
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateAsync(Post post)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAsync(int id, UpdatePostDTO post)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!await _postRepository.IsExisted(post))
-                return NotFound($"There is no post with the specified Id: {post.Id}");
+            var entity = new Post(post);
+            entity.Id = id;
+            if (!await _postRepository.IsExisted(entity))
+                return NotFound($"There is no post with the specified Id: {id}");
 
-            await _postRepository.Update(post);
+            await _postRepository.Update(entity);
             return NoContent();
         }
 

@@ -32,7 +32,7 @@ namespace HomeCompassApi.Controllers.Facilities
 
             await _facilityRepository.Add(facility);
 
-            return CreatedAtAction(nameof(GetAsync), new { Id = facility.Id }, facility);
+            return CreatedAtAction(nameof(Get), new { Id = facility.Id }, facility);
         }
 
         [HttpGet]
@@ -42,7 +42,7 @@ namespace HomeCompassApi.Controllers.Facilities
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Facility>> GetAsync(int id)
+        public async Task<ActionResult<Facility>> Get(int id)
         {
             if (id <= 0)
                 return BadRequest();
@@ -88,14 +88,15 @@ namespace HomeCompassApi.Controllers.Facilities
         }
 
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateAsync(Facility facility)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAsync(int id, Facility facility)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            facility.Id = id;
             if (!await _facilityRepository.IsExisted(facility))
-                return NotFound($"There is no facility with the specified Id: {facility.Id}");
+                return NotFound($"There is no facility with the specified Id: {id}");
 
             await _facilityRepository.Update(facility);
             return NoContent();

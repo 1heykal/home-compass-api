@@ -1,5 +1,6 @@
 ﻿using HomeCompassApi.BLL;
 using HomeCompassApi.Models;
+using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Repositories.Feed;
 using HomeCompassApi.Services;
 using Microsoft.AspNetCore.Http;
@@ -25,7 +26,7 @@ namespace HomeCompassApi.Controllers.Feed
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Report>> GetByIdAsync(int id)
+        public async Task<ActionResult<Report>> Get(int id)
         {
             if (id <= 0)
                 return BadRequest();
@@ -62,20 +63,21 @@ namespace HomeCompassApi.Controllers.Feed
 
             await _reportRepository.Add(report);
 
-            return CreatedAtAction(nameof(GetAsync), new { id = report.Id }, report);
+            return CreatedAtAction(nameof(Get), new { id = report.Id }, report);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateAsync(Report report)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAsync(int id, Report report)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (report.Id <= 0)
+            if (id <= 0)
                 return BadRequest("Id must be greater than Zero.");
 
+            report.Id = id;
             if (!await _reportRepository.IsExisted(report))
-                return NotFound($"There is no report with the specified id: {report.Id}");
+                return NotFound($"There is no report with the specified id: {id}");
 
             await _reportRepository.Update(report);
 

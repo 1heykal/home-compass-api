@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Services;
+using HomeCompassApi.Models.Facilities;
 
 namespace HomeCompassApi.Controllers.Info
 {
@@ -24,7 +25,7 @@ namespace HomeCompassApi.Controllers.Info
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Models.Info>> GetByIdAsync(int id)
+        public async Task<ActionResult<Models.Info>> Get(int id)
         {
             if (id <= 0)
                 return BadRequest();
@@ -73,22 +74,23 @@ namespace HomeCompassApi.Controllers.Info
 
             await _infoRepository.Add(info);
 
-            return CreatedAtAction(nameof(GetAsync), new { id = info.Id }, info);
+            return CreatedAtAction(nameof(Get), new { id = info.Id }, info);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateAsync(Models.Info entity)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAsync(int id, Models.Info info)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (entity.Id <= 0)
+            if (id <= 0)
                 return BadRequest("Id must be greater than Zero.");
 
-            if (!await _infoRepository.IsExisted(entity))
-                return NotFound($"There is no info with the specified id: {entity.Id}");
+            info.Id = id;
+            if (!await _infoRepository.IsExisted(info))
+                return NotFound($"There is no info with the specified id: {info.Id}");
 
-            await _infoRepository.Update(entity);
+            await _infoRepository.Update(info);
 
             return NoContent();
         }

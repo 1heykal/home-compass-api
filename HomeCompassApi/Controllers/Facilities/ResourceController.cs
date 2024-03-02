@@ -29,7 +29,7 @@ namespace HomeCompassApi.Controllers.Facilities
                 return BadRequest(ModelState);
 
             await _resourceRepository.Add(resource);
-            return CreatedAtAction(nameof(GetAsync), new { Id = resource.Id }, resource);
+            return CreatedAtAction(nameof(Get), new { Id = resource.Id }, resource);
         }
 
         [HttpGet]
@@ -39,7 +39,7 @@ namespace HomeCompassApi.Controllers.Facilities
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Resource>> GetAsync(int id)
+        public async Task<ActionResult<Resource>> Get(int id)
         {
             if (id <= 0)
                 return BadRequest();

@@ -1,5 +1,6 @@
 ﻿using HomeCompassApi.Models;
 using HomeCompassApi.Models.Feed;
+using HomeCompassApi.Services.CRUD;
 using HomeCompassApi.Services.Feed;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,9 +23,9 @@ namespace HomeCompassApi.BLL
 
         public async Task<List<Post>> GetAll() => await _context.Posts.AsNoTracking().ToListAsync();
 
-        public async Task<List<PostDTO>> GetAllReduced()
+        public async Task<List<ReadAllPostsDTO>> GetAllReduced()
         {
-            return await _context.Posts.Select(p => new PostDTO
+            return await _context.Posts.Select(p => new ReadAllPostsDTO
             {
                 Id = p.Id,
                 AuthorName = $"{p.User.FirstName} {p.User.LastName}",

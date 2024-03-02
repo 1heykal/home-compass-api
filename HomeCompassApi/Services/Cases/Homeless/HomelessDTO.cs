@@ -1,4 +1,4 @@
-﻿namespace HomeCompassApi.Services.Cases
+﻿namespace HomeCompassApi.Services.Cases.Homeless
 {
     public class HomelessDTO
     {

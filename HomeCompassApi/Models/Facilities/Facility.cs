@@ -7,6 +7,7 @@ namespace HomeCompassApi.Models.Facilities
     public class Facility
     {
         [Key]
+        [JsonIgnore]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
@@ -18,6 +19,7 @@ namespace HomeCompassApi.Models.Facilities
         public int CategoryId { get; set; }
 
         [ForeignKey(nameof(CategoryId))]
+        [JsonIgnore]
         public Category Category { get; set; }
         public string Target { get; set; }
         public List<Resource> Resources { get; set; }
@@ -31,6 +33,7 @@ namespace HomeCompassApi.Models.Facilities
         public string ContributorId { get; set; }
 
         [ForeignKey(nameof(ContributorId))]
+        [JsonIgnore]
         public ApplicationUser Contributor { get; set; }
 
     }

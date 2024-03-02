@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using HomeCompassApi.Services.CRUD;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -8,6 +9,7 @@ namespace HomeCompassApi.Models.Feed
     {
 
         [Key]
+        [JsonIgnore]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Title { get; set; }
@@ -21,10 +23,21 @@ namespace HomeCompassApi.Models.Feed
         public string UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
+        [JsonIgnore]
         public ApplicationUser User { get; set; }
 
+        [JsonIgnore]
         public ICollection<Comment> Comments { get; set; }
-
+        [JsonIgnore]
         public ICollection<Like> Likes { get; set; }
+
+
+        public Post() { }
+        public Post(UpdatePostDTO post)
+        {
+            Title = post.Title;
+            Content = post.Content;
+            Archived = post.Archived;
+        }
     }
 }

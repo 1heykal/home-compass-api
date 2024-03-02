@@ -11,11 +11,13 @@ namespace HomeCompassApi.Models.Feed
         public string UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
+        [JsonIgnore]
         public ApplicationUser User { get; set; }
 
         public int PostId { get; set; }
 
         [ForeignKey(nameof(PostId))]
+        [JsonIgnore]
         public Post Post { get; set; }
     }
 }

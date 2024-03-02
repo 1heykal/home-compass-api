@@ -12,7 +12,7 @@ namespace HomeCompassApi.Controllers.Cases
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
+    //[Authorize]
     public class HomelessController : Controller
     {
         private readonly HomelessRepository _homelessRepository;
@@ -30,7 +30,7 @@ namespace HomeCompassApi.Controllers.Cases
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Homeless>> GetAsync(int id)
+        public async Task<ActionResult<Homeless>> Get(int id)
         {
             if (id <= 0)
                 return BadRequest();
@@ -78,7 +78,7 @@ namespace HomeCompassApi.Controllers.Cases
             // if (homeless.ReporterId)
 
             await _homelessRepository.Add(homeless);
-            return CreatedAtAction(nameof(GetAsync), new { id = homeless.Id }, homeless);
+            return CreatedAtAction(nameof(Get), new { id = homeless.Id }, homeless);
         }
 
         [HttpPut]

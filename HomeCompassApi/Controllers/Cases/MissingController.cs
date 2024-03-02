@@ -10,7 +10,7 @@ namespace HomeCompassApi.Controllers.Cases
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
+    //[Authorize]
     public class MissingController : Controller
     {
         private readonly MissingRepository _missingRepository;
@@ -30,17 +30,17 @@ namespace HomeCompassApi.Controllers.Cases
 
             await _missingRepository.Add(missing);
 
-            return CreatedAtAction(nameof(GetAsync), new { Id = missing.Id }, missing);
+            return CreatedAtAction(nameof(Get), new { Id = missing.Id }, missing);
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Missing>>> GetAsync()
+        public async Task<ActionResult<List<Missing>>> GetAllAsync()
         {
             return Ok(await _missingRepository.GetAllReduced());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Missing>> GetAsync(int id)
+        public async Task<ActionResult<Missing>> Get(int id)
         {
             if (id <= 0)
                 return BadRequest();

@@ -1,6 +1,6 @@
 ﻿using HomeCompassApi.Models;
 using HomeCompassApi.Models.Cases;
-using HomeCompassApi.Services.Cases;
+using HomeCompassApi.Services.Cases.Homeless;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeCompassApi.BLL.Cases

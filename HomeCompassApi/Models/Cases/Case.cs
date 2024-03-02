@@ -7,6 +7,7 @@ namespace HomeCompassApi.Models.Cases
     public class Case
     {
         [Key]
+        [JsonIgnore]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Required]
@@ -27,6 +28,7 @@ namespace HomeCompassApi.Models.Cases
         public string ReporterId { get; set; }
 
         [ForeignKey(nameof(ReporterId))]
+        [JsonIgnore]
         public ApplicationUser Reporter { get; set; }
 
     }

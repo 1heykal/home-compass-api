@@ -8,6 +8,7 @@ namespace HomeCompassApi.Models
     public class Report
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [JsonIgnore]
         public int Id { get; set; }
 
         [Required]
@@ -16,10 +17,17 @@ namespace HomeCompassApi.Models
         public DateTime Date { get; set; }
         public bool Archived { get; set; }
 
+        public string ReporterId { get; set; }
+
+        [ForeignKey(nameof(ReporterId))]
+        [JsonIgnore]
+        public ApplicationUser Reporter { get; set; }
+
         [Required]
         public int PostId { get; set; }
 
         [ForeignKey(nameof(PostId))]
+        [JsonIgnore]
         public Post Post { get; set; }
     }
 }

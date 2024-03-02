@@ -1,4 +1,4 @@
-﻿namespace HomeCompassApi.Services.CRUD
+﻿namespace HomeCompassApi.Services.Feed.Comment
 {
     public class ReadAllCommentsDTO
     {

@@ -31,14 +31,14 @@ namespace HomeCompassApi.Controllers.Feed
                 return BadRequest(ModelState);
 
             await _commentRepository.Add(comment);
-            return CreatedAtAction(nameof(GetAsync), new { Id = comment.Id }, comment);
+            return CreatedAtAction(nameof(Get), new { Id = comment.Id }, comment);
         }
 
         [HttpGet]
         public async Task<ActionResult<List<CommentDTO>>> GetAsync() => Ok(await _commentRepository.GetAllReduced());
 
         [HttpGet("post/{id}")]
-        public async Task<ActionResult<List<CommentDTO>>> GetByPostIdAsync(int id)
+        public async Task<ActionResult<List<CommentDTO>>> Get(int id)
         {
             if (id <= 0)
                 return BadRequest("Invalid post id");
@@ -104,12 +104,13 @@ namespace HomeCompassApi.Controllers.Feed
             return NoContent();
         }
 
-        [HttpPut] // ("{id}")
-        public async Task<IActionResult> UpdateAsync(Comment comment)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAsync(int id, Comment comment)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            comment.Id = id;
             if (!await _commentRepository.IsExisted(comment))
                 return NotFound($"There is no comment with the specified Id: {comment.Id}");
 
