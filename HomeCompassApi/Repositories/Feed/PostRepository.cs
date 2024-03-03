@@ -72,7 +72,7 @@ namespace HomeCompassApi.BLL
 
         public async Task<bool> IsExisted(Post post) => await _context.Posts.ContainsAsync(post);
 
-        public async Task<bool> IsExisted(int id) => await _context.Posts.FindAsync(id) is not null;
+        public async Task<bool> IsExisted(int id) => await _context.Posts.AnyAsync(p => p.Id == id);
 
 
     }

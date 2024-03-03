@@ -45,7 +45,7 @@ namespace HomeCompassApi.BLL.Facilities
 
         public async Task<bool> IsExisted(Facility facility) => await _context.Facilities.ContainsAsync(facility);
 
-        public async Task<bool> IsExisted(int id) => await _context.Facilities.FindAsync(id) is not null;
+        public async Task<bool> IsExisted(int id) => await _context.Facilities.AnyAsync(e => e.Id == id);
 
 
 
