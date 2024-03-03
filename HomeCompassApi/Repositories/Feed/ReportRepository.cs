@@ -46,5 +46,8 @@ namespace HomeCompassApi.Repositories.Feed
         {
             return await _context.Reports.ContainsAsync(entity);
         }
+
+        public async Task<bool> IsExisted(int id) => await _context.Reports.FindAsync(id) is not null;
+
     }
 }

@@ -75,10 +75,10 @@ builder.Services.AddScoped<MissingRepository, MissingRepository>();
 
 // Facility
 builder.Services.AddScoped<FacilityRepository, FacilityRepository>();
-builder.Services.AddScoped<IRepository<Resource>, ResourceRepository>();
-builder.Services.AddScoped<IRepository<Category>, CategoryRepository>();
+builder.Services.AddScoped<ResourceRepository, ResourceRepository>();
+builder.Services.AddScoped<CategoryRepository, CategoryRepository>();
 
-builder.Services.AddScoped<IRepository<Info>, InfoRepository>();
+builder.Services.AddScoped<InfoRepository, InfoRepository>();
 
 
 

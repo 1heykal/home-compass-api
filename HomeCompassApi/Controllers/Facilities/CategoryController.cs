@@ -1,4 +1,6 @@
-﻿using HomeCompassApi.BLL;
+﻿using Elfie.Serialization;
+using HomeCompassApi.BLL;
+using HomeCompassApi.BLL.Facilities;
 using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Services.Facilities;
@@ -12,9 +14,9 @@ namespace HomeCompassApi.Controllers.Facilities
     [Route("[controller]")]
     public class CategoryController : ControllerBase
     {
-        private readonly IRepository<Category> _categoryRepository;
+        private readonly CategoryRepository _categoryRepository;
 
-        public CategoryController(IRepository<Category> categoryRepository)
+        public CategoryController(CategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
         }
@@ -24,6 +26,9 @@ namespace HomeCompassApi.Controllers.Facilities
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            if (!await _categoryRepository.NameExists(category.Name))
+                return BadRequest($"A resource with the specified name exists.");
 
             await _categoryRepository.Add(category);
             return CreatedAtAction(nameof(Get), new { Id = category.Id }, category);

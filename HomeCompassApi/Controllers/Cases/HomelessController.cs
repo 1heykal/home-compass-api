@@ -1,5 +1,6 @@
 ﻿using HomeCompassApi.BLL;
 using HomeCompassApi.BLL.Cases;
+using HomeCompassApi.Models;
 using HomeCompassApi.Models.Cases;
 using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Repositories.User;
@@ -63,8 +64,8 @@ namespace HomeCompassApi.Controllers.Cases
             if (id is null || id == string.Empty)
                 return BadRequest();
 
-            if (await _userRepository.GetById(id) is null)
-                return NotFound("There is no reporter with the specified id.");
+            if (!await _userRepository.IsExisted(id))
+                return NotFound($"There is no reporter with the specified id: {id}");
 
             return Ok((await _homelessRepository.GetAll()).Where(h => h.ReporterId == id).ToList());
         }
@@ -75,20 +76,22 @@ namespace HomeCompassApi.Controllers.Cases
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // if (homeless.ReporterId)
+            if (!await _userRepository.IsExisted(homeless.ReporterId))
+                return NotFound($"There is no reporter with the specified id: {homeless.ReporterId}");
 
             await _homelessRepository.Add(homeless);
             return CreatedAtAction(nameof(Get), new { id = homeless.Id }, homeless);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update(Homeless homeless)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, Homeless homeless)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (await _homelessRepository.GetById(homeless.Id) is null)
-                return NotFound($"There is no record with the specified Id: {homeless.Id}");
+            homeless.Id = id;
+            if (!await _homelessRepository.IsExisted(homeless))
+                return NotFound($"There is no record with the specified Id: {id}");
 
             await _homelessRepository.Update(homeless);
 
@@ -101,9 +104,7 @@ namespace HomeCompassApi.Controllers.Cases
             if (id <= 0)
                 return BadRequest();
 
-            var homeless = await _homelessRepository.GetById(id);
-
-            if (homeless is null)
+            if (!await _homelessRepository.IsExisted(id))
                 return NotFound($"There is no record with the specified Id: {id}");
 
             await _homelessRepository.Delete(id);

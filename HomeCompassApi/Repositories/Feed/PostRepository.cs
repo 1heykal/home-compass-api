@@ -38,12 +38,6 @@ namespace HomeCompassApi.BLL
             ).ToListAsync();
         }
 
-        //public IEnumerable<PostDTO> GetByPage() 
-        //{ 
-
-
-        //}
-
         public async Task<Post> GetById(int id) => await _context.Posts.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
 
         public async Task Update(Post entity)
@@ -77,6 +71,9 @@ namespace HomeCompassApi.BLL
         }
 
         public async Task<bool> IsExisted(Post post) => await _context.Posts.ContainsAsync(post);
+
+        public async Task<bool> IsExisted(int id) => await _context.Posts.FindAsync(id) is not null;
+
 
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Services;
 using HomeCompassApi.Models.Facilities;
+using HomeCompassApi.Repositories;
 
 namespace HomeCompassApi.Controllers.Info
 {
@@ -11,9 +12,9 @@ namespace HomeCompassApi.Controllers.Info
     [ApiController]
     public class InfoController : ControllerBase
     {
-        private readonly IRepository<Models.Info> _infoRepository;
+        private readonly InfoRepository _infoRepository;
 
-        public InfoController(IRepository<Models.Info> infoRepository)
+        public InfoController(InfoRepository infoRepository)
         {
             _infoRepository = infoRepository;
         }
@@ -101,7 +102,7 @@ namespace HomeCompassApi.Controllers.Info
             if (id <= 0)
                 return BadRequest("Id must be greater than Zero.");
 
-            if (!await _infoRepository.IsExisted(new Models.Info { Id = id }))
+            if (!await _infoRepository.IsExisted(id))
                 return NotFound($"There is no info with the specified id: {id}");
 
             await _infoRepository.Delete(id);

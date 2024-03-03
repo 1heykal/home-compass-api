@@ -33,10 +33,10 @@ namespace HomeCompassApi.Controllers.Feed
             if (like.PostId <= 0 || like.UserId == string.Empty)
                 return BadRequest();
 
-            if (!await _postRepository.IsExisted(new Post { Id = like.PostId }))
+            if (!await _postRepository.IsExisted( like.PostId ))
                 return NotFound($"There is no Post with the specified Id: {like.PostId}");
 
-            if (!await _userRepository.IsExisted(new ApplicationUser { Id = like.UserId }))
+            if (!await _userRepository.IsExisted( like.UserId ))
                 return NotFound($"There is no User with the specified Id: {like.UserId}");
 
             if (await _likeRepository.IsExisted(like))

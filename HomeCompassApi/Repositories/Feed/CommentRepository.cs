@@ -37,6 +37,9 @@ namespace HomeCompassApi.BLL
         public async Task<Comment> GetById(int id) => await _context.Comments.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
         public async Task<bool> IsExisted(Comment comment) => await _context.Comments.ContainsAsync(comment);
 
+        public async Task<bool> IsExisted(int id) => await _context.Comments.FindAsync(id) is not null;
+
+
         public async Task Update(Comment entity)
         {
             _context.Comments.Update(entity);

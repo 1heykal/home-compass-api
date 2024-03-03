@@ -16,11 +16,13 @@ namespace HomeCompassApi.Controllers.Facilities
     {
         private readonly FacilityRepository _facilityRepository;
         private readonly UserRepository _userRepository;
+        private readonly CategoryRepository _categoryRepository;
 
-        public FacilityController(FacilityRepository facilityRepository, UserRepository userRepository)
+        public FacilityController(FacilityRepository facilityRepository, UserRepository userRepository, CategoryRepository categoryRepository)
         {
             _facilityRepository = facilityRepository;
             _userRepository = userRepository;
+            _categoryRepository = categoryRepository;
         }
 
 
@@ -29,6 +31,12 @@ namespace HomeCompassApi.Controllers.Facilities
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            if (!await _userRepository.IsExisted(facility.ContributorId))
+                return NotFound($"There is no contibutor with the specified id: {facility.ContributorId}");
+
+            if (!await _categoryRepository.IsExisted(facility.CategoryId))
+                return NotFound($"There is no category with the specified Id: {facility.CategoryId}");
 
             await _facilityRepository.Add(facility);
 
@@ -61,7 +69,7 @@ namespace HomeCompassApi.Controllers.Facilities
             if (id is null || id == string.Empty)
                 return BadRequest();
 
-            if (!await _userRepository.IsExisted(new ApplicationUser { Id = id }))
+            if (!await _userRepository.IsExisted(id))
                 return NotFound($"There is no contibutor with the specified id: {id}");
 
             return Ok((await _facilityRepository.GetAll()).Where(f => f.ContributorId == id).ToList());
@@ -98,6 +106,9 @@ namespace HomeCompassApi.Controllers.Facilities
             if (!await _facilityRepository.IsExisted(facility))
                 return NotFound($"There is no facility with the specified Id: {id}");
 
+            if (!await _categoryRepository.IsExisted(facility.CategoryId))
+                return NotFound($"There is no category with the specified Id: {id}");
+
             await _facilityRepository.Update(facility);
             return NoContent();
         }
@@ -108,7 +119,7 @@ namespace HomeCompassApi.Controllers.Facilities
             if (id <= 0)
                 return BadRequest();
 
-            if (!await _facilityRepository.IsExisted(new Facility { Id = id }))
+            if (!await _facilityRepository.IsExisted(id))
                 return NotFound($"There is no facility with the specified Id: {id}");
 
             await _facilityRepository.Delete(id);

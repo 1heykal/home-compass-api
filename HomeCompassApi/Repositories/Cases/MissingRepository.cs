@@ -44,6 +44,9 @@ namespace HomeCompassApi.BLL.Cases
 
         public async Task<bool> IsExisted(Missing missing) => await _context.Missings.ContainsAsync(missing);
 
+        public async Task<bool> IsExisted(int id) => await _context.Missings.FindAsync(id) is not null;
+
+
         public async Task Update(Missing entity)
         {
             _context.Missings.Update(entity);

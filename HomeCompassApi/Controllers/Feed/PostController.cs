@@ -66,7 +66,7 @@ namespace HomeCompassApi.Controllers.Feed
             if (id is null || id == string.Empty)
                 return BadRequest();
 
-            if (!await _userRepository.IsExisted(new ApplicationUser { Id = id }))
+            if (!await _userRepository.IsExisted(id))
                 return NotFound($"There is no user with the specified id: {id}");
 
             return Ok((await _postRepository.GetAll()).Where(p => p.UserId == id).ToList());
@@ -108,27 +108,27 @@ namespace HomeCompassApi.Controllers.Feed
             if (id <= 0)
                 return BadRequest();
 
-            if (!await _postRepository.IsExisted(new Post { Id = id }))
+            if (!await _postRepository.IsExisted(id ))
                 return NotFound($"There is no post with the specified Id: {id}");
 
 
-            await _postRepository.Delete(id);
+        await _postRepository.Delete(id);
             return NoContent();
-        }
-
-        [HttpPost("report")]
-        public async Task<IActionResult> ReportAsync([FromBody] Report report)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            if (await _postRepository.IsExisted(report.Post))
-                return NotFound($"There is no post with the specified Id: {report.PostId}");
-
-            report.Date = DateTime.Now;
-            await _reportRepository.Add(report);
-
-            return Created();
-        }
     }
+
+    [HttpPost("report")]
+    public async Task<IActionResult> ReportAsync([FromBody] Report report)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        if (await _postRepository.IsExisted(report.Post))
+            return NotFound($"There is no post with the specified Id: {report.PostId}");
+
+        report.Date = DateTime.Now;
+        await _reportRepository.Add(report);
+
+        return Created();
+    }
+}
 }

@@ -29,6 +29,10 @@ namespace HomeCompassApi.BLL.Facilities
 
         public async Task<bool> IsExisted(Category category) => await _context.Categories.ContainsAsync(category);
 
+        public async Task<bool> IsExisted(int id) => await _context.Categories.FindAsync(id) is not null;
+
+
+        public async Task<bool> NameExists(string name) => await _context.Categories.FirstOrDefaultAsync(r => r.Name.Equals(name)) is not null;
 
         public async Task Update(Category entity)
         {

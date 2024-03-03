@@ -42,6 +42,7 @@ namespace HomeCompassApi.BLL.Cases
 
         public async Task<bool> IsExisted(Homeless homeless) => await _context.Homeless.ContainsAsync(homeless);
 
+        public async Task<bool> IsExisted(int id) => await _context.Homeless.FindAsync(id) is not null;
 
         public async Task Update(Homeless entity)
         {

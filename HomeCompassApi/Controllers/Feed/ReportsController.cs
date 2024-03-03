@@ -90,7 +90,7 @@ namespace HomeCompassApi.Controllers.Feed
             if (id <= 0)
                 return BadRequest("Id must be greater than Zero.");
 
-            if (!await _reportRepository.IsExisted(new Report { Id = id }))
+            if (!await _reportRepository.IsExisted(id ))
                 return NotFound($"There is no report with the specified id: {id}");
 
             await _reportRepository.Delete(id);

@@ -32,6 +32,9 @@ namespace HomeCompassApi.Repositories.User
 
         public async Task<bool> IsExisted(ApplicationUser user) => await _context.Users.ContainsAsync(user);
 
+        public async Task<bool> IsExisted(string id) => await _context.Users.FindAsync(id) is not null;
+
+
 
 
     }

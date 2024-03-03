@@ -14,8 +14,8 @@ namespace HomeCompassApi.Controllers.Facilities
     [Route("[controller]")]
     public class ResourceController : ControllerBase
     {
-        private readonly IRepository<Resource> _resourceRepository;
-        public ResourceController(IRepository<Resource> resourceRepository)
+        private readonly ResourceRepository _resourceRepository;
+        public ResourceController(ResourceRepository resourceRepository)
         {
             _resourceRepository = resourceRepository;
 
@@ -27,6 +27,9 @@ namespace HomeCompassApi.Controllers.Facilities
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            if (!await _resourceRepository.NameExists(resource.Name))
+                return BadRequest($"A resource with the specified name exists.");
 
             await _resourceRepository.Add(resource);
             return CreatedAtAction(nameof(Get), new { Id = resource.Id }, resource);
@@ -75,6 +78,9 @@ namespace HomeCompassApi.Controllers.Facilities
             if (!await _resourceRepository.IsExisted(resource))
                 return NotFound($"There is no resource with the specified Id: {resource.Id}");
 
+            if (!await _resourceRepository.NameExists(resource.Name))
+                return BadRequest($"A resource with the specified name exists.");
+
             await _resourceRepository.Update(resource);
 
             return NoContent();
@@ -86,7 +92,7 @@ namespace HomeCompassApi.Controllers.Facilities
             if (id <= 0)
                 return BadRequest();
 
-            if (!await _resourceRepository.IsExisted(new Resource { Id = id }))
+            if (!await _resourceRepository.IsExisted(id))
                 return NotFound($"There is no resource with the specified Id: {id}");
 
             await _resourceRepository.Delete(id);

@@ -5,6 +5,7 @@ using HomeCompassApi.Repositories.Feed;
 using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
 using HomeCompassApi.Services.Feed;
+using HomeCompassApi.Services.Feed.Comment;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeCompassApi.Controllers.Feed
@@ -30,6 +31,12 @@ namespace HomeCompassApi.Controllers.Feed
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            if (!await _userRepository.IsExisted(comment.UserId))
+                return NotFound($"There is no user with the specified id: {comment.UserId}");
+
+            if (!await _postRepository.IsExisted(comment.PostId))
+                return NotFound($"There is no post with the specified Id: {comment.PostId}");
+
             await _commentRepository.Add(comment);
             return CreatedAtAction(nameof(Get), new { Id = comment.Id }, comment);
         }
@@ -43,7 +50,7 @@ namespace HomeCompassApi.Controllers.Feed
             if (id <= 0)
                 return BadRequest("Invalid post id");
 
-            if (!await _postRepository.IsExisted(new Post { Id = id }))
+            if (!await _postRepository.IsExisted(id))
                 return NotFound($"There is no post with the specified Id: {id}");
 
             return Ok((await _commentRepository.GetAll()).Where(c => c.PostId == id).ToList());
@@ -70,7 +77,7 @@ namespace HomeCompassApi.Controllers.Feed
             if (id is null || id == string.Empty)
                 return BadRequest();
 
-            if (!await _userRepository.IsExisted(new ApplicationUser { Id = id }))
+            if (!await _userRepository.IsExisted( id ))
                 return NotFound($"There is no user with the specified id: {id}");
 
             return Ok((await _commentRepository.GetAll()).Where(c => c.UserId == id).ToList());
@@ -97,7 +104,7 @@ namespace HomeCompassApi.Controllers.Feed
             if (id <= 0)
                 return BadRequest();
 
-            if (!await _commentRepository.IsExisted(new Comment { Id = id }))
+            if (!await _commentRepository.IsExisted(id ))
                 return NotFound($"There is no comment with the specified Id: {id}");
 
             await _commentRepository.Delete(id);
@@ -105,16 +112,21 @@ namespace HomeCompassApi.Controllers.Feed
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync(int id, Comment comment)
+        public async Task<IActionResult> UpdateAsync(int id, UpdateCommentDTO comment)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            comment.Id = id;
-            if (!await _commentRepository.IsExisted(comment))
-                return NotFound($"There is no comment with the specified Id: {comment.Id}");
+            var entity = new Comment
+            {
+                Id = id,
+                Content = comment.Content
+            };
 
-            await _commentRepository.Update(comment);
+            if (!await _commentRepository.IsExisted(entity))
+                return NotFound($"There is no comment with the specified Id: {id}");
+
+            await _commentRepository.Update(entity);
             return NoContent();
 
         }

@@ -29,6 +29,11 @@ namespace HomeCompassApi.BLL.Facilities
 
         public async Task<bool> IsExisted(Resource resource) => await _context.Resources.ContainsAsync(resource);
 
+        public async Task<bool> IsExisted(int id) => await _context.Resources.FindAsync(id) is not null;
+
+
+        public async Task<bool> NameExists(string name) => await _context.Resources.FirstOrDefaultAsync(r => r.Name.Equals(name)) is not null;
+
         public async Task Update(Resource entity)
         {
             _context.Resources.Update(entity);
