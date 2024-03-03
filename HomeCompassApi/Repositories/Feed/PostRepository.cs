@@ -40,6 +40,22 @@ namespace HomeCompassApi.BLL
 
         public async Task<Post> GetById(int id) => await _context.Posts.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
 
+        public async Task<List<ReadPostDTO>> GetByIdDTO(int id)
+        {
+            return await _context.Posts.Where(p => p.Id == id).Select(p => new ReadPostDTO
+            {
+                Id = p.Id,
+                Content = p.Content,
+                Title = p.Title,
+                LikesCount = p.Likes.Count,
+                CommentsCount = p.Comments.Count,
+                Archived = p.Archived,
+                PublisedOn = p.PublisedOn,
+                UserId = p.UserId
+            }
+            ).ToListAsync();
+        }
+
         public async Task Update(Post entity)
         {
             _context.Posts.Update(entity);

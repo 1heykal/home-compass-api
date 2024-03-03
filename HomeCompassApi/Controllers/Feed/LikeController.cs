@@ -40,7 +40,7 @@ namespace HomeCompassApi.Controllers.Feed
                 return NotFound($"There is no User with the specified Id: {like.UserId}");
 
             if (await _likeRepository.IsExisted(like))
-                return NoContent();
+                return BadRequest("Like with the specified key already exists");
 
 
             await _likeRepository.Add(like);

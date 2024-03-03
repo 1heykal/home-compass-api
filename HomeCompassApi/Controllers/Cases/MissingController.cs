@@ -3,6 +3,7 @@ using HomeCompassApi.Models;
 using HomeCompassApi.Models.Cases;
 using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
+using HomeCompassApi.Services.Cases;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,7 +38,7 @@ namespace HomeCompassApi.Controllers.Cases
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Missing>>> GetAllAsync()
+        public async Task<ActionResult<List<MissingDTO>>> GetAllAsync()
         {
             return Ok(await _missingRepository.GetAllReduced());
         }

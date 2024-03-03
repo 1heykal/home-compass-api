@@ -5,6 +5,7 @@ using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Services;
 using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Repositories;
+using HomeCompassApi.Services.Feed;
 
 namespace HomeCompassApi.Controllers.Info
 {
@@ -20,9 +21,9 @@ namespace HomeCompassApi.Controllers.Info
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Models.Info>>> GetAsync()
+        public async Task<ActionResult<List<InfoDTO>>> GetAsync()
         {
-            return Ok((await _infoRepository.GetAll()).ToList());
+            return Ok((await _infoRepository.GetAllDTO()));
         }
 
         [HttpGet("{id}")]

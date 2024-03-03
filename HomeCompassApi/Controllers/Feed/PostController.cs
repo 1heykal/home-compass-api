@@ -55,7 +55,7 @@ namespace HomeCompassApi.Controllers.Feed
             if (id <= 0)
                 return BadRequest();
 
-            var post = await _postRepository.GetById(id);
+            var post = await _postRepository.GetByIdDTO(id);
 
             if (post is null)
                 return NotFound($"There is no post with the specified Id: {id}");

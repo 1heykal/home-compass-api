@@ -1,5 +1,6 @@
 ﻿using HomeCompassApi.BLL;
 using HomeCompassApi.Models;
+using HomeCompassApi.Services.Feed;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeCompassApi.Repositories
@@ -28,6 +29,15 @@ namespace HomeCompassApi.Repositories
         public async Task<List<Info>> GetAll()
         {
             return await _context.Info.ToListAsync();
+        }
+        public async Task<List<InfoDTO>> GetAllDTO()
+        {
+            return await _context.Info.Select(i => new InfoDTO
+            {
+                Id = i.Id,
+                Category = i.Category,
+                Content = i.Content
+            }).ToListAsync();
         }
 
         public async Task<Info> GetById(int id)

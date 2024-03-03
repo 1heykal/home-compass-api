@@ -5,6 +5,7 @@ using HomeCompassApi.Models.Cases;
 using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
+using HomeCompassApi.Services.Cases.Homeless;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -25,7 +26,7 @@ namespace HomeCompassApi.Controllers.Cases
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Homeless>>> GetAsync()
+        public async Task<ActionResult<List<HomelessDTO>>> GetAsync()
         {
             return Ok(await _homelessRepository.GetAllReduced());
         }
