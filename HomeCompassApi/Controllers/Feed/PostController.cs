@@ -1,5 +1,4 @@
 ﻿using HomeCompassApi.BLL;
-using HomeCompassApi.Models;
 using HomeCompassApi.Models.Cases;
 using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Repositories.Feed;
@@ -34,6 +33,10 @@ namespace HomeCompassApi.Controllers.Feed
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+
+            if (!await _userRepository.IsExisted(post.UserId))
+                return NotFound($"There is no user with the specified id: {post.UserId}");
 
             await _postRepository.Add(post);
             return CreatedAtAction(nameof(Get), new { id = post.Id }, post);
@@ -108,27 +111,27 @@ namespace HomeCompassApi.Controllers.Feed
             if (id <= 0)
                 return BadRequest();
 
-            if (!await _postRepository.IsExisted(id ))
+            if (!await _postRepository.IsExisted(id))
                 return NotFound($"There is no post with the specified Id: {id}");
 
 
-        await _postRepository.Delete(id);
+            await _postRepository.Delete(id);
             return NoContent();
+        }
+
+        [HttpPost("report")]
+        public async Task<IActionResult> ReportAsync([FromBody] Report report)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (await _postRepository.IsExisted(report.Post))
+                return NotFound($"There is no post with the specified Id: {report.PostId}");
+
+            report.Date = DateTime.Now;
+            await _reportRepository.Add(report);
+
+            return Created();
+        }
     }
-
-    [HttpPost("report")]
-    public async Task<IActionResult> ReportAsync([FromBody] Report report)
-    {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        if (await _postRepository.IsExisted(report.Post))
-            return NotFound($"There is no post with the specified Id: {report.PostId}");
-
-        report.Date = DateTime.Now;
-        await _reportRepository.Add(report);
-
-        return Created();
-    }
-}
 }

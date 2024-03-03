@@ -26,13 +26,13 @@ namespace HomeCompassApi.BLL.Facilities
 
         public async Task<List<Facility>> GetAll() => await _context.Facilities.AsNoTracking().ToListAsync();
 
-        public async Task<List<FacilityDTO>> GetAllReduced()
+        public async Task<List<Facility>> GetAllReduced()
         {
-            return await _context.Facilities.Select(f => new FacilityDTO
+            return await _context.Facilities.Select(f => new Facility
             {
                 Id = f.Id,
                 Name = f.Name,
-                ContactInformation = f.ContactInformaton,
+                ContactInformaton = f.ContactInformaton,
                 Description = f.Description,
                 Location = f.Location,
                 Resources = f.Resources,

@@ -1,9 +1,8 @@
-﻿using HomeCompassApi.Models.Feed;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace HomeCompassApi.Models
+namespace HomeCompassApi.Models.Feed
 {
     public class Report
     {

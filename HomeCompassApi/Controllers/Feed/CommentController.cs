@@ -77,7 +77,7 @@ namespace HomeCompassApi.Controllers.Feed
             if (id is null || id == string.Empty)
                 return BadRequest();
 
-            if (!await _userRepository.IsExisted( id ))
+            if (!await _userRepository.IsExisted(id))
                 return NotFound($"There is no user with the specified id: {id}");
 
             return Ok((await _commentRepository.GetAll()).Where(c => c.UserId == id).ToList());
@@ -104,7 +104,7 @@ namespace HomeCompassApi.Controllers.Feed
             if (id <= 0)
                 return BadRequest();
 
-            if (!await _commentRepository.IsExisted(id ))
+            if (!await _commentRepository.IsExisted(id))
                 return NotFound($"There is no comment with the specified Id: {id}");
 
             await _commentRepository.Delete(id);
@@ -117,14 +117,16 @@ namespace HomeCompassApi.Controllers.Feed
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+
+            if (!await _commentRepository.IsExisted(id))
+                return NotFound($"There is no comment with the specified Id: {id}");
+
             var entity = new Comment
             {
                 Id = id,
                 Content = comment.Content
             };
 
-            if (!await _commentRepository.IsExisted(entity))
-                return NotFound($"There is no comment with the specified Id: {id}");
 
             await _commentRepository.Update(entity);
             return NoContent();

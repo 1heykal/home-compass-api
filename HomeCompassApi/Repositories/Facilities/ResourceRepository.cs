@@ -1,5 +1,6 @@
 ﻿using HomeCompassApi.Models;
 using HomeCompassApi.Models.Facilities;
+using HomeCompassApi.Services.Facilities;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeCompassApi.BLL.Facilities
@@ -25,6 +26,14 @@ namespace HomeCompassApi.BLL.Facilities
 
         public async Task<List<Resource>> GetAll() => await _context.Resources.AsNoTracking().ToListAsync();
 
+        public async Task<List<ResourceDTO>> GetAllReduced() => await _context.Resources.AsNoTracking().Select(r => new ResourceDTO
+        {
+            Id = r.Id,
+            Name = r.Name,
+            IsAvailable = r.IsAvailable
+        }).ToListAsync();
+
+
         public async Task<Resource> GetById(int id) => await _context.Resources.AsNoTracking().FirstOrDefaultAsync(r => r.Id == id);
 
         public async Task<bool> IsExisted(Resource resource) => await _context.Resources.ContainsAsync(resource);
@@ -32,7 +41,10 @@ namespace HomeCompassApi.BLL.Facilities
         public async Task<bool> IsExisted(int id) => await _context.Resources.AnyAsync(e => e.Id == id);
 
 
-        public async Task<bool> NameExists(string name) => await _context.Resources.FirstOrDefaultAsync(r => r.Name.Equals(name)) is not null;
+        public async Task<bool> NameExists(int id, string name) => await _context.Resources.AnyAsync(r => r.Name.ToLower() == name.ToLower() && r.Id != id);
+
+        public async Task<bool> NameExists(string name) => await _context.Resources.AnyAsync(r => r.Name.ToLower() == name.ToLower());
+
 
         public async Task Update(Resource entity)
         {

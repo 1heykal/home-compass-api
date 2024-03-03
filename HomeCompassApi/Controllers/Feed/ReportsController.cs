@@ -1,8 +1,10 @@
 ﻿using HomeCompassApi.BLL;
-using HomeCompassApi.Models;
 using HomeCompassApi.Models.Facilities;
+using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Repositories.Feed;
+using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
+using HomeCompassApi.Services.Feed;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,10 +15,14 @@ namespace HomeCompassApi.Controllers.Feed
     public class ReportsController : ControllerBase
     {
         private readonly ReportRepository _reportRepository;
+        private readonly UserRepository _userRepository;
+        private readonly PostRepository _postRepository;
 
-        public ReportsController(ReportRepository reportRepository)
+        public ReportsController(ReportRepository reportRepository, UserRepository userRepository, PostRepository postRepository)
         {
             _reportRepository = reportRepository;
+            _userRepository = userRepository;
+            _postRepository = postRepository;
         }
 
         [HttpGet]
@@ -59,6 +65,12 @@ namespace HomeCompassApi.Controllers.Feed
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            if (!await _userRepository.IsExisted(report.ReporterId))
+                return NotFound($"There is no user with the specified id: {report.ReporterId}");
+
+            if (!await _postRepository.IsExisted(report.PostId))
+                return NotFound($"There is no post with the specified Id: {report.PostId}");
+
             report.Date = DateTime.Now;
 
             await _reportRepository.Add(report);
@@ -67,7 +79,7 @@ namespace HomeCompassApi.Controllers.Feed
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync(int id, Report report)
+        public async Task<IActionResult> UpdateAsync(int id, UpdateReportDTO report)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -75,11 +87,20 @@ namespace HomeCompassApi.Controllers.Feed
             if (id <= 0)
                 return BadRequest("Id must be greater than Zero.");
 
-            report.Id = id;
-            if (!await _reportRepository.IsExisted(report))
+
+
+            if (!await _reportRepository.IsExisted(id))
                 return NotFound($"There is no report with the specified id: {id}");
 
-            await _reportRepository.Update(report);
+            var entity = new Report
+            {
+                Id = id,
+                Type = report.Type,
+                Details = report.Details,
+                Archived = report.Archived
+            };
+
+            await _reportRepository.Update(entity);
 
             return NoContent();
         }
@@ -90,7 +111,7 @@ namespace HomeCompassApi.Controllers.Feed
             if (id <= 0)
                 return BadRequest("Id must be greater than Zero.");
 
-            if (!await _reportRepository.IsExisted(id ))
+            if (!await _reportRepository.IsExisted(id))
                 return NotFound($"There is no report with the specified id: {id}");
 
             await _reportRepository.Delete(id);

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using HomeCompassApi.Services.Facilities;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -35,6 +36,25 @@ namespace HomeCompassApi.Models.Facilities
         [ForeignKey(nameof(ContributorId))]
         [JsonIgnore]
         public ApplicationUser Contributor { get; set; }
+
+        public Facility() { }
+
+        public Facility(UpdateFacilityDTO facilityDTO)
+        {
+            Name = facilityDTO.Name;
+            Location = facilityDTO.Location;
+            Description = facilityDTO.Description;
+            CategoryId = facilityDTO.CategoryId;
+            Days = facilityDTO.Days;
+            Resources = facilityDTO.Resources;
+            Hours = facilityDTO.Hours;
+            Target = facilityDTO.Target;
+            Description = facilityDTO.Description;
+
+
+
+        }
+
 
     }
 }

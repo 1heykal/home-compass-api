@@ -28,7 +28,7 @@ namespace HomeCompassApi.Controllers.Facilities
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!await _resourceRepository.NameExists(resource.Name))
+            if (await _resourceRepository.NameExists(resource.Name))
                 return BadRequest($"A resource with the specified name exists.");
 
             await _resourceRepository.Add(resource);
@@ -38,7 +38,7 @@ namespace HomeCompassApi.Controllers.Facilities
         [HttpGet]
         public async Task<ActionResult<List<ResourceDTO>>> GetAsync()
         {
-            return Ok(await _resourceRepository.GetAll());
+            return Ok(await _resourceRepository.GetAllReduced());
         }
 
         [HttpGet("{id}")]
@@ -69,16 +69,16 @@ namespace HomeCompassApi.Controllers.Facilities
         }
 
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateAsync(Resource resource)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAsync(int id, Resource resource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!await _resourceRepository.IsExisted(resource))
-                return NotFound($"There is no resource with the specified Id: {resource.Id}");
+            if (!await _resourceRepository.IsExisted(id))
+                return NotFound($"There is no resource with the specified Id: {id}");
 
-            if (!await _resourceRepository.NameExists(resource.Name))
+            if (await _resourceRepository.NameExists(id, resource.Name))
                 return BadRequest($"A resource with the specified name exists.");
 
             await _resourceRepository.Update(resource);

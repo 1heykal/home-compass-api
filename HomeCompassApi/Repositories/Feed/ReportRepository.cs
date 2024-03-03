@@ -1,5 +1,6 @@
 ﻿using HomeCompassApi.BLL;
 using HomeCompassApi.Models;
+using HomeCompassApi.Models.Feed;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeCompassApi.Repositories.Feed

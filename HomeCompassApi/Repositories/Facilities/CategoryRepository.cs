@@ -32,7 +32,9 @@ namespace HomeCompassApi.BLL.Facilities
         public async Task<bool> IsExisted(int id) => await _context.Categories.AnyAsync(e => e.Id == id);
 
 
-        public async Task<bool> NameExists(string name) => await _context.Categories.FirstOrDefaultAsync(r => r.Name.Equals(name)) is not null;
+        public async Task<bool> NameExists(int id, string name) => await _context.Categories.AnyAsync(c => c.Name.ToLower() == name.ToLower() && c.Id != id);
+        public async Task<bool> NameExists(string name) => await _context.Categories.AnyAsync(c => c.Name.ToLower() == name.ToLower());
+
 
         public async Task Update(Category entity)
         {

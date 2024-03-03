@@ -27,7 +27,7 @@ namespace HomeCompassApi.Controllers.Facilities
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!await _categoryRepository.NameExists(category.Name))
+            if (await _categoryRepository.NameExists(category.Name))
                 return BadRequest($"A resource with the specified name exists.");
 
             await _categoryRepository.Add(category);
@@ -67,6 +67,9 @@ namespace HomeCompassApi.Controllers.Facilities
             category.Id = id;
             if (!await _categoryRepository.IsExisted(category))
                 return NotFound($"There is no category with the specified Id: {id}");
+
+            if (await _categoryRepository.NameExists(id, category.Name))
+                return BadRequest($"A resource with the specified name exists.");
 
             await _categoryRepository.Update(category);
 

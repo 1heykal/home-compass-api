@@ -5,6 +5,7 @@ using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
+using HomeCompassApi.Services.Facilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
 
@@ -97,19 +98,21 @@ namespace HomeCompassApi.Controllers.Facilities
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync(int id, Facility facility)
+        public async Task<IActionResult> UpdateAsync(int id, UpdateFacilityDTO facility)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            facility.Id = id;
-            if (!await _facilityRepository.IsExisted(facility))
+            if (!await _facilityRepository.IsExisted(id))
                 return NotFound($"There is no facility with the specified Id: {id}");
 
             if (!await _categoryRepository.IsExisted(facility.CategoryId))
                 return NotFound($"There is no category with the specified Id: {id}");
 
-            await _facilityRepository.Update(facility);
+            var entity = new Facility(facility);
+            entity.Id = id;
+
+            await _facilityRepository.Update(entity);
             return NoContent();
         }
 
