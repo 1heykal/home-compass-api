@@ -58,7 +58,7 @@ namespace HomeCompassApi.Controllers.Feed
         public async Task<ActionResult<Comment>> GetAsync(int id)
         {
             if (id <= 0)
-                return BadRequest();
+                return BadRequest("Id must be greater than zero.");
 
             var comment = await _commentRepository.GetById(id);
 
@@ -82,12 +82,9 @@ namespace HomeCompassApi.Controllers.Feed
         }
 
         [HttpPost("post/{postId}/page")]
-        public async Task<ActionResult<List<Comment>>> GetByPageAsync(int postId, [FromBody] PageDTO page)
+        public async Task<ActionResult<List<CommentDTO>>> GetByPageAsync(int postId, [FromBody] PageDTO page)
         {
-            if (page.Index < 0 || page.Size <= 0)
-                return BadRequest();
-
-            return Ok((await _commentRepository.GetAll()).Where(c => c.PostId == postId).Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
+            return Ok(await _commentRepository.GetByPageAsync(postId, page));
         }
 
 

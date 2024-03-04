@@ -1,10 +1,11 @@
+E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\HomeCompassApi.dll
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\appsettings.Development.json
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\appsettings.json
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\HomeCompassApi.exe
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\HomeCompassApi.deps.json
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\HomeCompassApi.runtimeconfig.json
-E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\HomeCompassApi.dll
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\HomeCompassApi.pdb
+E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\AutoMapper.dll
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\Azure.Core.dll
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\Azure.Identity.dll
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\Humanizer.dll
@@ -254,4 +255,3 @@ E:\Development\c#\HomeCompassApi\HomeCompassApi\obj\Debug\net8.0\refint\HomeComp
 E:\Development\c#\HomeCompassApi\HomeCompassApi\obj\Debug\net8.0\HomeCompassApi.pdb
 E:\Development\c#\HomeCompassApi\HomeCompassApi\obj\Debug\net8.0\HomeCompassApi.genruntimeconfig.cache
 E:\Development\c#\HomeCompassApi\HomeCompassApi\obj\Debug\net8.0\ref\HomeCompassApi.dll
-E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\AutoMapper.dll

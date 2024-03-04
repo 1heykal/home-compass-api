@@ -28,8 +28,8 @@ namespace HomeCompassApi.Controllers.Feed
         public async Task<ActionResult> CreateAsync(Like like)
         {
 
-            if (like.PostId <= 0 || like.UserId == string.Empty)
-                return BadRequest();
+            if (like.UserId == string.Empty)
+                return BadRequest("UserId cannot be Empty.");
 
             if (!await _postRepository.IsExisted(like.PostId))
                 return NotFound($"There is no Post with the specified Id: {like.PostId}");
@@ -46,22 +46,19 @@ namespace HomeCompassApi.Controllers.Feed
         }
 
         [HttpGet("post/{postId}")]
-        public async Task<ActionResult<List<Like>>> GetByPostIdAsync(int postId) => Ok((await _likeRepository.GetByPostId(postId)).ToList());
+        public async Task<ActionResult<List<Like>>> GetByPostIdAsync(int postId) => Ok((await _likeRepository.GetByPostId(postId)));
 
         [HttpPost("post/{postId}/page")]
         public async Task<ActionResult<List<Like>>> GetByPageAsync(int postId, [FromBody] PageDTO page)
         {
-            if (page.Index < 0 || page.Size <= 0)
-                return BadRequest();
-
-            return Ok((await _likeRepository.GetByPostId(postId)).Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
+            return Ok(await _likeRepository.GetByPageAsync(postId, page));
         }
 
         [HttpDelete]
         public async Task<IActionResult> DeleteAsync(Like like)
         {
-            if (like.PostId <= 0 || like.UserId == string.Empty)
-                return BadRequest();
+            if (like.UserId == string.Empty)
+                return BadRequest("UserId cannot be Empty.");
 
             if (!await _likeRepository.IsExisted(like))
                 return NotFound("There is no such a record with the specified Ids");

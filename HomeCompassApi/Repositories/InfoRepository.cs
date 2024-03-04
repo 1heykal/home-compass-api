@@ -1,6 +1,8 @@
 ﻿using HomeCompassApi.BLL;
 using HomeCompassApi.Models;
+using HomeCompassApi.Services;
 using HomeCompassApi.Services.Feed;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeCompassApi.Repositories
@@ -28,11 +30,11 @@ namespace HomeCompassApi.Repositories
 
         public async Task<List<Info>> GetAll()
         {
-            return await _context.Info.ToListAsync();
+            return await _context.Info.AsQueryable().ToListAsync();
         }
         public async Task<List<InfoDTO>> GetAllDTO()
         {
-            return await _context.Info.Select(i => new InfoDTO
+            return await _context.Info.AsQueryable().Select(i => new InfoDTO
             {
                 Id = i.Id,
                 Category = i.Category,
@@ -40,17 +42,22 @@ namespace HomeCompassApi.Repositories
             }).ToListAsync();
         }
 
+        public async Task<List<Models.Info>> GetByPageAsync(PageDTO page)
+        {
+            return await _context.Info.AsQueryable().Skip((page.Index - 1) * page.Size).Take(page.Size).ToListAsync();
+        }
+
         public async Task<Info> GetById(int id)
         {
-            return await _context.Info.FirstOrDefaultAsync(i => i.Id == id);
+            return await _context.Info.AsQueryable().FirstOrDefaultAsync(i => i.Id == id);
         }
 
         public async Task<bool> IsExisted(Info entity)
         {
-            return await _context.Info.ContainsAsync(entity);
+            return await _context.Info.AsQueryable().ContainsAsync(entity);
         }
 
-        public async Task<bool> IsExisted(int id) => await _context.Info.AnyAsync(e => e.Id == id);
+        public async Task<bool> IsExisted(int id) => await _context.Info.AsQueryable().AnyAsync(e => e.Id == id);
 
 
         public async Task Update(Info entity)

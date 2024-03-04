@@ -57,10 +57,7 @@ namespace HomeCompassApi.Controllers.Cases
         [HttpPost("page")]
         public async Task<ActionResult<List<Missing>>> GetByPageAsync([FromBody] PageDTO page)
         {
-            if (page.Index < 0 || page.Size <= 0)
-                return BadRequest();
-
-            return Ok((await _missingRepository.GetAllReduced()).Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
+            return Ok(await _missingRepository.GetByPageAsync(page));
         }
 
         [HttpGet("reporter/{id}")]

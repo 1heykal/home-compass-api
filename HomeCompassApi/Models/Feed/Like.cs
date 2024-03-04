@@ -8,12 +8,15 @@ namespace HomeCompassApi.Models.Feed
     [PrimaryKey(nameof(UserId), nameof(PostId))]
     public class Like
     {
+        [Required]
         public string UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
         [JsonIgnore]
         public ApplicationUser User { get; set; }
 
+        [Required]
+        [Range(1, int.MaxValue)]
         public int PostId { get; set; }
 
         [ForeignKey(nameof(PostId))]

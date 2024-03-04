@@ -48,11 +48,7 @@ namespace HomeCompassApi.Controllers.Feed
         [HttpPost("page")]
         public async Task<ActionResult<List<Report>>> GetByPageAsync([FromBody] PageDTO page)
         {
-
-            if (page.Index < 0 || page.Size <= 0)
-                return BadRequest();
-
-            return Ok((await _reportRepository.GetAll()).Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
+            return Ok(await _reportRepository.GetByPageAsync(page));
         }
 
 
@@ -78,8 +74,6 @@ namespace HomeCompassApi.Controllers.Feed
 
             if (id <= 0)
                 return BadRequest("Id must be greater than Zero.");
-
-
 
             if (!await _reportRepository.IsExisted(id))
                 return NotFound($"There is no report with the specified id: {id}");

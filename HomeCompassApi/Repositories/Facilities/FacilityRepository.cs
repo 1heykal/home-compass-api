@@ -1,7 +1,10 @@
 ﻿using HomeCompassApi.Models;
 using HomeCompassApi.Models.Facilities;
+using HomeCompassApi.Services.Cases.Homeless;
+using HomeCompassApi.Services;
 using HomeCompassApi.Services.Facilities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HomeCompassApi.BLL.Facilities
 {
@@ -24,30 +27,39 @@ namespace HomeCompassApi.BLL.Facilities
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Facility>> GetAll() => await _context.Facilities.AsNoTracking().ToListAsync();
+        public async Task<List<Facility>> GetAll() => await _context.Facilities.AsQueryable().AsNoTracking().ToListAsync();
 
         public async Task<List<Facility>> GetAllReduced()
         {
-            return await _context.Facilities.Select(f => new Facility
-            {
-                Id = f.Id,
-                Name = f.Name,
-                ContactInformaton = f.ContactInformaton,
-                Description = f.Description,
-                Location = f.Location,
-                Resources = f.Resources,
-                Target = f.Target
-
-            }).ToListAsync();
+            return await _context.Facilities.AsQueryable().Select(f => FacilityToFacilityReduced(f)).ToListAsync();
         }
 
-        public async Task<Facility> GetById(int id) => await _context.Facilities.AsNoTracking().FirstOrDefaultAsync(f => f.Id == id);
+        private static Facility FacilityToFacilityReduced(Facility facility)
+        {
+            return new Facility()
+            {
+                Id = facility.Id,
+                Name = facility.Name,
+                ContactInformaton = facility.ContactInformaton,
+                Description = facility.Description,
+                Location = facility.Location,
+                Resources = facility.Resources,
+                Target = facility.Target
+            };
+        }
 
-        public async Task<bool> IsExisted(Facility facility) => await _context.Facilities.ContainsAsync(facility);
+        public async Task<List<Facility>> GetByCategoryAsync(int categoryId)
+        {
+            return await _context.Facilities.AsQueryable().Where(f => f.CategoryId == categoryId).ToListAsync();
+        }
 
-        public async Task<bool> IsExisted(int id) => await _context.Facilities.AnyAsync(e => e.Id == id);
+        public async Task<List<Facility>> GetByPageAsync(PageDTO page) => await _context.Facilities.AsQueryable().Select(f => FacilityToFacilityReduced(f)).Skip((page.Index - 1) * page.Size).Take(page.Size).ToListAsync();
 
+        public async Task<Facility> GetById(int id) => await _context.Facilities.AsQueryable().AsNoTracking().FirstOrDefaultAsync(f => f.Id == id);
 
+        public async Task<bool> IsExisted(Facility facility) => await _context.Facilities.AsQueryable().ContainsAsync(facility);
+
+        public async Task<bool> IsExisted(int id) => await _context.Facilities.AsQueryable().AnyAsync(e => e.Id == id);
 
         public async Task Update(Facility entity)
         {

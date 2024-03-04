@@ -49,17 +49,14 @@ namespace HomeCompassApi.Controllers.Cases
         [HttpPost("page")]
         public async Task<ActionResult<List<Homeless>>> GetByPageAsync([FromBody] PageDTO page)
         {
-            if (page.Index < 0 || page.Size <= 0)
-                return BadRequest();
-
-            return Ok((await _homelessRepository.GetAllReduced()).Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
+            return Ok(await _homelessRepository.GetByPageAsync(page));
         }
 
         [HttpGet("reporter/{id}")]
         public async Task<ActionResult<List<Homeless>>> GetByReporterId(string id)
         {
             if (id is null || id == string.Empty)
-                return BadRequest();
+                return BadRequest("ReportedId cannot be Empty.");
 
             if (!await _userRepository.IsExisted(id))
                 return NotFound($"There is no reporter with the specified id: {id}");

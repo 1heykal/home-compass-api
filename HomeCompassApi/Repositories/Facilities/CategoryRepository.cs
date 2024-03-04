@@ -23,18 +23,16 @@ namespace HomeCompassApi.BLL.Facilities
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Category>> GetAll() => await _context.Categories.AsNoTracking().ToListAsync();
+        public async Task<List<Category>> GetAll() => await _context.Categories.AsQueryable().AsNoTracking().ToListAsync();
 
-        public async Task<Category> GetById(int id) => await _context.Categories.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
+        public async Task<Category> GetById(int id) => await _context.Categories.AsQueryable().AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
 
-        public async Task<bool> IsExisted(Category category) => await _context.Categories.ContainsAsync(category);
+        public async Task<bool> IsExisted(Category category) => await _context.Categories.AsQueryable().ContainsAsync(category);
 
-        public async Task<bool> IsExisted(int id) => await _context.Categories.AnyAsync(e => e.Id == id);
+        public async Task<bool> IsExisted(int id) => await _context.Categories.AsQueryable().AnyAsync(e => e.Id == id);
 
-
-        public async Task<bool> NameExists(int id, string name) => await _context.Categories.AnyAsync(c => c.Name.ToLower() == name.ToLower() && c.Id != id);
-        public async Task<bool> NameExists(string name) => await _context.Categories.AnyAsync(c => c.Name.ToLower() == name.ToLower());
-
+        public async Task<bool> NameExists(int id, string name) => await _context.Categories.AsQueryable().AnyAsync(c => c.Name.ToLower() == name.ToLower() && c.Id != id);
+        public async Task<bool> NameExists(string name) => await _context.Categories.AsQueryable().AnyAsync(c => c.Name.ToLower() == name.ToLower());
 
         public async Task Update(Category entity)
         {

@@ -77,16 +77,13 @@ namespace HomeCompassApi.Controllers.Facilities
         [HttpGet("bycategory/{categoryId}")]
         public async Task<ActionResult<List<Facility>>> GetByCategoryAsync(int categoryId)
         {
-            return Ok((await _facilityRepository.GetAll()).Where(f => f.CategoryId == categoryId).ToList());
+            return Ok(await _facilityRepository.GetByCategoryAsync(categoryId));
         }
 
         [HttpPost("page")]
         public async Task<ActionResult<List<Facility>>> GetByPageAsync([FromBody] PageDTO page)
         {
-            if (page.Index < 0 || page.Size <= 0)
-                return BadRequest();
-
-            return Ok((await _facilityRepository.GetAllReduced()).Skip((page.Index - 1) * page.Size).Take(page.Size).ToList());
+            return Ok(await _facilityRepository.GetByPageAsync(page));
         }
 
 
