@@ -24,9 +24,6 @@ namespace HomeCompassApi.Controllers.Facilities
         [HttpPost]
         public async Task<IActionResult> CreateAsync(Category category)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             if (await _categoryRepository.NameExists(category.Name))
                 return BadRequest($"A resource with the specified name exists.");
 
@@ -61,9 +58,6 @@ namespace HomeCompassApi.Controllers.Facilities
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAsync(int id, Category category)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             category.Id = id;
             if (!await _categoryRepository.IsExisted(category))
                 return NotFound($"There is no category with the specified Id: {id}");

@@ -28,9 +28,6 @@ namespace HomeCompassApi.Controllers.Feed
         [HttpPost]
         public async Task<ActionResult> CreateAsync(Comment comment)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             if (!await _userRepository.IsExisted(comment.UserId))
                 return NotFound($"There is no user with the specified id: {comment.UserId}");
 
@@ -87,10 +84,6 @@ namespace HomeCompassApi.Controllers.Feed
         [HttpPost("post/{postId}/page")]
         public async Task<ActionResult<List<Comment>>> GetByPageAsync(int postId, [FromBody] PageDTO page)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-
             if (page.Index < 0 || page.Size <= 0)
                 return BadRequest();
 
@@ -114,10 +107,6 @@ namespace HomeCompassApi.Controllers.Feed
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAsync(int id, UpdateCommentDTO comment)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-
             if (!await _commentRepository.IsExisted(id))
                 return NotFound($"There is no comment with the specified Id: {id}");
 

@@ -25,9 +25,6 @@ namespace HomeCompassApi.Controllers.Facilities
         [HttpPost]
         public async Task<IActionResult> CreateAsync(Resource resource)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             if (await _resourceRepository.NameExists(resource.Name))
                 return BadRequest($"A resource with the specified name exists.");
 
@@ -58,10 +55,6 @@ namespace HomeCompassApi.Controllers.Facilities
         [HttpPost("page")]
         public async Task<ActionResult<List<ResourceDTO>>> GetByPageAsync([FromBody] PageDTO page)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-
             if (page.Index < 0 || page.Size <= 0)
                 return BadRequest();
 
@@ -72,9 +65,6 @@ namespace HomeCompassApi.Controllers.Facilities
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAsync(int id, Resource resource)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             if (!await _resourceRepository.IsExisted(id))
                 return NotFound($"There is no resource with the specified Id: {id}");
 

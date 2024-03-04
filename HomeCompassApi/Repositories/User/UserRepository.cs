@@ -1,6 +1,7 @@
 ﻿using HomeCompassApi.BLL;
 using HomeCompassApi.Models;
 using HomeCompassApi.Models.Feed;
+using HomeCompassApi.Services.Cases;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeCompassApi.Repositories.User
@@ -33,6 +34,8 @@ namespace HomeCompassApi.Repositories.User
         public async Task<bool> IsExisted(ApplicationUser user) => await _context.Users.ContainsAsync(user);
 
         public async Task<bool> IsExisted(string id) => await _context.Users.AnyAsync(e => e.Id == id);
+
+       
 
 
 

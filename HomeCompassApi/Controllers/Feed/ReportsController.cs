@@ -48,9 +48,6 @@ namespace HomeCompassApi.Controllers.Feed
         [HttpPost("page")]
         public async Task<ActionResult<List<Report>>> GetByPageAsync([FromBody] PageDTO page)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
 
             if (page.Index < 0 || page.Size <= 0)
                 return BadRequest();
@@ -62,9 +59,6 @@ namespace HomeCompassApi.Controllers.Feed
         [HttpPost]
         public async Task<IActionResult> CreateAsync(Report report)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             if (!await _userRepository.IsExisted(report.ReporterId))
                 return NotFound($"There is no user with the specified id: {report.ReporterId}");
 
@@ -81,8 +75,6 @@ namespace HomeCompassApi.Controllers.Feed
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAsync(int id, UpdateReportDTO report)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
 
             if (id <= 0)
                 return BadRequest("Id must be greater than Zero.");

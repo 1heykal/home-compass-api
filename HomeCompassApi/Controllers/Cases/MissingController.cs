@@ -26,9 +26,6 @@ namespace HomeCompassApi.Controllers.Cases
         [HttpPost]
         public async Task<IActionResult> CreateAsync(Missing missing)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             if (!await _userRepository.IsExisted(missing.ReporterId))
                 return NotFound($"There is no reporter with the specified id: {missing.ReporterId}");
 
@@ -60,10 +57,6 @@ namespace HomeCompassApi.Controllers.Cases
         [HttpPost("page")]
         public async Task<ActionResult<List<Missing>>> GetByPageAsync([FromBody] PageDTO page)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-
             if (page.Index < 0 || page.Size <= 0)
                 return BadRequest();
 
@@ -86,9 +79,6 @@ namespace HomeCompassApi.Controllers.Cases
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAsync(int id, Missing missing)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             missing.Id = id;
             if (!await _missingRepository.IsExisted(missing))
                 return NotFound($"There is no record with the specified Id: {id}");

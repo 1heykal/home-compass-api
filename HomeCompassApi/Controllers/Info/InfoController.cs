@@ -57,10 +57,6 @@ namespace HomeCompassApi.Controllers.Info
         [HttpPost("page")]
         public async Task<ActionResult<List<Models.Info>>> GetByPageAsync([FromBody] PageDTO page)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-
             if (page.Index < 0 || page.Size <= 0)
                 return BadRequest();
 
@@ -71,9 +67,6 @@ namespace HomeCompassApi.Controllers.Info
         [HttpPost]
         public async Task<IActionResult> CreateAsync(Models.Info info)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             await _infoRepository.Add(info);
 
             return CreatedAtAction(nameof(Get), new { id = info.Id }, info);
@@ -82,9 +75,6 @@ namespace HomeCompassApi.Controllers.Info
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAsync(int id, Models.Info info)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             if (id <= 0)
                 return BadRequest("Id must be greater than Zero.");
 

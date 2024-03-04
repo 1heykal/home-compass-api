@@ -49,10 +49,6 @@ namespace HomeCompassApi.Controllers.Cases
         [HttpPost("page")]
         public async Task<ActionResult<List<Homeless>>> GetByPageAsync([FromBody] PageDTO page)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-
             if (page.Index < 0 || page.Size <= 0)
                 return BadRequest();
 
@@ -74,9 +70,6 @@ namespace HomeCompassApi.Controllers.Cases
         [HttpPost]
         public async Task<IActionResult> Create(Homeless homeless)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             if (!await _userRepository.IsExisted(homeless.ReporterId))
                 return NotFound($"There is no reporter with the specified id: {homeless.ReporterId}");
 
@@ -87,9 +80,6 @@ namespace HomeCompassApi.Controllers.Cases
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, Homeless homeless)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             homeless.Id = id;
             if (!await _homelessRepository.IsExisted(homeless))
                 return NotFound($"There is no record with the specified Id: {id}");

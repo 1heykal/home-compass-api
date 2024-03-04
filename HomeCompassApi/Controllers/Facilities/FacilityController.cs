@@ -30,9 +30,6 @@ namespace HomeCompassApi.Controllers.Facilities
         [HttpPost]
         public async Task<IActionResult> CreateAsync(Facility facility)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             if (!await _userRepository.IsExisted(facility.ContributorId))
                 return NotFound($"There is no contibutor with the specified id: {facility.ContributorId}");
 
@@ -86,10 +83,6 @@ namespace HomeCompassApi.Controllers.Facilities
         [HttpPost("page")]
         public async Task<ActionResult<List<Facility>>> GetByPageAsync([FromBody] PageDTO page)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-
             if (page.Index < 0 || page.Size <= 0)
                 return BadRequest();
 
@@ -100,9 +93,6 @@ namespace HomeCompassApi.Controllers.Facilities
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAsync(int id, UpdateFacilityDTO facility)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             if (!await _facilityRepository.IsExisted(id))
                 return NotFound($"There is no facility with the specified Id: {id}");
 
