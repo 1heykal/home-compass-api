@@ -1,4 +1,4 @@
-﻿namespace HomeCompassApi.BLL
+﻿namespace HomeCompassApi.Repositories
 {
     public interface IRepository<T>
     {

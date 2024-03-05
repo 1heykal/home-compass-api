@@ -1,6 +1,6 @@
 ﻿using Elfie.Serialization;
-using HomeCompassApi.BLL;
-using HomeCompassApi.BLL.Facilities;
+using HomeCompassApi.Repositories;
+using HomeCompassApi.Repositories.Facilities;
 using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Services.Facilities;
@@ -34,11 +34,7 @@ namespace HomeCompassApi.Controllers.Facilities
         [HttpGet]
         public async Task<ActionResult<List<CategoryDTO>>> GetAsync()
         {
-            return Ok((await _categoryRepository.GetAll()).Select(c => new CategoryDTO
-            {
-                Id = c.Id,
-                Name = c.Name
-            }));
+            return Ok(await _categoryRepository.GetAllReduced());
         }
 
         [HttpGet("{id}")]
@@ -50,7 +46,7 @@ namespace HomeCompassApi.Controllers.Facilities
             var category = await _categoryRepository.GetById(id);
 
             if (category is null)
-                return NotFound($"There is no category with the specified Id: {category.Id}");
+                return NotFound($"There is no category with the specified Id: {id}");
 
             return Ok(category);
         }

@@ -1,12 +1,11 @@
 ﻿using HomeCompassApi.Models;
 using HomeCompassApi.Models.Facilities;
-using HomeCompassApi.Services.Cases.Homeless;
 using HomeCompassApi.Services;
 using HomeCompassApi.Services.Facilities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
 
-namespace HomeCompassApi.BLL.Facilities
+
+namespace HomeCompassApi.Repositories.Facilities
 {
     public class FacilityRepository : IRepository<Facility>
     {
@@ -27,16 +26,25 @@ namespace HomeCompassApi.BLL.Facilities
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Facility>> GetAll() => await _context.Facilities.AsQueryable().AsNoTracking().ToListAsync();
+        public async Task<List<Facility>> GetAll() => await _context.Facilities.AsNoTracking().ToListAsync();
 
-        public async Task<List<Facility>> GetAllReduced()
+        public async Task<List<ReadFacilitiesDTO>> GetAllReduced()
         {
-            return await _context.Facilities.AsQueryable().Select(f => FacilityToFacilityReduced(f)).ToListAsync();
+            return await _context.Facilities.Select(facility => new ReadFacilitiesDTO()
+            {
+                Id = facility.Id,
+                Name = facility.Name,
+                ContactInformaton = facility.ContactInformaton,
+                Description = facility.Description,
+                Location = facility.Location,
+                Resources = facility.Resources,
+                Target = facility.Target
+            }).ToListAsync();
         }
 
-        private static Facility FacilityToFacilityReduced(Facility facility)
+        private static ReadFacilitiesDTO FacilityToReadFacilitiesDTO(Facility facility)
         {
-            return new Facility()
+            return new ReadFacilitiesDTO()
             {
                 Id = facility.Id,
                 Name = facility.Name,
@@ -50,16 +58,33 @@ namespace HomeCompassApi.BLL.Facilities
 
         public async Task<List<Facility>> GetByCategoryAsync(int categoryId)
         {
-            return await _context.Facilities.AsQueryable().Where(f => f.CategoryId == categoryId).ToListAsync();
+            return await _context.Facilities.Where(f => f.CategoryId == categoryId).ToListAsync();
         }
 
-        public async Task<List<Facility>> GetByPageAsync(PageDTO page) => await _context.Facilities.AsQueryable().Select(f => FacilityToFacilityReduced(f)).Skip((page.Index - 1) * page.Size).Take(page.Size).ToListAsync();
+        public async Task<List<Facility>> GetByContributorIdAsync(string id)
+        {
+            return await _context.Facilities.Where(f => f.ContributorId == id).ToListAsync();
+        }
 
-        public async Task<Facility> GetById(int id) => await _context.Facilities.AsQueryable().AsNoTracking().FirstOrDefaultAsync(f => f.Id == id);
+        public async Task<List<ReadFacilitiesDTO>> GetByPageAsync(PageDTO page) => await _context.Facilities.Select(facility => new ReadFacilitiesDTO()
+            {
+                Id = facility.Id,
+                Name = facility.Name,
+                ContactInformaton = facility.ContactInformaton,
+                Description = facility.Description,
+                Location = facility.Location,
+                Resources = facility.Resources,
+                Target = facility.Target
 
-        public async Task<bool> IsExisted(Facility facility) => await _context.Facilities.AsQueryable().ContainsAsync(facility);
+            }).Skip((page.Index - 1) * page.Size).Take(page.Size).ToListAsync();
 
-        public async Task<bool> IsExisted(int id) => await _context.Facilities.AsQueryable().AnyAsync(e => e.Id == id);
+
+
+        public async Task<Facility> GetById(int id) => await _context.Facilities.Include(f => f.Resources).FirstOrDefaultAsync(f => f.Id == id);
+
+        public async Task<bool> IsExisted(Facility facility) => await _context.Facilities.ContainsAsync(facility);
+
+        public async Task<bool> IsExisted(int id) => await _context.Facilities.AnyAsync(e => e.Id == id);
 
         public async Task Update(Facility entity)
         {

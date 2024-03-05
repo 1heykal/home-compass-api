@@ -1,7 +1,5 @@
-﻿using HomeCompassApi.BLL;
-using HomeCompassApi.Models;
+﻿using HomeCompassApi.Repositories;
 using HomeCompassApi.Models.Feed;
-using HomeCompassApi.Repositories.Feed;
 using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
 using HomeCompassApi.Services.Feed;
@@ -42,7 +40,7 @@ namespace HomeCompassApi.Controllers.Feed
         public async Task<ActionResult<List<CommentDTO>>> GetAsync() => Ok(await _commentRepository.GetAllReduced());
 
         [HttpGet("post/{id}")]
-        public async Task<ActionResult<List<CommentDTO>>> Get(int id)
+        public async Task<ActionResult<List<CommentDTO>>> GetByPostId(int id)
         {
             if (id <= 0)
                 return BadRequest("Invalid post id");
@@ -50,12 +48,12 @@ namespace HomeCompassApi.Controllers.Feed
             if (!await _postRepository.IsExisted(id))
                 return NotFound($"There is no post with the specified Id: {id}");
 
-            return Ok((await _commentRepository.GetAll()).Where(c => c.PostId == id).ToList());
+            return Ok(await _commentRepository.GetByPostId(id));
         }
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Comment>> GetAsync(int id)
+        public async Task<ActionResult<Comment>> Get(int id)
         {
             if (id <= 0)
                 return BadRequest("Id must be greater than zero.");

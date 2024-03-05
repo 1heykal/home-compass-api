@@ -1,10 +1,6 @@
-﻿using HomeCompassApi.BLL;
-using Microsoft.AspNetCore.Http;
+﻿using HomeCompassApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Services;
-using HomeCompassApi.Models.Facilities;
-using HomeCompassApi.Repositories;
 using HomeCompassApi.Services.Feed;
 
 namespace HomeCompassApi.Controllers.Info
@@ -45,7 +41,7 @@ namespace HomeCompassApi.Controllers.Info
             if (category is null || category == string.Empty)
                 return BadRequest();
 
-            var info = (await _infoRepository.GetAll()).Where(i => i.Category.ToLower() == category.ToLower()).ToList();
+            var info = await _infoRepository.GetByCategoryAsync(category);
 
             if (info is null || info.Count == 0)
                 return NotFound($"There is no info with the specified category: {category}");

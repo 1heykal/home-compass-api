@@ -1,5 +1,6 @@
 ﻿using HomeCompassApi.Models;
 using HomeCompassApi.Models.Feed;
+using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
 using HomeCompassApi.Services.CRUD;
 using HomeCompassApi.Services.Feed;
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
 
-namespace HomeCompassApi.BLL
+namespace HomeCompassApi.Repositories
 {
     public class PostRepository : IRepository<Post>
     {
@@ -25,11 +26,11 @@ namespace HomeCompassApi.BLL
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Post>> GetAll() => await _context.Posts.AsQueryable().AsNoTracking().ToListAsync();
+        public async Task<List<Post>> GetAll() => await _context.Posts.AsNoTracking().ToListAsync();
 
         public async Task<List<ReadAllPostsDTO>> GetAllReduced()
         {
-            return await _context.Posts.AsQueryable().Select(p => new ReadAllPostsDTO
+            return await _context.Posts.Select(p => new ReadAllPostsDTO
             {
                 Id = p.Id,
                 AuthorName = $"{p.User.FirstName} {p.User.LastName}",
@@ -38,6 +39,7 @@ namespace HomeCompassApi.BLL
                 LikesCount = p.Likes.Count,
                 AuthorPhotoUrl = p.User.PhotoUrl,
                 CommentsCount = p.Comments.Count
+
             }).ToListAsync();
         }
 
@@ -55,16 +57,39 @@ namespace HomeCompassApi.BLL
             };
         }
 
+        public async Task<List<ReadAllPostsDTO>> GetByUserIdAsync(string id)
+        {
+            return await _context.Posts.Where(p => p.UserId == id).Select(p => new ReadAllPostsDTO
+            {
+                Id = p.Id,
+                AuthorName = $"{p.User.FirstName} {p.User.LastName}",
+                Content = p.Content,
+                Title = p.Title,
+                LikesCount = p.Likes.Count,
+                AuthorPhotoUrl = p.User.PhotoUrl,
+                CommentsCount = p.Comments.Count
+
+            }).ToListAsync();
+        }
 
 
-        public async Task<Post> GetById(int id) => await _context.Posts.AsQueryable().AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+
+        public async Task<Post> GetById(int id) => await _context.Posts.FindAsync(id);
 
         public async Task<List<ReadPostDTO>> GetByIdDTO(int id)
         {
-            return await _context.Posts.AsQueryable()
-                 .Include(p => p.Likes)
-                 .Include(p => p.Comments)
-                 .Where(p => p.Id == id).Select(p => PostToReadPostDTO(p)).ToListAsync();
+            return await _context.Posts.Where(p => p.Id == id).Select(post => new ReadPostDTO
+            {
+                Id = post.Id,
+                Content = post.Content,
+                Title = post.Title,
+                LikesCount = post.Likes.Count,
+                CommentsCount = post.Comments.Count,
+                Archived = post.Archived,
+                PublisedOn = post.PublisedOn,
+                UserId = post.UserId
+
+            }).ToListAsync();
         }
 
 
@@ -88,7 +113,7 @@ namespace HomeCompassApi.BLL
 
         public async Task<List<ReadAllPostsDTO>> GetByPageAsync(PageDTO page)
         {
-            return await _context.Posts.AsQueryable().Select(p => new ReadAllPostsDTO
+            return await _context.Posts.Select(p => new ReadAllPostsDTO
             {
                 Id = p.Id,
                 AuthorName = $"{p.User.FirstName} {p.User.LastName}",
@@ -117,9 +142,9 @@ namespace HomeCompassApi.BLL
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> IsExisted(Post post) => await _context.Posts.AsQueryable().ContainsAsync(post);
+        public async Task<bool> IsExisted(Post post) => await _context.Posts.ContainsAsync(post);
 
-        public async Task<bool> IsExisted(int id) => await _context.Posts.AsQueryable().AnyAsync(p => p.Id == id);
+        public async Task<bool> IsExisted(int id) => await _context.Posts.AnyAsync(p => p.Id == id);
 
 
     }

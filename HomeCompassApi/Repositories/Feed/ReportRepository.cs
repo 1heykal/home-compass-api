@@ -1,4 +1,4 @@
-﻿using HomeCompassApi.BLL;
+﻿using HomeCompassApi.Repositories;
 using HomeCompassApi.Models;
 using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Services;
@@ -24,17 +24,17 @@ namespace HomeCompassApi.Repositories.Feed
 
         public async Task<List<Report>> GetAll()
         {
-            return await _context.Reports.AsQueryable().ToListAsync();
+            return await _context.Reports.ToListAsync();
         }
 
         public async Task<Report> GetById(int id)
         {
-            return await _context.Reports.AsQueryable().FirstOrDefaultAsync(r => r.Id == id);
+            return await _context.Reports.FindAsync(id);
         }
 
         public async Task<List<Report>> GetByPageAsync(PageDTO page)
         {
-            return await _context.Reports.AsQueryable().Skip((page.Index - 1) * page.Size).Take(page.Size).ToListAsync();
+            return await _context.Reports.Skip((page.Index - 1) * page.Size).Take(page.Size).ToListAsync();
         }
 
         public async Task Update(Report entity)
@@ -52,10 +52,10 @@ namespace HomeCompassApi.Repositories.Feed
 
         public async Task<bool> IsExisted(Report entity)
         {
-            return await _context.Reports.AsQueryable().ContainsAsync(entity);
+            return await _context.Reports.ContainsAsync(entity);
         }
 
-        public async Task<bool> IsExisted(int id) => await _context.Reports.AsQueryable().AnyAsync(r => r.Id == id);
+        public async Task<bool> IsExisted(int id) => await _context.Reports.AnyAsync(r => r.Id == id);
 
     }
 }

@@ -5,7 +5,7 @@ using HomeCompassApi.Services.Feed;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace HomeCompassApi.BLL
+namespace HomeCompassApi.Repositories
 {
     public class CommentRepository : IRepository<Comment>
     {
@@ -22,20 +22,44 @@ namespace HomeCompassApi.BLL
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Comment>> GetAll() => await _context.Comments.AsQueryable().AsNoTracking().ToListAsync();
+        public async Task<List<Comment>> GetAll() => await _context.Comments.AsNoTracking().ToListAsync();
 
         public async Task<List<CommentDTO>> GetAllReduced()
         {
-            return await _context.Comments.AsQueryable().Include(c => c.User).Select(c => CommentToCommentDTO(c)).ToListAsync();
+            return await _context.Comments.Select(comment => new CommentDTO
+            {
+                Id = comment.Id,
+                Content = comment.Content,
+                AuthorName = $"{comment.User.FirstName} {comment.User.LastName}",
+                AuthorPhotoURL = comment.User.PhotoUrl
+            }).ToListAsync();
         }
 
 
         public async Task<List<CommentDTO>> GetByPageAsync(int postId, PageDTO page)
         {
-            return await _context.Comments.AsQueryable().Include(c => c.User).
+            return await _context.Comments.
                 Where(c => c.PostId == postId).
-                Select(c => CommentToCommentDTO(c)).
+                Select(comment => new CommentDTO
+                {
+                    Id = comment.Id,
+                    Content = comment.Content,
+                    AuthorName = $"{comment.User.FirstName} {comment.User.LastName}",
+                    AuthorPhotoURL = comment.User.PhotoUrl
+                }).
                 Skip((page.Index - 1) * page.Size).Take(page.Size).ToListAsync();
+        }
+
+        public async Task<List<CommentDTO>> GetByPostId(int id)
+        {
+            return await _context.Comments.Where(c => c.PostId == id).Select(comment => new CommentDTO
+            {
+                Id = comment.Id,
+                Content = comment.Content,
+                AuthorName = $"{comment.User.FirstName} {comment.User.LastName}",
+                AuthorPhotoURL = comment.User.PhotoUrl
+
+            }).ToListAsync();
         }
 
         private static CommentDTO CommentToCommentDTO(Comment comment)
@@ -49,10 +73,10 @@ namespace HomeCompassApi.BLL
             };
         }
 
-        public async Task<Comment> GetById(int id) => await _context.Comments.AsQueryable().AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
-        public async Task<bool> IsExisted(Comment comment) => await _context.Comments.AsQueryable().ContainsAsync(comment);
+        public async Task<Comment> GetById(int id) => await _context.Comments.FindAsync(id);
+        public async Task<bool> IsExisted(Comment comment) => await _context.Comments.ContainsAsync(comment);
 
-        public async Task<bool> IsExisted(int id) => await _context.Comments.AsQueryable().AnyAsync(e => e.Id == id);
+        public async Task<bool> IsExisted(int id) => await _context.Comments.AnyAsync(e => e.Id == id);
 
         public async Task Update(Comment entity)
         {

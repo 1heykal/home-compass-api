@@ -1,4 +1,4 @@
-﻿using HomeCompassApi.BLL;
+﻿using HomeCompassApi.Repositories;
 using HomeCompassApi.Models;
 using HomeCompassApi.Services;
 using HomeCompassApi.Services.Feed;
@@ -30,11 +30,11 @@ namespace HomeCompassApi.Repositories
 
         public async Task<List<Info>> GetAll()
         {
-            return await _context.Info.AsQueryable().ToListAsync();
+            return await _context.Info.ToListAsync();
         }
         public async Task<List<InfoDTO>> GetAllDTO()
         {
-            return await _context.Info.AsQueryable().Select(i => new InfoDTO
+            return await _context.Info.Select(i => new InfoDTO
             {
                 Id = i.Id,
                 Category = i.Category,
@@ -42,22 +42,33 @@ namespace HomeCompassApi.Repositories
             }).ToListAsync();
         }
 
+        public async Task<List<InfoDTO>> GetByCategoryAsync(string category)
+        {
+            return await _context.Info.Where(i => i.Category.ToLower() == category.ToLower()).Select(i => new InfoDTO
+            {
+                Id = i.Id,
+                Category = i.Category,
+                Content = i.Content
+
+            }).ToListAsync();
+        }
+
         public async Task<List<Models.Info>> GetByPageAsync(PageDTO page)
         {
-            return await _context.Info.AsQueryable().Skip((page.Index - 1) * page.Size).Take(page.Size).ToListAsync();
+            return await _context.Info.Skip((page.Index - 1) * page.Size).Take(page.Size).ToListAsync();
         }
 
         public async Task<Info> GetById(int id)
         {
-            return await _context.Info.AsQueryable().FirstOrDefaultAsync(i => i.Id == id);
+            return await _context.Info.FindAsync(id);
         }
 
         public async Task<bool> IsExisted(Info entity)
         {
-            return await _context.Info.AsQueryable().ContainsAsync(entity);
+            return await _context.Info.ContainsAsync(entity);
         }
 
-        public async Task<bool> IsExisted(int id) => await _context.Info.AsQueryable().AnyAsync(e => e.Id == id);
+        public async Task<bool> IsExisted(int id) => await _context.Info.AnyAsync(e => e.Id == id);
 
 
         public async Task Update(Info entity)

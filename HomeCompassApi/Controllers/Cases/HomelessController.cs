@@ -1,5 +1,5 @@
-﻿using HomeCompassApi.BLL;
-using HomeCompassApi.BLL.Cases;
+﻿using HomeCompassApi.Repositories;
+using HomeCompassApi.Repositories.Cases;
 using HomeCompassApi.Models;
 using HomeCompassApi.Models.Cases;
 using HomeCompassApi.Models.Feed;
@@ -53,7 +53,7 @@ namespace HomeCompassApi.Controllers.Cases
         }
 
         [HttpGet("reporter/{id}")]
-        public async Task<ActionResult<List<Homeless>>> GetByReporterId(string id)
+        public async Task<ActionResult<List<HomelessDTO>>> GetByReporterId(string id)
         {
             if (id is null || id == string.Empty)
                 return BadRequest("ReportedId cannot be Empty.");
@@ -61,7 +61,7 @@ namespace HomeCompassApi.Controllers.Cases
             if (!await _userRepository.IsExisted(id))
                 return NotFound($"There is no reporter with the specified id: {id}");
 
-            return Ok((await _homelessRepository.GetAll()).Where(h => h.ReporterId == id).ToList());
+            return Ok(await _homelessRepository.GetByReporterId(id));
         }
 
         [HttpPost]

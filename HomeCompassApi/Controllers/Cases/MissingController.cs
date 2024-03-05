@@ -1,4 +1,4 @@
-﻿using HomeCompassApi.BLL.Cases;
+﻿using HomeCompassApi.Repositories.Cases;
 using HomeCompassApi.Models;
 using HomeCompassApi.Models.Cases;
 using HomeCompassApi.Repositories.User;
@@ -61,7 +61,7 @@ namespace HomeCompassApi.Controllers.Cases
         }
 
         [HttpGet("reporter/{id}")]
-        public async Task<ActionResult<List<Missing>>> GetByReporterIdAsync(string id)
+        public async Task<ActionResult<List<MissingDTO>>> GetByReporterIdAsync(string id)
         {
             if (id is null || id == string.Empty)
                 return BadRequest();
@@ -69,7 +69,7 @@ namespace HomeCompassApi.Controllers.Cases
             if (!await _userRepository.IsExisted(id))
                 return NotFound($"There is no reporter with the specified id: {id}");
 
-            return Ok((await _missingRepository.GetAll()).Where(m => m.ReporterId == id).ToList());
+            return Ok(await _missingRepository.GetByReporterId(id));
         }
 
 

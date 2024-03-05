@@ -1,4 +1,4 @@
-﻿using HomeCompassApi.BLL;
+﻿using HomeCompassApi.Repositories;
 using HomeCompassApi.Models;
 using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Services.CRUD;
@@ -22,13 +22,13 @@ namespace HomeCompassApi.Repositories.Feed
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Like>> GetByPostId(int id) => await _context.Likes.AsQueryable().AsNoTracking().Where(l => l.PostId == id).ToListAsync();
+        public async Task<List<Like>> GetByPostId(int id) => await _context.Likes.AsNoTracking().Where(l => l.PostId == id).ToListAsync();
 
-        public async Task<bool> IsExisted(Like like) => await _context.Likes.AsQueryable().ContainsAsync(like);
+        public async Task<bool> IsExisted(Like like) => await _context.Likes.ContainsAsync(like);
 
         public async Task<List<Like>> GetByPageAsync(int postId, PageDTO page)
         {
-            return await _context.Likes.AsQueryable().Where(l => l.PostId == postId).Skip((page.Index - 1) * page.Size).Take(page.Size).ToListAsync();
+            return await _context.Likes.Where(l => l.PostId == postId).Skip((page.Index - 1) * page.Size).Take(page.Size).ToListAsync();
         }
 
         public async Task Delete(Like like)

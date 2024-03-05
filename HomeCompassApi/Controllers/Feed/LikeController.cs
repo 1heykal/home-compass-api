@@ -1,10 +1,8 @@
-﻿using HomeCompassApi.BLL;
-using HomeCompassApi.Models;
+﻿using HomeCompassApi.Repositories;
 using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Repositories.Feed;
 using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeCompassApi.Controllers.Feed

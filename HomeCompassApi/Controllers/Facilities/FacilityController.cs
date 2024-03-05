@@ -1,13 +1,9 @@
-﻿using HomeCompassApi.BLL;
-using HomeCompassApi.BLL.Facilities;
-using HomeCompassApi.Models;
+﻿using HomeCompassApi.Repositories.Facilities;
 using HomeCompassApi.Models.Facilities;
-using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
 using HomeCompassApi.Services.Facilities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.FileProviders;
 
 namespace HomeCompassApi.Controllers.Facilities
 {
@@ -42,7 +38,7 @@ namespace HomeCompassApi.Controllers.Facilities
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Facility>>> GetAsync()
+        public async Task<ActionResult<List<ReadFacilitiesDTO>>> GetAsync()
         {
             return Ok(await _facilityRepository.GetAllReduced());
         }
@@ -62,7 +58,7 @@ namespace HomeCompassApi.Controllers.Facilities
         }
 
         [HttpGet("contributor/{id}")]
-        public async Task<ActionResult<List<Post>>> GetByContributorIdAsync(string id)
+        public async Task<ActionResult<List<Facility>>> GetByContributorIdAsync(string id)
         {
             if (id is null || id == string.Empty)
                 return BadRequest();
@@ -70,7 +66,7 @@ namespace HomeCompassApi.Controllers.Facilities
             if (!await _userRepository.IsExisted(id))
                 return NotFound($"There is no contibutor with the specified id: {id}");
 
-            return Ok((await _facilityRepository.GetAll()).Where(f => f.ContributorId == id).ToList());
+            return Ok(await _facilityRepository.GetByContributorIdAsync(id));
 
         }
 
@@ -81,7 +77,7 @@ namespace HomeCompassApi.Controllers.Facilities
         }
 
         [HttpPost("page")]
-        public async Task<ActionResult<List<Facility>>> GetByPageAsync([FromBody] PageDTO page)
+        public async Task<ActionResult<List<ReadFacilitiesDTO>>> GetByPageAsync([FromBody] PageDTO page)
         {
             return Ok(await _facilityRepository.GetByPageAsync(page));
         }

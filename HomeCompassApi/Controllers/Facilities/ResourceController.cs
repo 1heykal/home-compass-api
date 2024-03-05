@@ -1,9 +1,5 @@
-﻿using HomeCompassApi.BLL;
-using HomeCompassApi.BLL.Facilities;
-using HomeCompassApi.Models.Cases;
+﻿using HomeCompassApi.Repositories.Facilities;
 using HomeCompassApi.Models.Facilities;
-using HomeCompassApi.Models.Feed;
-using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
 using HomeCompassApi.Services.Facilities;
 using Microsoft.AspNetCore.Mvc;

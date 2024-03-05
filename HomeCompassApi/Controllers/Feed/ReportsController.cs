@@ -1,4 +1,4 @@
-﻿using HomeCompassApi.BLL;
+﻿using HomeCompassApi.Repositories;
 using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Repositories.Feed;

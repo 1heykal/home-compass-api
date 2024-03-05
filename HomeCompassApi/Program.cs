@@ -1,6 +1,6 @@
-using HomeCompassApi.BLL;
-using HomeCompassApi.BLL.Cases;
-using HomeCompassApi.BLL.Facilities;
+using HomeCompassApi.Repositories;
+using HomeCompassApi.Repositories.Cases;
+using HomeCompassApi.Repositories.Facilities;
 using HomeCompassApi.Helpers;
 using HomeCompassApi.Models;
 using HomeCompassApi.Models.Cases;

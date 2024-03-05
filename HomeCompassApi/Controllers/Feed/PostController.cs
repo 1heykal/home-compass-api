@@ -1,4 +1,4 @@
-﻿using HomeCompassApi.BLL;
+﻿using HomeCompassApi.Repositories;
 using HomeCompassApi.Models.Cases;
 using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Repositories.Feed;
@@ -68,7 +68,7 @@ namespace HomeCompassApi.Controllers.Feed
             if (!await _userRepository.IsExisted(id))
                 return NotFound($"There is no user with the specified id: {id}");
 
-            return Ok((await _postRepository.GetAll()).Where(p => p.UserId == id).ToList());
+            return Ok(await _postRepository.GetByUserIdAsync(id));
 
         }
 
