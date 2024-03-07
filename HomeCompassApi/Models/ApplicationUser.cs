@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using HomeCompassApi.Models.Auth;
 using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Models.Feed;
+using HomeCompassApi.Services.User;
 using Microsoft.AspNetCore.Identity;
 
 namespace HomeCompassApi.Models
@@ -31,5 +32,24 @@ namespace HomeCompassApi.Models
         public ICollection<Comment> Comments { get; set; }
         public ICollection<Facility> Facilities { get; set; }
         public ICollection<Resource> Resources { get; set; }
+
+
+        public ApplicationUser()
+        {
+
+        }
+
+
+        public ApplicationUser(UpdateUserDetailsDTO userDetailsDTO)
+        {
+            FirstName = userDetailsDTO.FirstName;
+            LastName = userDetailsDTO.LastName;
+            Gender = userDetailsDTO.Gender;
+            Address = userDetailsDTO.Address;
+            Email = userDetailsDTO.Email;
+            Age = userDetailsDTO.Age;
+            PhotoUrl = userDetailsDTO.PhotoURL;
+
+        }
     }
 }

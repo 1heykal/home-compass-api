@@ -37,6 +37,7 @@ namespace HomeCompassApi.Repositories.Cases
                 MissingDate = missing.DateOfDisappearance,
                 Name = missing.FullName,
                 PhotoURL = missing.PhotoUrl
+
             }).ToListAsync();
         }
 
@@ -77,6 +78,18 @@ namespace HomeCompassApi.Repositories.Cases
         public async Task<bool> IsExisted(Missing missing) => await _context.Missings.ContainsAsync(missing);
 
         public async Task<bool> IsExisted(int id) => await _context.Missings.AnyAsync(e => e.Id == id);
+
+        public async Task<MatchDTO> GetMatchDetails(int id)
+        {
+            return await _context.Homeless.Select(m => new MatchDTO
+            {
+                Id = m.Id,
+                Name = m.FullName,
+                Address = m.CurrentLocation,
+                Phone = m.PhoneNumber
+
+            }).FirstOrDefaultAsync(m => m.Id == id);
+        }
 
 
         public async Task Update(Missing entity)

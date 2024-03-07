@@ -1,4 +1,5 @@
-﻿using HomeCompassApi.Services.Facilities;
+﻿using HomeCompassApi.Repositories.Facilities;
+using HomeCompassApi.Services.Facilities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -37,6 +38,9 @@ namespace HomeCompassApi.Models.Facilities
         [JsonIgnore]
         public ApplicationUser Contributor { get; set; }
 
+        [JsonIgnore]
+        public List<Job> Jobs { get; set; }
+
         public Facility() { }
 
         public Facility(UpdateFacilityDTO facilityDTO)
@@ -50,8 +54,6 @@ namespace HomeCompassApi.Models.Facilities
             Hours = facilityDTO.Hours;
             Target = facilityDTO.Target;
             Description = facilityDTO.Description;
-
-
 
         }
 

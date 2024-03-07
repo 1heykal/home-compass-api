@@ -1,4 +1,6 @@
-﻿namespace HomeCompassApi.Services.User
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HomeCompassApi.Services.User
 {
     public class UserDetailsDTO
     {
@@ -9,5 +11,6 @@
         public string Gender { get; set; }
         public int Age { get; set; }
         public string PhotoURL { get; set; }
+
     }
 }
