@@ -24,8 +24,6 @@ namespace HomeCompassApi.Models.Facilities
         public int Hours { get; set; }
         public string ContactInformation { get; set; }
         public string Benefits { get; set; }
-
-        [Required]
         public int EmployerId { get; set; }
 
         [ForeignKey(nameof(EmployerId))]

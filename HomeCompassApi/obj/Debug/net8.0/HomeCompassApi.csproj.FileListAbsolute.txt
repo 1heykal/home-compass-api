@@ -1,14 +1,16 @@
-E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\HomeCompassApi.dll
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\appsettings.Development.json
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\appsettings.json
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\HomeCompassApi.exe
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\HomeCompassApi.deps.json
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\HomeCompassApi.runtimeconfig.json
+E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\HomeCompassApi.dll
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\HomeCompassApi.pdb
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\AutoMapper.dll
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\Azure.Core.dll
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\Azure.Identity.dll
+E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\Humanizer.dll
+E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\MailKit.dll
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll
@@ -54,6 +56,7 @@ E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\Microsoft.Visua
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
+E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\MimeKit.dll
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\Mono.TextTemplating.dll
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\Newtonsoft.Json.dll
 E:\Development\c#\HomeCompassApi\HomeCompassApi\bin\Debug\net8.0\NuGet.Common.dll

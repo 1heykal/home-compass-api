@@ -62,6 +62,12 @@ namespace HomeCompassApi.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("EmailVerificationToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EmailVerificationTokenExpiresAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -89,6 +95,15 @@ namespace HomeCompassApi.Migrations
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasswordResetToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("PasswordResetTokenExpiresAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("PasswordTokenConfirmed")
+                        .HasColumnType("bit");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
@@ -156,12 +171,18 @@ namespace HomeCompassApi.Migrations
                     b.Property<string>("HealthCondition")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PhotoUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReporterId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Skills")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -287,6 +308,58 @@ namespace HomeCompassApi.Migrations
                     b.HasIndex("ContributorId");
 
                     b.ToTable("Facilities");
+                });
+
+            modelBuilder.Entity("HomeCompassApi.Models.Facilities.Job", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Benefits")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ContactInformation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Days")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EmployerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Hours")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Salary")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Skills")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("EmployerId");
+
+                    b.ToTable("Jobs");
                 });
 
             modelBuilder.Entity("HomeCompassApi.Models.Facilities.Resource", b =>
@@ -669,6 +742,25 @@ namespace HomeCompassApi.Migrations
                     b.Navigation("Contributor");
                 });
 
+            modelBuilder.Entity("HomeCompassApi.Models.Facilities.Job", b =>
+                {
+                    b.HasOne("HomeCompassApi.Models.Facilities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HomeCompassApi.Models.Facilities.Facility", "Facility")
+                        .WithMany("Jobs")
+                        .HasForeignKey("EmployerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Facility");
+                });
+
             modelBuilder.Entity("HomeCompassApi.Models.Facilities.Resource", b =>
                 {
                     b.HasOne("HomeCompassApi.Models.ApplicationUser", null)
@@ -803,6 +895,11 @@ namespace HomeCompassApi.Migrations
             modelBuilder.Entity("HomeCompassApi.Models.Facilities.Category", b =>
                 {
                     b.Navigation("Facilities");
+                });
+
+            modelBuilder.Entity("HomeCompassApi.Models.Facilities.Facility", b =>
+                {
+                    b.Navigation("Jobs");
                 });
 
             modelBuilder.Entity("HomeCompassApi.Models.Feed.Post", b =>

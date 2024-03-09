@@ -27,6 +27,12 @@ namespace HomeCompassApi.Models
         public string Gender { get; set; }
         public string Role { get; set; }
 
+        public string EmailVerificationToken { get; set; }
+        public DateTime? EmailVerificationTokenExpiresAt { get; set; }
+        public string PasswordResetToken { get; set; }
+        public DateTime? PasswordResetTokenExpiresAt { get; set; }
+        public bool PasswordTokenConfirmed { get; set; }
+
         public List<RefreshToken> RefreshTokens { get; set; }
         public ICollection<Post> Posts { get; set; }
         public ICollection<Comment> Comments { get; set; }

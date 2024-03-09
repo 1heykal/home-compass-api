@@ -17,18 +17,26 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Text.Json.Serialization;
+using HomeCompassApi.Services.EmailService;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+{
+    options.SignIn.RequireConfirmedEmail = true;
+
+})
+    .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
 
 
 // Add services to the container.
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
+builder.Services.AddOptions<EmailSettings>().BindConfiguration(nameof(EmailSettings));
+builder.Services.AddSingleton<EmailService>();
+
 
 
 // JWT

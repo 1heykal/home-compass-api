@@ -17,6 +17,7 @@ namespace HomeCompassApi.Models
         public virtual DbSet<Facility> Facilities { get; set; }
         public virtual DbSet<Resource> Resources { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Job> Jobs { get; set; }
 
 
         // Feed 
