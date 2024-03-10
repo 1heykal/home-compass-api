@@ -13,10 +13,10 @@ namespace HomeCompassApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20240309181214_job")]
-    partial class job
+    partial class Job
     {
         /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -50,7 +50,7 @@ namespace HomeCompassApi.Controllers
             return Ok(result);
         }
 
-        [HttpPost("resendemailconfirmation")]
+        [HttpPost("resendConfirmationEmail")]
         public async Task<IActionResult> ResendEmailConfirmation(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
@@ -68,7 +68,7 @@ namespace HomeCompassApi.Controllers
             return NoContent();
         }
 
-        [HttpPost("confirmemail")]
+        [HttpPost("confirmEmail")]
         public async Task<IActionResult> ConfirmEmailAsync(string email, string token)
         {
             var user = await _userManager.FindByEmailAsync(email);
@@ -88,7 +88,7 @@ namespace HomeCompassApi.Controllers
 
         }
 
-        [HttpPost("sendresetpasswordtoken")]
+        [HttpPost("forgotPassword")]
         public async Task<IActionResult> SendResetPasswordTokenAsync(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
@@ -126,7 +126,7 @@ namespace HomeCompassApi.Controllers
 
         }
 
-        [HttpPost("changepassword")]
+        [HttpPost("changePassword")]
         public async Task<IActionResult> ChangePassword(string email, string newpassword)
         {
             var user = await _userManager.FindByEmailAsync(email);
@@ -144,19 +144,19 @@ namespace HomeCompassApi.Controllers
             return Ok();
         }
 
-        [HttpPost("changpasswordwitholdone")]
-        public async Task<IActionResult> ChangePasswordWithOldOne(string email, string oldpassword, string newpassword)
+        [HttpPost("changePasswordWithOldOne")]
+        public async Task<IActionResult> ChangePasswordWithOldOne([FromBody] ChangePasswordOldNewModel model)
         {
-            var user = await _userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindByEmailAsync(model.Email);
             if (user is null)
                 return NotFound("There is no user with the specified email.");
 
-            if (!await _userManager.CheckPasswordAsync(user, oldpassword))
+            if (!await _userManager.CheckPasswordAsync(user, model.OldPassword))
             {
                 return BadRequest("Wrong email or password.");
             }
 
-            await _userManager.ChangePasswordAsync(user, oldpassword, newpassword);
+            await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
             await _context.SaveChangesAsync();
 
             return Ok();

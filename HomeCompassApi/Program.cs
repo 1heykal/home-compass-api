@@ -3,10 +3,6 @@ using HomeCompassApi.Repositories.Cases;
 using HomeCompassApi.Repositories.Facilities;
 using HomeCompassApi.Helpers;
 using HomeCompassApi.Models;
-using HomeCompassApi.Models.Cases;
-using HomeCompassApi.Models.Facilities;
-using HomeCompassApi.Models.Feed;
-using HomeCompassApi.Repositories;
 using HomeCompassApi.Repositories.Feed;
 using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services.Auth;
@@ -14,9 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Security.Cryptography.Xml;
 using System.Text;
-using System.Text.Json.Serialization;
 using HomeCompassApi.Services.EmailService;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,7 +34,7 @@ builder.Services.AddSingleton<EmailService>();
 
 
 // JWT
-builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<AuthService, AuthService>();
 builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
 builder.Services.AddAuthentication(options =>
 {
@@ -77,6 +71,7 @@ builder.Services.AddScoped<CommentRepository, CommentRepository>();
 builder.Services.AddScoped<LikeRepository, LikeRepository>();
 builder.Services.AddScoped<ReportRepository, ReportRepository>();
 
+
 // Cases
 builder.Services.AddScoped<HomelessRepository, HomelessRepository>();
 builder.Services.AddScoped<MissingRepository, MissingRepository>();
@@ -85,6 +80,8 @@ builder.Services.AddScoped<MissingRepository, MissingRepository>();
 builder.Services.AddScoped<FacilityRepository, FacilityRepository>();
 builder.Services.AddScoped<ResourceRepository, ResourceRepository>();
 builder.Services.AddScoped<CategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<JobRepository, JobRepository>();
+
 
 builder.Services.AddScoped<InfoRepository, InfoRepository>();
 

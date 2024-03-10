@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HomeCompassApi.Migrations
 {
     /// <inheritdoc />
-    public partial class job : Migration
+    public partial class JobMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

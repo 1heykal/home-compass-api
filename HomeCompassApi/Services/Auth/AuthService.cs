@@ -64,7 +64,7 @@ namespace HomeCompassApi.Services.Auth
             authModel.Username = user.UserName;
             authModel.UserId = user.Id;
             authModel.ExpiresOn = jwtSecurityToken.ValidTo;
-            authModel.Roles = roles.ToList();
+            authModel.Roles = [.. roles];
 
 
 
@@ -118,7 +118,7 @@ namespace HomeCompassApi.Services.Auth
             authModel.Username = user.UserName;
 
             var roles = await _userManager.GetRolesAsync(user);
-            authModel.Roles = roles.ToList();
+            authModel.Roles = [.. roles];
             authModel.RefreshToken = newRefreshToken.Token;
             authModel.RefreshTokenExpiration = newRefreshToken.ExpiresOn;
 
@@ -171,7 +171,7 @@ namespace HomeCompassApi.Services.Auth
                 Email = user.Email,
                 ExpiresOn = jwtSecurityToken.ValidTo,
                 IsAuthenticated = true,
-                Roles = new List<string> { "User" },
+                Roles = ["User"],
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                 Username = user.UserName
 
@@ -234,7 +234,7 @@ namespace HomeCompassApi.Services.Auth
 
         }
 
-        private RefreshToken GenerateRefrshToken()
+        private static RefreshToken GenerateRefrshToken()
         {
             var randomNumber = new byte[32];
 

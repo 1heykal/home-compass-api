@@ -34,7 +34,7 @@ namespace HomeCompassApi.Controllers.Facilities
 
             await _facilityRepository.Add(facility);
 
-            return CreatedAtAction(nameof(Get), new { Id = facility.Id }, facility);
+            return CreatedAtAction(nameof(Get), new { facility.Id }, facility);
         }
 
         [HttpGet]
@@ -92,8 +92,10 @@ namespace HomeCompassApi.Controllers.Facilities
             if (!await _categoryRepository.IsExisted(facility.CategoryId))
                 return NotFound($"There is no category with the specified Id: {id}");
 
-            var entity = new Facility(facility);
-            entity.Id = id;
+            var entity = new Facility(facility)
+            {
+                Id = id
+            };
 
             await _facilityRepository.Update(entity);
             return NoContent();
