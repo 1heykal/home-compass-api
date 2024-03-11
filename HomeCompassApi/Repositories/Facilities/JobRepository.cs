@@ -1,7 +1,6 @@
 ﻿using HomeCompassApi.Models;
 using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Services;
-using HomeCompassApi.Services.Facilities;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -69,7 +68,7 @@ namespace HomeCompassApi.Repositories.Facilities
 
         public async Task<List<Job>> GetByPageAsync(PageDTO page) => await _context.Jobs.Skip((page.Index - 1) * page.Size).Take(page.Size).ToListAsync();
 
-
+        public async Task<List<Job>> GetBySkill(string skill) => await _context.Jobs.Where(j => j.Skills.Contains(skill.ToLower())).ToListAsync();
 
         public async Task<Job> GetById(int id) => await _context.Jobs.FindAsync(id);
 

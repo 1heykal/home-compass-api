@@ -36,10 +36,8 @@ namespace HomeCompassApi.Controllers
             if (!await _userRepository.IsExisted(id))
                 return NotFound($"There is no user with the specified Id: {id}");
 
-            ApplicationUser user = new(userDetailsDTO)
-            {
-                Id = id
-            };
+            ApplicationUser user = new(userDetailsDTO);
+            user.Id = id;
 
             await _userRepository.UpdateUserDetails(user);
 

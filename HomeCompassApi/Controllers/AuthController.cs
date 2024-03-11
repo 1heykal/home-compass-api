@@ -1,9 +1,11 @@
 ﻿using HomeCompassApi.Models;
 using HomeCompassApi.Models.Auth;
+using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services.Auth;
 using HomeCompassApi.Services.EmailService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using System.Security;
 using System.Security.Cryptography;
@@ -14,17 +16,19 @@ namespace HomeCompassApi.Controllers
     [Route("[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthService _authService;
+        private readonly AuthService _authService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly EmailService _emailService;
         private readonly ApplicationDbContext _context;
+        private readonly UserRepository _userRepository;
 
 
-        public AuthController(IAuthService authService, UserManager<ApplicationUser> userManager, EmailService emailService, ApplicationDbContext context)
+        public AuthController(AuthService authService, UserManager<ApplicationUser> userManager, EmailService emailService, ApplicationDbContext context, UserRepository userRepository)
         {
             _authService = authService;
             _userManager = userManager;
             _emailService = emailService;
+            _userRepository = userRepository;
             _context = context;
         }
 
@@ -38,16 +42,21 @@ namespace HomeCompassApi.Controllers
 
             var user = await _userManager.FindByEmailAsync(result.Email);
 
-            var token = RandomNumberGenerator.GetInt32(100000, 999999).ToString();
+            var token = GenerateToken();
 
-            user.EmailVerificationToken = token;
-            user.EmailVerificationTokenExpiresAt = DateTime.UtcNow.AddMinutes(15);
-            await _context.SaveChangesAsync();
+            await _userRepository.SetEmailVerificationToken(user, token);
+
             var subject = "Home Compass App Email Confirmation";
             await _emailService.SendVerificationToken(subject, token, user.FirstName + " " + user.LastName, result.Email);
 
 
             return Ok(result);
+        }
+
+
+        private static string GenerateToken()
+        {
+            return RandomNumberGenerator.GetInt32(100000, 999999).ToString();
         }
 
         [HttpPost("resendConfirmationEmail")]
@@ -57,12 +66,12 @@ namespace HomeCompassApi.Controllers
             if (user is null)
                 return NotFound("There is no user with the specified email.");
 
-            var token = RandomNumberGenerator.GetInt32(100000, 999999).ToString();
+            var token = GenerateToken();
 
-            user.EmailVerificationToken = token;
-            user.EmailVerificationTokenExpiresAt = DateTime.UtcNow.AddMinutes(15);
-            await _context.SaveChangesAsync();
+            await _userRepository.SetEmailVerificationToken(user, token);
+
             var subject = "Home Compass App Email Confirmation";
+
             await _emailService.SendVerificationToken(subject, token, user.FirstName + " " + user.LastName, email);
 
             return NoContent();
@@ -77,10 +86,7 @@ namespace HomeCompassApi.Controllers
 
             if (!user.EmailConfirmed && user.EmailVerificationTokenExpiresAt > DateTime.UtcNow && user.EmailVerificationToken == token)
             {
-                user.EmailConfirmed = true;
-                user.EmailVerificationTokenExpiresAt = DateTime.UtcNow;
-                await _context.SaveChangesAsync();
-
+                await _userRepository.ConfirmEmailAsync(user);
                 return Ok();
             }
 
@@ -95,11 +101,10 @@ namespace HomeCompassApi.Controllers
             if (user is null)
                 return NotFound("There is no user with the specified email.");
 
-            var token = RandomNumberGenerator.GetInt32(100000, 999999).ToString();
+            var token = GenerateToken();
 
-            user.PasswordResetToken = token;
-            user.PasswordResetTokenExpiresAt = DateTime.UtcNow.AddMinutes(15);
-            user.PasswordTokenConfirmed = false;
+            await _userRepository.SetPasswordResetToken(user, token);
+
             var subject = "Home Compass App Password Reset";
             await _emailService.SendVerificationToken(subject, token, user.FirstName + " " + user.LastName, email);
 
@@ -115,9 +120,7 @@ namespace HomeCompassApi.Controllers
 
             if (!user.PasswordTokenConfirmed && user.PasswordResetTokenExpiresAt > DateTime.UtcNow && user.PasswordResetToken == token)
             {
-                user.PasswordTokenConfirmed = true;
-                user.PasswordResetTokenExpiresAt = DateTime.UtcNow;
-                await _context.SaveChangesAsync();
+                await _userRepository.ConfirmPasswordToken(user);
 
                 return Ok();
             }
@@ -138,8 +141,8 @@ namespace HomeCompassApi.Controllers
             }
             await _userManager.RemovePasswordAsync(user);
             await _userManager.AddPasswordAsync(user, newpassword);
-            user.PasswordTokenConfirmed = false;
-            await _context.SaveChangesAsync();
+
+            await _userRepository.SetPasswordTokenConfirmedAsync(user);
 
             return Ok();
         }
@@ -157,7 +160,7 @@ namespace HomeCompassApi.Controllers
             }
 
             await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
-            await _context.SaveChangesAsync();
+            await _userRepository.SaveChangesAsync();
 
             return Ok();
         }

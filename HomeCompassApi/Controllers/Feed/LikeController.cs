@@ -40,11 +40,11 @@ namespace HomeCompassApi.Controllers.Feed
 
 
             await _likeRepository.Add(like);
-            return CreatedAtAction(nameof(CreateAsync), like);
+            return Created("", like);
         }
 
         [HttpGet("post/{postId}")]
-        public async Task<ActionResult<List<Like>>> GetByPostIdAsync(int postId) => Ok((await _likeRepository.GetByPostId(postId)));
+        public async Task<ActionResult<List<Like>>> Get(int postId) => Ok((await _likeRepository.GetByPostId(postId)));
 
         [HttpPost("post/{postId}/page")]
         public async Task<ActionResult<List<Like>>> GetByPageAsync(int postId, [FromBody] PageDTO page)

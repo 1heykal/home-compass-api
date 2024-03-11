@@ -2,7 +2,6 @@
 using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
-using HomeCompassApi.Services.Facilities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeCompassApi.Controllers.Facilities
@@ -70,6 +69,16 @@ namespace HomeCompassApi.Controllers.Facilities
 
             return Ok(await _jobRepository.GetByEmployerIdAsync(id));
 
+        }
+
+
+        [HttpGet("skill")]
+        public async Task<ActionResult<List<Job>>> GetBySkill(string skill)
+        {
+            if (string.IsNullOrEmpty(skill))
+                return BadRequest("Skill cannot be null or Empty.");
+
+            return Ok(await _jobRepository.GetBySkill(skill));
         }
 
         [HttpGet("bycategory/{categoryId}")]

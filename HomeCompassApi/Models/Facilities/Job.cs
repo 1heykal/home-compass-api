@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace HomeCompassApi.Models.Facilities
 {
@@ -11,6 +12,8 @@ namespace HomeCompassApi.Models.Facilities
         [Required]
         public string Title { get; set; }
         public int CategoryId { get; set; }
+
+        [ForeignKey(nameof(CategoryId)), JsonIgnore]
         public Category Category { get; set; }
 
         [Required]
@@ -26,7 +29,7 @@ namespace HomeCompassApi.Models.Facilities
         public string Benefits { get; set; }
         public int EmployerId { get; set; }
 
-        [ForeignKey(nameof(EmployerId))]
+        [ForeignKey(nameof(EmployerId)), JsonIgnore]
         public Facility Facility { get; set; }
     }
 }

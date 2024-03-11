@@ -252,9 +252,9 @@ E:\Development\c#\HomeCompassApi\HomeCompassApi\obj\Debug\net8.0\staticwebassets
 E:\Development\c#\HomeCompassApi\HomeCompassApi\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.HomeCompassApi.props
 E:\Development\c#\HomeCompassApi\HomeCompassApi\obj\Debug\net8.0\staticwebassets.pack.json
 E:\Development\c#\HomeCompassApi\HomeCompassApi\obj\Debug\net8.0\scopedcss\bundle\HomeCompassApi.styles.css
-E:\Development\c#\HomeCompassApi\HomeCompassApi\obj\Debug\net8.0\HomeCompassApi.csproj.CopyComplete
 E:\Development\c#\HomeCompassApi\HomeCompassApi\obj\Debug\net8.0\HomeCompassApi.dll
 E:\Development\c#\HomeCompassApi\HomeCompassApi\obj\Debug\net8.0\refint\HomeCompassApi.dll
 E:\Development\c#\HomeCompassApi\HomeCompassApi\obj\Debug\net8.0\HomeCompassApi.pdb
 E:\Development\c#\HomeCompassApi\HomeCompassApi\obj\Debug\net8.0\HomeCompassApi.genruntimeconfig.cache
 E:\Development\c#\HomeCompassApi\HomeCompassApi\obj\Debug\net8.0\ref\HomeCompassApi.dll
+E:\Development\c#\HomeCompassApi\HomeCompassApi\obj\Debug\net8.0\HomeComp.0146FFE5.Up2Date

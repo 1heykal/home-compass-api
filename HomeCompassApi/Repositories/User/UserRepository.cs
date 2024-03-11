@@ -58,7 +58,44 @@ namespace HomeCompassApi.Repositories.User
         public async Task<bool> IsExisted(string id) => await _context.Users.AnyAsync(e => e.Id == id);
 
 
+        public async Task SetEmailVerificationToken(ApplicationUser user, string token)
+        {
+            user.EmailVerificationToken = token;
+            user.EmailVerificationTokenExpiresAt = DateTime.UtcNow.AddMinutes(15);
 
+            await _context.SaveChangesAsync();
+        }
+
+
+        public async Task SetPasswordResetToken(ApplicationUser user, string token)
+        {
+            user.PasswordResetToken = token;
+            user.PasswordResetTokenExpiresAt = DateTime.UtcNow.AddMinutes(15);
+            user.PasswordTokenConfirmed = false;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task ConfirmEmailAsync(ApplicationUser user)
+        {
+            user.EmailConfirmed = true;
+            user.EmailVerificationTokenExpiresAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task ConfirmPasswordToken(ApplicationUser user)
+        {
+            user.PasswordTokenConfirmed = true;
+            user.PasswordResetTokenExpiresAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task SetPasswordTokenConfirmedAsync(ApplicationUser user)
+        {
+            user.PasswordTokenConfirmed = false;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
 
 
 
