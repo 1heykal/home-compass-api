@@ -1,6 +1,7 @@
 ﻿using HomeCompassApi.Models;
 using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Services;
+using HomeCompassApi.Services.Facilities;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -27,9 +28,9 @@ namespace HomeCompassApi.Repositories.Facilities
 
         public async Task<List<Job>> GetAll() => await _context.Jobs.AsNoTracking().ToListAsync();
 
-        public async Task<List<Job>> GetAllReduced()
+        public async Task<List<ReadJobsDTO>> GetAllReduced()
         {
-            return await _context.Jobs.Select(job => new Job()
+            return await _context.Jobs.Select(job => new ReadJobsDTO()
             {
                 Id = job.Id,
                 Title = job.Title,

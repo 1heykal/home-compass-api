@@ -3,6 +3,7 @@ using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using HomeCompassApi.Services.Facilities;
 
 namespace HomeCompassApi.Controllers.Facilities
 {
@@ -39,7 +40,7 @@ namespace HomeCompassApi.Controllers.Facilities
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Job>>> GetAsync()
+        public async Task<ActionResult<List<ReadJobsDTO>>> GetAsync()
         {
             return Ok(await _jobRepository.GetAllReduced());
         }

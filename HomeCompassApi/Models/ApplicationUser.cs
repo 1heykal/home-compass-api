@@ -23,7 +23,7 @@ namespace HomeCompassApi.Models
         public string Address { get; set; }
 
         [Range(minimum: 17, maximum: 100)]
-        public int Age { get; set; }
+        public DateOnly BirthDate { get; set; }
         public string Gender { get; set; }
         public string Role { get; set; }
 
@@ -53,7 +53,7 @@ namespace HomeCompassApi.Models
             Gender = userDetailsDTO.Gender;
             Address = userDetailsDTO.Address;
             Email = userDetailsDTO.Email;
-            Age = userDetailsDTO.Age;
+            BirthDate = userDetailsDTO.BirthDate;
             PhotoUrl = userDetailsDTO.PhotoURL;
 
         }

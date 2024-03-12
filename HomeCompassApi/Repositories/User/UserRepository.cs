@@ -39,7 +39,7 @@ namespace HomeCompassApi.Repositories.User
                 Id = u.Id,
                 FirstName = u.FirstName,
                 LastName = u.LastName,
-                Age = u.Age,
+                BirthDate = u.BirthDate,
                 Email = u.Email,
                 Gender = u.Gender,
                 PhotoURL = u.PhotoUrl
@@ -47,9 +47,18 @@ namespace HomeCompassApi.Repositories.User
             }).FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public async Task UpdateUserDetails(ApplicationUser userDetailsDTO)
+        public async Task UpdateUserDetails(string id, UpdateUserDetailsDTO userDetailsDTO)
         {
-            _context.Users.Update(userDetailsDTO);
+            var user = await GetById(id);
+
+            user.FirstName = userDetailsDTO.FirstName;
+            user.LastName = userDetailsDTO.LastName;
+            user.BirthDate = userDetailsDTO.BirthDate;
+            user.Email = userDetailsDTO.Email;
+            user.Gender = userDetailsDTO.Gender;
+            user.PhotoUrl = userDetailsDTO.PhotoURL;
+
+            _context.Users.Update(user);
             await _context.SaveChangesAsync();
         }
 

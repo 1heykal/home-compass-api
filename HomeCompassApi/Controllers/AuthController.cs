@@ -19,17 +19,15 @@ namespace HomeCompassApi.Controllers
         private readonly AuthService _authService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly EmailService _emailService;
-        private readonly ApplicationDbContext _context;
         private readonly UserRepository _userRepository;
 
 
-        public AuthController(AuthService authService, UserManager<ApplicationUser> userManager, EmailService emailService, ApplicationDbContext context, UserRepository userRepository)
+        public AuthController(AuthService authService, UserManager<ApplicationUser> userManager, EmailService emailService, UserRepository userRepository)
         {
             _authService = authService;
             _userManager = userManager;
             _emailService = emailService;
             _userRepository = userRepository;
-            _context = context;
         }
 
         [HttpPost("register")]
