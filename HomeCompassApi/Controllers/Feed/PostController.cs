@@ -82,13 +82,22 @@ namespace HomeCompassApi.Controllers.Feed
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAsync(int id, UpdatePostDTO post)
         {
-            var entity = new Post(post);
-            entity.Id = id;
-            if (!await _postRepository.IsExisted(entity))
+
+            if (!await _postRepository.IsExisted(id))
                 return NotFound($"There is no post with the specified Id: {id}");
+
+            var entity = UpdatePostDTOToPost(await _postRepository.GetById(id), post);
 
             await _postRepository.Update(entity);
             return NoContent();
+        }
+
+        private static Post UpdatePostDTOToPost(Post post, UpdatePostDTO postDTO)
+        {
+            post.Title = postDTO.Title;
+            post.Content = postDTO.Content;
+            post.Archived = postDTO.Archived;
+            return post;
         }
 
         [HttpDelete("{id}")]

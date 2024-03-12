@@ -41,22 +41,5 @@ namespace HomeCompassApi.Models.Facilities
         [JsonIgnore]
         public List<Job> Jobs { get; set; }
 
-        public Facility() { }
-
-        public Facility(UpdateFacilityDTO facilityDTO)
-        {
-            Name = facilityDTO.Name;
-            Location = facilityDTO.Location;
-            Description = facilityDTO.Description;
-            CategoryId = facilityDTO.CategoryId;
-            Days = facilityDTO.Days;
-            Resources = facilityDTO.Resources;
-            Hours = facilityDTO.Hours;
-            Target = facilityDTO.Target;
-            Description = facilityDTO.Description;
-
-        }
-
-
     }
 }

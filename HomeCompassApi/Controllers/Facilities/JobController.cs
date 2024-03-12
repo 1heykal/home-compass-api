@@ -4,6 +4,7 @@ using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using HomeCompassApi.Services.Facilities;
+using System.Configuration;
 
 namespace HomeCompassApi.Controllers.Facilities
 {
@@ -96,7 +97,7 @@ namespace HomeCompassApi.Controllers.Facilities
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync(int id, Job job)
+        public async Task<IActionResult> UpdateAsync(int id, UpdateJobDTO job)
         {
             if (!await _jobRepository.IsExisted(id))
                 return NotFound($"There is no job with the specified Id: {id}");
@@ -104,13 +105,27 @@ namespace HomeCompassApi.Controllers.Facilities
             if (!await _categoryRepository.IsExisted(job.CategoryId))
                 return NotFound($"There is no category with the specified Id: {id}");
 
-            // var entity = new Job(job);
-            // entity.Id = id;
+            var entity = UpdateJobDTOToJob(await _jobRepository.GetById(id), job);
 
-            await _jobRepository.Update(job);
+            await _jobRepository.Update(entity);
             return NoContent();
         }
 
+        private static Job UpdateJobDTOToJob(Job job, UpdateJobDTO jobDTO)
+        {
+            job.Title = jobDTO.Title;
+            job.Benefits = jobDTO.Benefits;
+            job.ContactInformation = jobDTO.ContactInformation;
+            job.Hours = jobDTO.Hours;
+            job.Days = jobDTO.Days;
+            job.Location = jobDTO.Location;
+            job.Skills = jobDTO.Skills;
+            job.Salary = jobDTO.Salary;
+            job.Description = jobDTO.Description;
+            job.CategoryId = jobDTO.CategoryId;
+
+            return job;
+        }
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {

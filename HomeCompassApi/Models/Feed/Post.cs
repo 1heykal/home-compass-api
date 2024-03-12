@@ -31,13 +31,5 @@ namespace HomeCompassApi.Models.Feed
         [JsonIgnore]
         public List<Like> Likes { get; set; }
 
-
-        public Post() { }
-        public Post(UpdatePostDTO post)
-        {
-            Title = post.Title;
-            Content = post.Content;
-            Archived = post.Archived;
-        }
     }
 }

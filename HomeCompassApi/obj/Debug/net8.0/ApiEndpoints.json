@@ -1021,7 +1021,7 @@
       },
       {
         "Name": "job",
-        "Type": "HomeCompassApi.Models.Facilities.Job",
+        "Type": "HomeCompassApi.Services.Facilities.UpdateJobDTO",
         "IsRequired": true
       }
     ],

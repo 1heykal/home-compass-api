@@ -4,6 +4,8 @@ using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
 using HomeCompassApi.Services.Facilities;
 using Microsoft.AspNetCore.Mvc;
+using Humanizer.Localisation;
+using Org.BouncyCastle.Asn1.X509;
 
 namespace HomeCompassApi.Controllers.Facilities
 {
@@ -92,13 +94,26 @@ namespace HomeCompassApi.Controllers.Facilities
             if (!await _categoryRepository.IsExisted(facility.CategoryId))
                 return NotFound($"There is no category with the specified Id: {id}");
 
-            var entity = new Facility(facility)
-            {
-                Id = id
-            };
+            var entity = UpdateFacilityDTOToFacility(await _facilityRepository.GetById(id), facility);
 
             await _facilityRepository.Update(entity);
             return NoContent();
+        }
+
+        private static Facility UpdateFacilityDTOToFacility(Facility facility, UpdateFacilityDTO facilityDTO)
+        {
+
+            facility.Name = facilityDTO.Name;
+            facility.Location = facilityDTO.Location;
+            facility.Description = facilityDTO.Description;
+            facility.CategoryId = facilityDTO.CategoryId;
+            facility.Days = facilityDTO.Days;
+            facility.Resources = facilityDTO.Resources;
+            facility.Hours = facilityDTO.Hours;
+            facility.Target = facilityDTO.Target;
+            facility.Description = facilityDTO.Description;
+
+            return facility;
         }
 
         [HttpDelete("{id}")]
