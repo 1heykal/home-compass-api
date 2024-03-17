@@ -11,7 +11,7 @@ namespace HomeCompassApi.Controllers.Cases
 {
     [ApiController]
     [Route("[controller]")]
-    //[Authorize]
+    [Authorize]
     public class MissingController : Controller
     {
         private readonly MissingRepository _missingRepository;

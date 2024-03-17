@@ -86,6 +86,9 @@ namespace HomeCompassApi.Controllers.Facilities
         [HttpGet("bycategory/{categoryId}")]
         public async Task<ActionResult<List<Job>>> GetByCategoryAsync(int categoryId)
         {
+            if (!await _categoryRepository.IsExisted(categoryId))
+                return NotFound($"There is no category with the specified id: {categoryId}");
+
             return Ok(await _jobRepository.GetByCategoryAsync(categoryId));
         }
 
@@ -103,7 +106,7 @@ namespace HomeCompassApi.Controllers.Facilities
                 return NotFound($"There is no job with the specified Id: {id}");
 
             if (!await _categoryRepository.IsExisted(job.CategoryId))
-                return NotFound($"There is no category with the specified Id: {id}");
+                return NotFound($"There is no category with the specified Id: {job.CategoryId}");
 
             var entity = UpdateJobDTOToJob(await _jobRepository.GetById(id), job);
 

@@ -4,6 +4,8 @@ using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using HomeCompassApi.Services.Feed;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
 namespace HomeCompassApi.Repositories.Feed
 {
@@ -25,6 +27,21 @@ namespace HomeCompassApi.Repositories.Feed
         public async Task<List<Report>> GetAll()
         {
             return await _context.Reports.ToListAsync();
+        }
+
+        public async Task<List<ReadAllReportsDTO>> GetAllReportsDTO()
+        {
+            return await _context.Reports.Select(r => new ReadAllReportsDTO
+            {
+                Id = r.Id,
+                Type = r.Type,
+                Details = r.Details,
+                Date = r.Date,
+                Archived = r.Archived,
+                ReporterId = r.ReporterId,
+                PostId = r.PostId
+
+            }).ToListAsync();
         }
 
         public async Task<Report> GetById(int id)

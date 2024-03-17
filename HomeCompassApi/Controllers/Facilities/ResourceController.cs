@@ -64,6 +64,7 @@ namespace HomeCompassApi.Controllers.Facilities
             if (await _resourceRepository.NameExists(id, resource.Name))
                 return BadRequest($"A resource with the specified name exists.");
 
+            resource.Id = id;
             await _resourceRepository.Update(resource);
 
             return NoContent();

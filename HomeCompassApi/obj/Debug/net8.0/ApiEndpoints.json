@@ -1555,16 +1555,16 @@
     ]
   },
   {
-    "ContainingType": "HomeCompassApi.Controllers.Feed.ReportsController",
+    "ContainingType": "HomeCompassApi.Controllers.Feed.ReportController",
     "Method": "GetAsync",
-    "RelativePath": "Reports",
+    "RelativePath": "Report",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.List\u00601[[HomeCompassApi.Models.Feed.Report, HomeCompassApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.List\u00601[[HomeCompassApi.Services.Feed.ReadAllReportsDTO, HomeCompassApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -1575,9 +1575,9 @@
     ]
   },
   {
-    "ContainingType": "HomeCompassApi.Controllers.Feed.ReportsController",
+    "ContainingType": "HomeCompassApi.Controllers.Feed.ReportController",
     "Method": "CreateAsync",
-    "RelativePath": "Reports",
+    "RelativePath": "Report",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -1591,9 +1591,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "HomeCompassApi.Controllers.Feed.ReportsController",
+    "ContainingType": "HomeCompassApi.Controllers.Feed.ReportController",
     "Method": "Get",
-    "RelativePath": "Reports/{id}",
+    "RelativePath": "Report/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -1617,9 +1617,9 @@
     ]
   },
   {
-    "ContainingType": "HomeCompassApi.Controllers.Feed.ReportsController",
+    "ContainingType": "HomeCompassApi.Controllers.Feed.ReportController",
     "Method": "UpdateAsync",
-    "RelativePath": "Reports/{id}",
+    "RelativePath": "Report/{id}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -1638,9 +1638,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "HomeCompassApi.Controllers.Feed.ReportsController",
+    "ContainingType": "HomeCompassApi.Controllers.Feed.ReportController",
     "Method": "DeleteAsync",
-    "RelativePath": "Reports/{id}",
+    "RelativePath": "Report/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -1654,9 +1654,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "HomeCompassApi.Controllers.Feed.ReportsController",
+    "ContainingType": "HomeCompassApi.Controllers.Feed.ReportController",
     "Method": "GetByPageAsync",
-    "RelativePath": "Reports/page",
+    "RelativePath": "Report/page",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,

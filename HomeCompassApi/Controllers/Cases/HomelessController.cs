@@ -14,7 +14,7 @@ namespace HomeCompassApi.Controllers.Cases
 {
     [ApiController]
     [Route("[controller]")]
-    //[Authorize]
+    [Authorize]
     public class HomelessController : Controller
     {
         private readonly HomelessRepository _homelessRepository;

@@ -9,6 +9,7 @@ namespace HomeCompassApi.Models.Facilities
     public class Job
     {
         [Key]
+        [JsonIgnore]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Required]

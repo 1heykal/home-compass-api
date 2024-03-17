@@ -38,7 +38,8 @@ namespace HomeCompassApi.Repositories.Facilities
                 Description = job.Description,
                 Location = job.Location,
                 ContactInformation = job.ContactInformation,
-                EmployerId = job.EmployerId
+                EmployerId = job.EmployerId,
+                CategoryId = job.CategoryId
 
             }).ToListAsync();
         }
@@ -53,7 +54,8 @@ namespace HomeCompassApi.Repositories.Facilities
                 Description = job.Description,
                 Location = job.Location,
                 ContactInformation = job.ContactInformation,
-                EmployerId = job.EmployerId
+                EmployerId = job.EmployerId,
+                CategoryId = job.CategoryId
             };
         }
 
