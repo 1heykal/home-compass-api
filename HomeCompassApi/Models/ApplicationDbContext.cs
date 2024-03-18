@@ -44,11 +44,6 @@ namespace HomeCompassApi.Models
             //builder.Entity<ApplicationUser>().HasQueryFilter(u => !u.IsDeleted);
 
 
-            builder.Entity<Report>()
-                .HasOne(r => r.Reporter)
-                .WithMany(u => u.Reports)
-                .OnDelete(DeleteBehavior.SetNull);
-
             base.OnModelCreating(builder);
         }
 

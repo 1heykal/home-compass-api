@@ -30,9 +30,9 @@ namespace HomeCompassApi.Models.Facilities
         public int Hours { get; set; }
         public string ContactInformation { get; set; }
         public string Benefits { get; set; }
-        public int EmployerId { get; set; }
+        public string ContributorId { get; set; }
 
-        [ForeignKey(nameof(EmployerId)), JsonIgnore]
-        public Facility Facility { get; set; }
+        [ForeignKey(nameof(ContributorId)), JsonIgnore]
+        public ApplicationUser Contributor { get; set; }
     }
 }

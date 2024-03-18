@@ -1072,14 +1072,14 @@
   {
     "ContainingType": "HomeCompassApi.Controllers.Facilities.JobController",
     "Method": "GetByContributorIdAsync",
-    "RelativePath": "Job/employer/{id}",
+    "RelativePath": "Job/contributor/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "id",
-        "Type": "System.Int32",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],

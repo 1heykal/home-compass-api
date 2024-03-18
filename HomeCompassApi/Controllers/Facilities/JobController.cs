@@ -29,8 +29,8 @@ namespace HomeCompassApi.Controllers.Facilities
         [HttpPost]
         public async Task<IActionResult> CreateAsync(Job job)
         {
-            if (!await _facilityRepository.IsExisted(job.EmployerId))
-                return NotFound($"There is no employer with the specified id: {job.EmployerId}");
+            if (!await _userRepository.IsExisted(job.ContributorId))
+                return NotFound($"There is no contributor with the specified id: {job.ContributorId}");
 
             if (!await _categoryRepository.IsExisted(job.CategoryId))
                 return NotFound($"There is no category with the specified Id: {job.CategoryId}");
@@ -60,16 +60,16 @@ namespace HomeCompassApi.Controllers.Facilities
             return Ok(job);
         }
 
-        [HttpGet("employer/{id}")]
-        public async Task<ActionResult<List<Job>>> GetByContributorIdAsync(int id)
+        [HttpGet("contributor/{id}")]
+        public async Task<ActionResult<List<Job>>> GetByContributorIdAsync(string id)
         {
-            if (id <= 0)
-                return BadRequest();
+            if (id is not null || id == string.Empty)
+                return BadRequest("Provide a valid contributor Id.");
 
-            if (!await _facilityRepository.IsExisted(id))
-                return NotFound($"There is no employer with the specified id: {id}");
+            if (!await _userRepository.IsExisted(id))
+                return NotFound($"There is no contributor with the specified id: {id}");
 
-            return Ok(await _jobRepository.GetByEmployerIdAsync(id));
+            return Ok(await _jobRepository.GetByContributorIdAsync(id));
 
         }
 

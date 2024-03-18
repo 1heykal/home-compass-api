@@ -23,7 +23,6 @@ namespace HomeCompassApi.Repositories.Facilities
         public async Task Delete(int id)
         {
             var facility = await _context.Facilities
-                .Include(f => f.Jobs)
                 .Include(f => f.Resources)
                 .FirstOrDefaultAsync(f => f.Id == id);
 

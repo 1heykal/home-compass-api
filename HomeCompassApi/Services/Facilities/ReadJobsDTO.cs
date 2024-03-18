@@ -13,7 +13,7 @@ namespace HomeCompassApi.Services.Facilities
         public string Location { get; set; }
         public string ContactInformation { get; set; }
         public int CategoryId { get; set; }
-        public int EmployerId { get; set; }
+        public string ContributorId { get; set; }
 
     }
 }

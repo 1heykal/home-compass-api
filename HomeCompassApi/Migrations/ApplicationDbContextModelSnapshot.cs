@@ -178,7 +178,6 @@ namespace HomeCompassApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReporterId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Skills")
@@ -236,7 +235,6 @@ namespace HomeCompassApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReporterId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -278,7 +276,6 @@ namespace HomeCompassApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ContributorId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Days")
@@ -327,15 +324,15 @@ namespace HomeCompassApi.Migrations
                     b.Property<string>("ContactInformation")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ContributorId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Days")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("EmployerId")
-                        .HasColumnType("int");
 
                     b.Property<int>("Hours")
                         .HasColumnType("int");
@@ -358,7 +355,7 @@ namespace HomeCompassApi.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("EmployerId");
+                    b.HasIndex("ContributorId");
 
                     b.ToTable("Jobs");
                 });
@@ -706,9 +703,7 @@ namespace HomeCompassApi.Migrations
                 {
                     b.HasOne("HomeCompassApi.Models.ApplicationUser", "Reporter")
                         .WithMany()
-                        .HasForeignKey("ReporterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ReporterId");
 
                     b.Navigation("Reporter");
                 });
@@ -717,9 +712,7 @@ namespace HomeCompassApi.Migrations
                 {
                     b.HasOne("HomeCompassApi.Models.ApplicationUser", "Reporter")
                         .WithMany()
-                        .HasForeignKey("ReporterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ReporterId");
 
                     b.Navigation("Reporter");
                 });
@@ -729,14 +722,12 @@ namespace HomeCompassApi.Migrations
                     b.HasOne("HomeCompassApi.Models.Facilities.Category", "Category")
                         .WithMany("Facilities")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("HomeCompassApi.Models.ApplicationUser", "Contributor")
                         .WithMany("Facilities")
-                        .HasForeignKey("ContributorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ContributorId");
 
                     b.Navigation("Category");
 
@@ -746,20 +737,18 @@ namespace HomeCompassApi.Migrations
             modelBuilder.Entity("HomeCompassApi.Models.Facilities.Job", b =>
                 {
                     b.HasOne("HomeCompassApi.Models.Facilities.Category", "Category")
-                        .WithMany()
+                        .WithMany("Jobs")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HomeCompassApi.Models.Facilities.Facility", "Facility")
+                    b.HasOne("HomeCompassApi.Models.ApplicationUser", "Contributor")
                         .WithMany("Jobs")
-                        .HasForeignKey("EmployerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ContributorId");
 
                     b.Navigation("Category");
 
-                    b.Navigation("Facility");
+                    b.Navigation("Contributor");
                 });
 
             modelBuilder.Entity("HomeCompassApi.Models.Facilities.Resource", b =>
@@ -824,8 +813,7 @@ namespace HomeCompassApi.Migrations
 
                     b.HasOne("HomeCompassApi.Models.ApplicationUser", "Reporter")
                         .WithMany("Reports")
-                        .HasForeignKey("ReporterId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("ReporterId");
 
                     b.Navigation("Post");
 
@@ -889,6 +877,8 @@ namespace HomeCompassApi.Migrations
 
                     b.Navigation("Facilities");
 
+                    b.Navigation("Jobs");
+
                     b.Navigation("Posts");
 
                     b.Navigation("Reports");
@@ -899,10 +889,7 @@ namespace HomeCompassApi.Migrations
             modelBuilder.Entity("HomeCompassApi.Models.Facilities.Category", b =>
                 {
                     b.Navigation("Facilities");
-                });
 
-            modelBuilder.Entity("HomeCompassApi.Models.Facilities.Facility", b =>
-                {
                     b.Navigation("Jobs");
                 });
 

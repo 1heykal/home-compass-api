@@ -17,6 +17,6 @@ namespace HomeCompassApi.Services.Facilities
         public int Hours { get; set; }
         public string ContactInformation { get; set; }
         public string Benefits { get; set; }
-        public int EmployerId { get; set; }
+        public int ContributorId { get; set; }
     }
 }

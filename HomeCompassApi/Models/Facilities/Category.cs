@@ -18,5 +18,8 @@ namespace HomeCompassApi.Models.Facilities
         [JsonIgnore]
         public List<Facility> Facilities { get; set; }
 
+        [JsonIgnore]
+        public List<Job> Jobs { get; set; }
+
     }
 }

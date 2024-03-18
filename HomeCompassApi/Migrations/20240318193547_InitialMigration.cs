@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HomeCompassApi.Migrations
 {
     /// <inheritdoc />
-    public partial class JobMigration : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,7 +34,7 @@ namespace HomeCompassApi.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhotoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Age = table.Column<int>(type: "int", nullable: false),
+                    BirthDate = table.Column<DateOnly>(type: "date", nullable: false),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Role = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EmailVerificationToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -211,7 +211,7 @@ namespace HomeCompassApi.Migrations
                     PhotoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Archived = table.Column<bool>(type: "bit", nullable: false),
                     AdditionalDetails = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReporterId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    ReporterId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -220,8 +220,8 @@ namespace HomeCompassApi.Migrations
                         name: "FK_Homeless_AspNetUsers_ReporterId",
                         column: x => x.ReporterId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetDefault);
+                        principalColumn: "Id"
+                        );
                 });
 
             migrationBuilder.CreateTable(
@@ -241,7 +241,7 @@ namespace HomeCompassApi.Migrations
                     PhotoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Archived = table.Column<bool>(type: "bit", nullable: false),
                     AdditionalDetails = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReporterId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    ReporterId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -250,8 +250,7 @@ namespace HomeCompassApi.Migrations
                         name: "FK_Missings_AspNetUsers_ReporterId",
                         column: x => x.ReporterId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetDefault);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -328,12 +327,12 @@ namespace HomeCompassApi.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: true),
                     Target = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Days = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Hours = table.Column<int>(type: "int", nullable: false),
                     ContactInformaton = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ContributorId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    ContributorId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -342,10 +341,43 @@ namespace HomeCompassApi.Migrations
                         name: "FK_Facilities_AspNetUsers_ContributorId",
                         column: x => x.ContributorId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Facilities_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Jobs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Salary = table.Column<decimal>(type: "decimal(38,18)", precision: 38, scale: 18, nullable: false),
+                    Skills = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Days = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Hours = table.Column<int>(type: "int", nullable: false),
+                    ContactInformation = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Benefits = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ContributorId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Jobs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Jobs_AspNetUsers_ContributorId",
+                        column: x => x.ContributorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Jobs_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
@@ -455,41 +487,6 @@ namespace HomeCompassApi.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Jobs",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Salary = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Skills = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Days = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Hours = table.Column<int>(type: "int", nullable: false),
-                    ContactInformation = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Benefits = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EmployerId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Jobs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Jobs_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Jobs_Facilities_EmployerId",
-                        column: x => x.EmployerId,
-                        principalTable: "Facilities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -565,9 +562,9 @@ namespace HomeCompassApi.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Jobs_EmployerId",
+                name: "IX_Jobs_ContributorId",
                 table: "Jobs",
-                column: "EmployerId");
+                column: "ContributorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Likes_PostId",
@@ -649,10 +646,10 @@ namespace HomeCompassApi.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Resources");
+                name: "Facilities");
 
             migrationBuilder.DropTable(
-                name: "Facilities");
+                name: "Resources");
 
             migrationBuilder.DropTable(
                 name: "Posts");

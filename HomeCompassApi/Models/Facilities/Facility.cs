@@ -31,15 +31,11 @@ namespace HomeCompassApi.Models.Facilities
         [DataType(DataType.PhoneNumber)]
         public string ContactInformaton { get; set; }
 
-        [Required]
         public string ContributorId { get; set; }
 
         [ForeignKey(nameof(ContributorId))]
         [JsonIgnore]
         public ApplicationUser Contributor { get; set; }
-
-        [JsonIgnore]
-        public List<Job> Jobs { get; set; }
 
     }
 }

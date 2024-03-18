@@ -38,7 +38,7 @@ namespace HomeCompassApi.Repositories.Facilities
                 Description = job.Description,
                 Location = job.Location,
                 ContactInformation = job.ContactInformation,
-                EmployerId = job.EmployerId,
+                ContributorId = job.ContributorId,
                 CategoryId = job.CategoryId
 
             }).ToListAsync();
@@ -54,7 +54,7 @@ namespace HomeCompassApi.Repositories.Facilities
                 Description = job.Description,
                 Location = job.Location,
                 ContactInformation = job.ContactInformation,
-                EmployerId = job.EmployerId,
+                ContributorId = job.ContributorId,
                 CategoryId = job.CategoryId
             };
         }
@@ -64,9 +64,9 @@ namespace HomeCompassApi.Repositories.Facilities
             return await _context.Facilities.Where(f => f.CategoryId == categoryId).ToListAsync();
         }
 
-        public async Task<List<Job>> GetByEmployerIdAsync(int id)
+        public async Task<List<Job>> GetByContributorIdAsync(string id)
         {
-            return await _context.Jobs.Where(f => f.EmployerId == id).ToListAsync();
+            return await _context.Jobs.Where(f => f.ContributorId == id).ToListAsync();
         }
 
         public async Task<List<Job>> GetByPageAsync(PageDTO page) => await _context.Jobs.Skip((page.Index - 1) * page.Size).Take(page.Size).ToListAsync();

@@ -20,7 +20,12 @@ namespace HomeCompassApi.Repositories.Facilities
 
         public async Task Delete(int id)
         {
-            _context.Categories.Remove(await GetById(id));
+            var category = await _context.Categories
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if(category is not null)
+            _context.Categories.Remove(category);
+
             await _context.SaveChangesAsync();
         }
 

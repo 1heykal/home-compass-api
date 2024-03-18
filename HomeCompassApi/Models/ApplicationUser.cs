@@ -27,7 +27,7 @@ namespace HomeCompassApi.Models
         public string Gender { get; set; }
         public string Role { get; set; }
 
-      //  public bool IsDeleted { get; set; }
+        //  public bool IsDeleted { get; set; }
 
         public string EmailVerificationToken { get; set; }
         public DateTime? EmailVerificationTokenExpiresAt { get; set; }
@@ -41,24 +41,7 @@ namespace HomeCompassApi.Models
         public ICollection<Comment> Comments { get; set; }
         public ICollection<Facility> Facilities { get; set; }
         public ICollection<Resource> Resources { get; set; }
+        public ICollection<Job> Jobs { get; set; }
 
-
-        public ApplicationUser()
-        {
-
-        }
-
-
-        public ApplicationUser(UpdateUserDetailsDTO userDetailsDTO)
-        {
-            FirstName = userDetailsDTO.FirstName;
-            LastName = userDetailsDTO.LastName;
-            Gender = userDetailsDTO.Gender;
-            Address = userDetailsDTO.Address;
-            Email = userDetailsDTO.Email;
-            BirthDate = userDetailsDTO.BirthDate;
-            PhotoUrl = userDetailsDTO.PhotoURL;
-
-        }
     }
 }
