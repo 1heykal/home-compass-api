@@ -38,6 +38,20 @@ namespace HomeCompassApi.Models
             _configuration = configuration;
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Job>().Property<decimal>(j => j.Salary).HasPrecision(38, 18);
+            //builder.Entity<ApplicationUser>().HasQueryFilter(u => !u.IsDeleted);
+
+
+            builder.Entity<Report>()
+                .HasOne(r => r.Reporter)
+                .WithMany(u => u.Reports)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            base.OnModelCreating(builder);
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

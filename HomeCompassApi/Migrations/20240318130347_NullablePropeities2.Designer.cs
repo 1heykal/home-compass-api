@@ -4,6 +4,7 @@ using HomeCompassApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HomeCompassApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240318130347_NullablePropeities2")]
+    partial class NullablePropeities2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -271,7 +274,7 @@ namespace HomeCompassApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("ContactInformaton")
@@ -321,7 +324,7 @@ namespace HomeCompassApi.Migrations
                     b.Property<string>("Benefits")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("ContactInformation")
@@ -334,7 +337,7 @@ namespace HomeCompassApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("EmployerId")
+                    b.Property<int?>("EmployerId")
                         .HasColumnType("int");
 
                     b.Property<int>("Hours")
@@ -728,9 +731,7 @@ namespace HomeCompassApi.Migrations
                 {
                     b.HasOne("HomeCompassApi.Models.Facilities.Category", "Category")
                         .WithMany("Facilities")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.HasOne("HomeCompassApi.Models.ApplicationUser", "Contributor")
                         .WithMany("Facilities")
@@ -747,15 +748,11 @@ namespace HomeCompassApi.Migrations
                 {
                     b.HasOne("HomeCompassApi.Models.Facilities.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.HasOne("HomeCompassApi.Models.Facilities.Facility", "Facility")
                         .WithMany("Jobs")
-                        .HasForeignKey("EmployerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EmployerId");
 
                     b.Navigation("Category");
 
@@ -823,9 +820,8 @@ namespace HomeCompassApi.Migrations
                         .IsRequired();
 
                     b.HasOne("HomeCompassApi.Models.ApplicationUser", "Reporter")
-                        .WithMany("Reports")
-                        .HasForeignKey("ReporterId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .WithMany()
+                        .HasForeignKey("ReporterId");
 
                     b.Navigation("Post");
 
@@ -890,8 +886,6 @@ namespace HomeCompassApi.Migrations
                     b.Navigation("Facilities");
 
                     b.Navigation("Posts");
-
-                    b.Navigation("Reports");
 
                     b.Navigation("Resources");
                 });

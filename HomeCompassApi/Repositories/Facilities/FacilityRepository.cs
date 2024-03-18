@@ -22,7 +22,12 @@ namespace HomeCompassApi.Repositories.Facilities
 
         public async Task Delete(int id)
         {
-            _context.Facilities.Remove(await GetById(id));
+            var facility = await _context.Facilities
+                .Include(f => f.Jobs)
+                .Include(f => f.Resources)
+                .FirstOrDefaultAsync(f => f.Id == id);
+
+            _context.Facilities.Remove(facility);
             await _context.SaveChangesAsync();
         }
 
@@ -67,16 +72,16 @@ namespace HomeCompassApi.Repositories.Facilities
         }
 
         public async Task<List<ReadFacilitiesDTO>> GetByPageAsync(PageDTO page) => await _context.Facilities.Select(facility => new ReadFacilitiesDTO()
-            {
-                Id = facility.Id,
-                Name = facility.Name,
-                ContactInformaton = facility.ContactInformaton,
-                Description = facility.Description,
-                Location = facility.Location,
-                Resources = facility.Resources,
-                Target = facility.Target
+        {
+            Id = facility.Id,
+            Name = facility.Name,
+            ContactInformaton = facility.ContactInformaton,
+            Description = facility.Description,
+            Location = facility.Location,
+            Resources = facility.Resources,
+            Target = facility.Target
 
-            }).Skip((page.Index - 1) * page.Size).Take(page.Size).ToListAsync();
+        }).Skip((page.Index - 1) * page.Size).Take(page.Size).ToListAsync();
 
 
 

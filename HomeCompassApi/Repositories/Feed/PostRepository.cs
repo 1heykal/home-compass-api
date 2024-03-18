@@ -134,7 +134,7 @@ namespace HomeCompassApi.Repositories
 
         public async Task Delete(int id)
         {
-            var post = await _context.Posts.AsQueryable()
+            var post = await _context.Posts
                 .Include(p => p.Comments)
                 .Include(p => p.Likes).FirstOrDefaultAsync(p => p.Id == id);
 
