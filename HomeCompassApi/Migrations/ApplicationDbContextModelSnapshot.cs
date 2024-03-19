@@ -368,9 +368,6 @@ namespace HomeCompassApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
 
@@ -379,8 +376,6 @@ namespace HomeCompassApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Resources");
                 });
@@ -751,13 +746,6 @@ namespace HomeCompassApi.Migrations
                     b.Navigation("Contributor");
                 });
 
-            modelBuilder.Entity("HomeCompassApi.Models.Facilities.Resource", b =>
-                {
-                    b.HasOne("HomeCompassApi.Models.ApplicationUser", null)
-                        .WithMany("Resources")
-                        .HasForeignKey("ApplicationUserId");
-                });
-
             modelBuilder.Entity("HomeCompassApi.Models.Feed.Comment", b =>
                 {
                     b.HasOne("HomeCompassApi.Models.Feed.Post", "Post")
@@ -882,8 +870,6 @@ namespace HomeCompassApi.Migrations
                     b.Navigation("Posts");
 
                     b.Navigation("Reports");
-
-                    b.Navigation("Resources");
                 });
 
             modelBuilder.Entity("HomeCompassApi.Models.Facilities.Category", b =>

@@ -40,7 +40,6 @@ namespace HomeCompassApi.Models
         public ICollection<Report> Reports { get; set; }
         public ICollection<Comment> Comments { get; set; }
         public ICollection<Facility> Facilities { get; set; }
-        public ICollection<Resource> Resources { get; set; }
         public ICollection<Job> Jobs { get; set; }
 
     }

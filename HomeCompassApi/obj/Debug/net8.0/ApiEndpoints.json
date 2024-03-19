@@ -443,7 +443,7 @@
     "ContainingType": "HomeCompassApi.Controllers.Feed.CommentController",
     "Method": "GetByUserIdAsync",
     "RelativePath": "Comment/user/{id}",
-    "HttpMethod": "POST",
+    "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -1803,22 +1803,6 @@
         "StatusCode": 200
       }
     ]
-  },
-  {
-    "ContainingType": "HomeCompassApi.Controllers.UserController",
-    "Method": "Delete",
-    "RelativePath": "User/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.String",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
   },
   {
     "ContainingType": "HomeCompassApi.Controllers.UserController",

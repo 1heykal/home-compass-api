@@ -41,8 +41,6 @@ namespace HomeCompassApi.Models
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Job>().Property<decimal>(j => j.Salary).HasPrecision(38, 18);
-            //builder.Entity<ApplicationUser>().HasQueryFilter(u => !u.IsDeleted);
-
 
             base.OnModelCreating(builder);
         }

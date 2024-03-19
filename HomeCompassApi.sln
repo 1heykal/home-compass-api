@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeCompassApi", "HomeCompassApi\HomeCompassApi.csproj", "{DB5EEF72-EF96-46FD-BB65-64DBBFE89C2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeCompassApi", "HomeCompassApi\HomeCompassApi.csproj", "{7644504C-CB67-41E5-BDF1-5A4FE5EA9BA3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DB5EEF72-EF96-46FD-BB65-64DBBFE89C2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DB5EEF72-EF96-46FD-BB65-64DBBFE89C2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DB5EEF72-EF96-46FD-BB65-64DBBFE89C2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DB5EEF72-EF96-46FD-BB65-64DBBFE89C2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7644504C-CB67-41E5-BDF1-5A4FE5EA9BA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7644504C-CB67-41E5-BDF1-5A4FE5EA9BA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7644504C-CB67-41E5-BDF1-5A4FE5EA9BA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7644504C-CB67-41E5-BDF1-5A4FE5EA9BA3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

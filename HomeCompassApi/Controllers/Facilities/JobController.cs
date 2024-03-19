@@ -63,7 +63,7 @@ namespace HomeCompassApi.Controllers.Facilities
         [HttpGet("contributor/{id}")]
         public async Task<ActionResult<List<Job>>> GetByContributorIdAsync(string id)
         {
-            if (id is not null || id == string.Empty)
+            if (id is null || id == string.Empty)
                 return BadRequest("Provide a valid contributor Id.");
 
             if (!await _userRepository.IsExisted(id))

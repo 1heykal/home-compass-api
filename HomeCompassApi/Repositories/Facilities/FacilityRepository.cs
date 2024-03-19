@@ -10,12 +10,30 @@ namespace HomeCompassApi.Repositories.Facilities
     public class FacilityRepository : IRepository<Facility>
     {
         private readonly ApplicationDbContext _context;
-        public FacilityRepository(ApplicationDbContext context)
+        private readonly ResourceRepository _resourceRepository;
+        public FacilityRepository(ApplicationDbContext context, ResourceRepository resourceRepository)
         {
             _context = context;
+            _resourceRepository = resourceRepository;
         }
         public async Task Add(Facility entity)
         {
+            List<Resource> resources = new();
+            foreach (Resource r in entity.Resources)
+            {
+                var resource = await _resourceRepository.GetByName(r.Name);
+                if (resource is null)
+                {
+                    await _resourceRepository.Add(r);
+                    resource = await _resourceRepository.GetByName(r.Name);
+                    resources.Add(resource);
+                }
+                else
+                {
+                    resources.Add(resource);
+                }
+            }
+            entity.Resources = resources;
             await _context.Facilities.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
@@ -92,6 +110,22 @@ namespace HomeCompassApi.Repositories.Facilities
 
         public async Task Update(Facility entity)
         {
+            List<Resource> resources = new();
+            foreach (Resource r in entity.Resources)
+            {
+                var resource = await _resourceRepository.GetByName(r.Name);
+                if (resource is null)
+                {
+                    await _resourceRepository.Add(r);
+                    resource = await _resourceRepository.GetByName(r.Name);
+                    resources.Add(resource);
+                }
+                else
+                {
+                    resources.Add(resource);
+                }
+            }
+            entity.Resources = resources;
             _context.Facilities.Update(entity);
             await _context.SaveChangesAsync();
         }

@@ -16,7 +16,7 @@ namespace HomeCompassApi.Models.Feed
         public DateTime Date { get; set; }
         public bool Archived { get; set; }
 
-        public string ReporterId { get; set; }
+        public string ReporterId { get; set; } = string.Empty;
 
         [ForeignKey(nameof(ReporterId))]
         [JsonIgnore]

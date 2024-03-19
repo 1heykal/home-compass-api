@@ -66,7 +66,7 @@ namespace HomeCompassApi.Controllers.Feed
             return Ok(comment);
         }
 
-        [HttpPost("user/{id}")]
+        [HttpGet("user/{id}")]
         public async Task<ActionResult<List<Post>>> GetByUserIdAsync(string id)
         {
             if (id is null || id == string.Empty)
@@ -105,11 +105,8 @@ namespace HomeCompassApi.Controllers.Feed
             if (!await _commentRepository.IsExisted(id))
                 return NotFound($"There is no comment with the specified Id: {id}");
 
-            var entity = new Comment
-            {
-                Id = id,
-                Content = comment.Content
-            };
+            var entity = await _commentRepository.GetById(id);
+            entity.Content = comment.Content;
 
 
             await _commentRepository.Update(entity);

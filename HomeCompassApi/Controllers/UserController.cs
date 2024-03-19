@@ -41,15 +41,15 @@ namespace HomeCompassApi.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (!await _userRepository.IsExisted(id))
-                return NotFound($"There is no user with the specified Id: {id}");
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> Delete(string id)
+        //{
+        //    if (!await _userRepository.IsExisted(id))
+        //        return NotFound($"There is no user with the specified Id: {id}");
 
-            await _userRepository.Delete(id);
-            return NoContent();
-        }
+        //    await _userRepository.Delete(id);
+        //    return NoContent();
+        //}
 
     }
 }

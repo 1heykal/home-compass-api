@@ -14,7 +14,7 @@ namespace HomeCompassApi.Models.Facilities
         public int Id { get; set; }
         [Required]
         public string Title { get; set; }
-        public int CategoryId { get; set; }
+        public int CategoryId { get; set; } = 0;
 
         [ForeignKey(nameof(CategoryId)), JsonIgnore]
         public Category Category { get; set; }
@@ -30,7 +30,7 @@ namespace HomeCompassApi.Models.Facilities
         public int Hours { get; set; }
         public string ContactInformation { get; set; }
         public string Benefits { get; set; }
-        public string ContributorId { get; set; }
+        public string ContributorId { get; set; } = string.Empty;
 
         [ForeignKey(nameof(ContributorId)), JsonIgnore]
         public ApplicationUser Contributor { get; set; }

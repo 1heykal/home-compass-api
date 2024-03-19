@@ -60,6 +60,8 @@ namespace HomeCompassApi.Repositories.Facilities
 
 
         public async Task<Resource> GetById(int id) => await _context.Resources.FindAsync(id);
+
+        public async Task<Resource> GetByName(string name) => await _context.Resources.FirstOrDefaultAsync(r => r.Name.ToLower() == name.ToLower());
         public async Task<bool> IsExisted(Resource resource) => await _context.Resources.ContainsAsync(resource);
 
         public async Task<bool> IsExisted(int id) => await _context.Resources.AnyAsync(e => e.Id == id);

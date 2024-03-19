@@ -19,9 +19,8 @@ namespace HomeCompassApi.Repositories.User
 
         public async Task Delete(string id)
         {
-            var user = await _context.Users.Include(u => u.Posts)
-                    .Include(u => u.Comments)
-                    .Include(u => u.RefreshTokens).FirstOrDefaultAsync(u => u.Id == id);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+
             if (user is not null)
             {
                 _context.Users.Remove(user);

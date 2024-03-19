@@ -24,7 +24,7 @@ namespace HomeCompassApi.Models.Cases
         public bool Archived { get; set; } = false;
         public string AdditionalDetails { get; set; }
 
-        public string ReporterId { get; set; }
+        public string ReporterId { get; set; } = string.Empty;
 
         [ForeignKey(nameof(ReporterId))]
         [JsonIgnore]

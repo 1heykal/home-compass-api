@@ -18,7 +18,7 @@ namespace HomeCompassApi.Models.Facilities
         [Required]
         public string Location { get; set; }
         public string Description { get; set; }
-        public int CategoryId { get; set; }
+        public int CategoryId { get; set; } = 0;
 
         [ForeignKey(nameof(CategoryId))]
         [JsonIgnore]
@@ -31,7 +31,7 @@ namespace HomeCompassApi.Models.Facilities
         [DataType(DataType.PhoneNumber)]
         public string ContactInformaton { get; set; }
 
-        public string ContributorId { get; set; }
+        public string ContributorId { get; set; } = string.Empty;
 
         [ForeignKey(nameof(ContributorId))]
         [JsonIgnore]

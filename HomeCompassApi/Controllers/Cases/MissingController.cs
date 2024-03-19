@@ -11,7 +11,7 @@ namespace HomeCompassApi.Controllers.Cases
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
+    //[Authorize]
     public class MissingController : Controller
     {
         private readonly MissingRepository _missingRepository;
@@ -74,7 +74,7 @@ namespace HomeCompassApi.Controllers.Cases
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync(int id, Missing missing)
+        public async Task<IActionResult> UpdateAsync(int id, [FromBody] Missing missing)
         {
             missing.Id = id;
             if (!await _missingRepository.IsExisted(missing))

@@ -20,11 +20,12 @@ namespace HomeCompassApi.Repositories.Facilities
 
         public async Task Delete(int id)
         {
-            var category = await _context.Categories
+            var category = await _context.Categories.Include(c => c.Facilities)
+                .Include(c => c.Jobs)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
-            if(category is not null)
-            _context.Categories.Remove(category);
+            if (category is not null)
+                _context.Categories.Remove(category);
 
             await _context.SaveChangesAsync();
         }
@@ -42,7 +43,7 @@ namespace HomeCompassApi.Repositories.Facilities
 
         public async Task<bool> IsExisted(Category category) => await _context.Categories.ContainsAsync(category);
 
-        public async Task<bool> IsExisted(int id)   => await _context.Categories.AnyAsync(e => e.Id == id);
+        public async Task<bool> IsExisted(int id) => await _context.Categories.AnyAsync(e => e.Id == id);
 
         public async Task<bool> NameExists(int id, string name) => await _context.Categories.AnyAsync(c => c.Name.ToLower() == name.ToLower() && c.Id != id);
         public async Task<bool> NameExists(string name) => await _context.Categories.AnyAsync(c => c.Name.ToLower() == name.ToLower());
