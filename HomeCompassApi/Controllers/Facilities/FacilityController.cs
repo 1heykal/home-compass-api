@@ -111,6 +111,7 @@ namespace HomeCompassApi.Controllers.Facilities
             facility.Resources = facilityDTO.Resources;
             facility.Hours = facilityDTO.Hours;
             facility.Target = facilityDTO.Target;
+            facility.PhotoUrl = facilityDTO.PhotoUrl;
             facility.Description = facilityDTO.Description;
 
             return facility;

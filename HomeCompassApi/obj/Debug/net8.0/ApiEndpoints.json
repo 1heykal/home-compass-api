@@ -1805,6 +1805,16 @@
     ]
   },
   {
+    "ContainingType": "HomeCompassApi.Controllers.UploadController",
+    "Method": "Upload",
+    "RelativePath": "Upload",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "HomeCompassApi.Controllers.UserController",
     "Method": "Get",
     "RelativePath": "User/details",

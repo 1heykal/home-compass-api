@@ -13,6 +13,7 @@ namespace HomeCompassApi.Services.Facilities
         public string Location { get; set; }
         public List<Resource> Resources { get; set; }
         public string Target { get; set; }
+        public string PhotoUrl { get; set; }
 
     }
 }

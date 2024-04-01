@@ -28,6 +28,9 @@ namespace HomeCompassApi.Models.Facilities
         public List<string> Days { get; set; }
         public int Hours { get; set; }
 
+        [DataType(DataType.ImageUrl)]
+        public string PhotoUrl { get; set; }
+
         [DataType(DataType.PhoneNumber)]
         public string ContactInformaton { get; set; }
 

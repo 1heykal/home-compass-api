@@ -60,6 +60,7 @@ namespace HomeCompassApi.Repositories.Facilities
                 Description = facility.Description,
                 Location = facility.Location,
                 Resources = facility.Resources,
+                PhotoUrl = facility.PhotoUrl,
                 Target = facility.Target
             }).ToListAsync();
         }
@@ -74,6 +75,7 @@ namespace HomeCompassApi.Repositories.Facilities
                 Description = facility.Description,
                 Location = facility.Location,
                 Resources = facility.Resources,
+                PhotoUrl = facility.PhotoUrl,
                 Target = facility.Target
             };
         }
@@ -96,6 +98,7 @@ namespace HomeCompassApi.Repositories.Facilities
             Description = facility.Description,
             Location = facility.Location,
             Resources = facility.Resources,
+            PhotoUrl = facility.PhotoUrl,
             Target = facility.Target
 
         }).Skip((page.Index - 1) * page.Size).Take(page.Size).ToListAsync();

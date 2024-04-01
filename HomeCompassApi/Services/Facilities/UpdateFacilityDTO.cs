@@ -17,6 +17,8 @@ namespace HomeCompassApi.Services.Facilities
         public int Hours { get; set; }
         public List<Resource> Resources { get; set; }
         public List<string> Days { get; set; }
+        public string PhotoUrl { get; set; }
+
 
     }
 }

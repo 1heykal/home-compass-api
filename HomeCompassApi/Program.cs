@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using HomeCompassApi.Services.EmailService;
 using Microsoft.OpenApi.Models;
+using HomeCompassApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -87,48 +88,58 @@ builder.Services.AddScoped<JobRepository, JobRepository>();
 builder.Services.AddScoped<InfoRepository, InfoRepository>();
 
 
+builder.Services.AddScoped<AzureBlobService>();
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(opt =>
-{
-    opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        In = ParameterLocation.Header,
-        Description = "Please enter the access token",
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        BearerFormat = "JWT",
-        Scheme = "bearer"
-    });
+builder.Services.AddSwaggerGen();
 
-    opt.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id  = "Bearer"
-                }
-            },
-            new string[]{}
-        }
-    });
-});
+
+//(opt =>
+//{
+//    opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+//    {
+//        In = ParameterLocation.Header,
+//        Description = "Please enter the access token",
+//        Name = "Authorization",
+//        Type = SecuritySchemeType.Http,
+//        BearerFormat = "JWT",
+//        Scheme = "bearer"
+//    });
+
+//    opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+//    {
+//        {
+//            new OpenApiSecurityScheme
+//            {
+//                Reference = new OpenApiReference
+//                {
+//                    Type = ReferenceType.SecurityScheme,
+//                    Id  = "Bearer"
+//                }
+//            },
+//            new string[]{}
+//        }
+//    });
+//});
 
 var app = builder.Build();
 
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("../swagger/v1/swagger.json", "HomeCompass API V1");
+    c.RoutePrefix = string.Empty;
+});
+
 
 app.MapSwagger();
+
+
 
 app.UseHttpsRedirection();
 

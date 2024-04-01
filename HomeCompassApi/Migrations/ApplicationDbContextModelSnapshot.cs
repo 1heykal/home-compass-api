@@ -295,6 +295,9 @@ namespace HomeCompassApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PhotoUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Target")
                         .HasColumnType("nvarchar(max)");
 
