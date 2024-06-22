@@ -7,17 +7,16 @@ namespace HomeCompassApi.Models.Feed
 {
     public class Post
     {
-
         [Key]
         [JsonIgnore]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
         public string Title { get; set; }
 
-        [Required]
-        public string Content { get; set; }
+        [Required] public string Content { get; set; }
 
-        public DateTime PublisedOn { get; set; }
+        [DataType(DataType.DateTime)] public DateTime PublisedOn { get; set; }
 
         public bool Archived { get; set; } = false;
         public string UserId { get; set; }
@@ -26,10 +25,7 @@ namespace HomeCompassApi.Models.Feed
         [JsonIgnore]
         public ApplicationUser User { get; set; }
 
-        [JsonIgnore]
-        public List<Comment> Comments { get; set; }
-        [JsonIgnore]
-        public List<Like> Likes { get; set; }
-
+        [JsonIgnore] public List<Comment> Comments { get; set; }
+        [JsonIgnore] public List<Like> Likes { get; set; }
     }
 }

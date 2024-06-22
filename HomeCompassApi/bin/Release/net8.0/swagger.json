@@ -806,7 +806,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Facility"
+                "$ref": "#/definitions/ReadFacilitiesDTO"
               }
             }
           }
@@ -2935,6 +2935,10 @@
         "likesCount": {
           "format": "int32",
           "type": "integer"
+        },
+        "publisedOn": {
+          "format": "date-time",
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -3021,6 +3025,14 @@
           "items": {
             "type": "string"
           }
+        },
+        "hours": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "salary": {
+          "format": "double",
+          "type": "number"
         },
         "location": {
           "type": "string"

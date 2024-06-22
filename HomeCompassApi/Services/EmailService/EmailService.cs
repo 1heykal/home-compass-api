@@ -37,7 +37,5 @@ namespace HomeCompassApi.Services.EmailService
             await client.SendAsync(message);
             await client.DisconnectAsync(true);
         }
-
-
     }
 }

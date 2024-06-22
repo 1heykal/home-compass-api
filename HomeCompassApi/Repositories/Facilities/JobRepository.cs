@@ -36,6 +36,8 @@ namespace HomeCompassApi.Repositories.Facilities
                 Title = job.Title,
                 Skills = job.Skills,
                 Description = job.Description,
+                Salary = job.Salary,
+                Hours = job.Hours,
                 Location = job.Location,
                 ContactInformation = job.ContactInformation,
                 ContributorId = job.ContributorId,
@@ -59,9 +61,9 @@ namespace HomeCompassApi.Repositories.Facilities
             };
         }
 
-        public async Task<List<Facility>> GetByCategoryAsync(int categoryId)
+        public async Task<List<Job>> GetByCategoryAsync(int categoryId)
         {
-            return await _context.Facilities.Where(f => f.CategoryId == categoryId).ToListAsync();
+            return await _context.Jobs.Where(j => j.CategoryId == categoryId).ToListAsync();
         }
 
         public async Task<List<Job>> GetByContributorIdAsync(string id)

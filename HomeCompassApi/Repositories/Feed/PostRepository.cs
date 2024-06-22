@@ -38,9 +38,10 @@ namespace HomeCompassApi.Repositories
                 Title = p.Title,
                 LikesCount = p.Likes.Count,
                 AuthorPhotoUrl = p.User.PhotoUrl,
-                CommentsCount = p.Comments.Count
+                CommentsCount = p.Comments.Count,
+                PublisedOn = p.PublisedOn
 
-            }).ToListAsync();
+            }).OrderByDescending(p => p.PublisedOn).ToListAsync();
         }
 
         private static ReadAllPostsDTO PostToReadAllPostsDTO(Post p)
@@ -67,9 +68,10 @@ namespace HomeCompassApi.Repositories
                 Title = p.Title,
                 LikesCount = p.Likes.Count,
                 AuthorPhotoUrl = p.User.PhotoUrl,
-                CommentsCount = p.Comments.Count
+                CommentsCount = p.Comments.Count,
+                PublisedOn = p.PublisedOn
 
-            }).ToListAsync();
+            }).OrderByDescending(p => p.PublisedOn).ToListAsync();
         }
 
 
@@ -121,9 +123,10 @@ namespace HomeCompassApi.Repositories
                 Title = p.Title,
                 LikesCount = p.Likes.Count,
                 AuthorPhotoUrl = p.User.PhotoUrl,
-                CommentsCount = p.Comments.Count
+                CommentsCount = p.Comments.Count,
+                PublisedOn = p.PublisedOn,
 
-            }).Skip((page.Index - 1) * page.Size).Take(page.Size).ToListAsync();
+            }).OrderByDescending(p => p.PublisedOn).Skip((page.Index - 1) * page.Size).Take(page.Size).ToListAsync();
         }
 
         public async Task Update(Post entity)

@@ -80,9 +80,19 @@ namespace HomeCompassApi.Repositories.Facilities
             };
         }
 
-        public async Task<List<Facility>> GetByCategoryAsync(int categoryId)
+        public async Task<List<ReadFacilitiesDTO>> GetByCategoryAsync(int categoryId)
         {
-            return await _context.Facilities.Where(f => f.CategoryId == categoryId).ToListAsync();
+            return await _context.Facilities.Where(f => f.CategoryId == categoryId).Select(facility => new ReadFacilitiesDTO()
+            {
+                Id = facility.Id,
+                Name = facility.Name,
+                ContactInformaton = facility.ContactInformaton,
+                Description = facility.Description,
+                Location = facility.Location,
+                Resources = facility.Resources,
+                PhotoUrl = facility.PhotoUrl,
+                Target = facility.Target
+            }).ToListAsync();
         }
 
         public async Task<List<Facility>> GetByContributorIdAsync(string id)
