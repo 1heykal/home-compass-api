@@ -8,12 +8,12 @@ namespace HomeCompassApi.Services
         BlobServiceClient _blobServiceClient;
         BlobContainerClient _blobContainerClient;
         string azureConnectionString;
+
         public AzureBlobService(IConfiguration configuration)
         {
             _blobServiceClient = new BlobServiceClient(azureConnectionString);
             _blobContainerClient = _blobServiceClient.GetBlobContainerClient("homecompass");
             azureConnectionString = configuration.GetConnectionString("AzureBlobStorage");
-
         }
 
         public async Task<List<BlobContentInfo>> UploadFiles(List<IFormFile> files)
@@ -31,7 +31,6 @@ namespace HomeCompassApi.Services
                     var client = await _blobContainerClient.UploadBlobAsync(fileName, memoryStream, default);
 
                     azureResponse.Add(client);
-
                 }
             }
 

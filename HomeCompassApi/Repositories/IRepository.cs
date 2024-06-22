@@ -8,5 +8,7 @@
         Task Update(T entity);
         Task Delete(int id);
         Task<bool> IsExisted(T entity);
+
+        Task SaveChangesAsync();
     }
 }

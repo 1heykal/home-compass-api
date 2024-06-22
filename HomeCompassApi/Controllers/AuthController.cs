@@ -22,7 +22,8 @@ namespace HomeCompassApi.Controllers
         private readonly UserRepository _userRepository;
 
 
-        public AuthController(AuthService authService, UserManager<ApplicationUser> userManager, EmailService emailService, UserRepository userRepository)
+        public AuthController(AuthService authService, UserManager<ApplicationUser> userManager,
+            EmailService emailService, UserRepository userRepository)
         {
             _authService = authService;
             _userManager = userManager;
@@ -45,7 +46,8 @@ namespace HomeCompassApi.Controllers
             await _userRepository.SetEmailVerificationToken(user, token);
 
             var subject = "Home Compass App Email Confirmation";
-            await _emailService.SendVerificationToken(subject, token, user.FirstName + " " + user.LastName, result.Email);
+            await _emailService.SendVerificationToken(subject, token, user.FirstName + " " + user.LastName,
+                result.Email);
 
 
             return Ok(result);
@@ -82,14 +84,14 @@ namespace HomeCompassApi.Controllers
             if (user is null)
                 return NotFound("There is no user with the specified email.");
 
-            if (!user.EmailConfirmed && user.EmailVerificationTokenExpiresAt > DateTime.UtcNow && user.EmailVerificationToken == token)
+            if (!user.EmailConfirmed && user.EmailVerificationTokenExpiresAt > DateTime.UtcNow &&
+                user.EmailVerificationToken == token)
             {
                 await _userRepository.ConfirmEmailAsync(user);
                 return Ok();
             }
 
             return Unauthorized();
-
         }
 
         [HttpPost("forgotPassword")]
@@ -116,7 +118,8 @@ namespace HomeCompassApi.Controllers
             if (user is null)
                 return NotFound("There is no user with the specified email.");
 
-            if (!user.PasswordTokenConfirmed && user.PasswordResetTokenExpiresAt > DateTime.UtcNow && user.PasswordResetToken == token)
+            if (!user.PasswordTokenConfirmed && user.PasswordResetTokenExpiresAt > DateTime.UtcNow &&
+                user.PasswordResetToken == token)
             {
                 await _userRepository.ConfirmPasswordToken(user);
 
@@ -124,7 +127,6 @@ namespace HomeCompassApi.Controllers
             }
 
             return Unauthorized();
-
         }
 
         [HttpPost("changePassword")]
@@ -137,6 +139,7 @@ namespace HomeCompassApi.Controllers
             {
                 return BadRequest("Please confirm password token first");
             }
+
             await _userManager.RemovePasswordAsync(user);
             await _userManager.AddPasswordAsync(user, newpassword);
 
@@ -162,9 +165,6 @@ namespace HomeCompassApi.Controllers
 
             return Ok();
         }
-
-
-
 
 
         [HttpPost("login")]
@@ -198,6 +198,7 @@ namespace HomeCompassApi.Controllers
 
             return Ok(model);
         }
+
         [HttpGet("refreshToken")]
         public async Task<IActionResult> RefreshToken()
         {
@@ -211,7 +212,6 @@ namespace HomeCompassApi.Controllers
             SetRefreshTokenInCookie(result.RefreshToken, result.RefreshTokenExpiration);
 
             return Ok(result);
-
         }
 
         private void SetRefreshTokenInCookie(string refreshToken, DateTime expires)
@@ -239,8 +239,6 @@ namespace HomeCompassApi.Controllers
                 return BadRequest("The token is invalid.");
 
             return Ok();
-
         }
-
     }
 }

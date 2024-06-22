@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using AutoMapper;
 
 namespace HomeCompassApi.Controllers.Feed
 {
@@ -20,12 +21,16 @@ namespace HomeCompassApi.Controllers.Feed
         private readonly PostRepository _postRepository;
         private readonly UserRepository _userRepository;
         private readonly ReportRepository _reportRepository;
+        private readonly IMapper _mapper;
 
-        public PostController(PostRepository postRepository, UserRepository userRepository, ReportRepository reportRepository)
+        public PostController(PostRepository postRepository,
+            UserRepository userRepository,
+            ReportRepository reportRepository, IMapper mapper)
         {
             _postRepository = postRepository;
             _userRepository = userRepository;
             _reportRepository = reportRepository;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpPost]
@@ -86,18 +91,13 @@ namespace HomeCompassApi.Controllers.Feed
             if (!await _postRepository.IsExisted(id))
                 return NotFound($"There is no post with the specified Id: {id}");
 
-            var entity = UpdatePostDTOToPost(await _postRepository.GetById(id), post);
+            var entity = await _postRepository.GetById(id);
 
-            await _postRepository.Update(entity);
+            _mapper.Map(post, entity);
+
+            await _postRepository.SaveChangesAsync();
+
             return NoContent();
-        }
-
-        private static Post UpdatePostDTOToPost(Post post, UpdatePostDTO postDTO)
-        {
-            post.Title = postDTO.Title;
-            post.Content = postDTO.Content;
-            post.Archived = postDTO.Archived;
-            return post;
         }
 
         [HttpDelete("{id}")]

@@ -1,14 +1,11 @@
-﻿using HomeCompassApi.Repositories;
-using HomeCompassApi.Repositories.Cases;
-using HomeCompassApi.Models;
+﻿using HomeCompassApi.Repositories.Cases;
 using HomeCompassApi.Models.Cases;
-using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
 using HomeCompassApi.Services.Cases.Homeless;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+using AutoMapper;
 
 namespace HomeCompassApi.Controllers.Cases
 {
@@ -19,10 +16,12 @@ namespace HomeCompassApi.Controllers.Cases
     {
         private readonly HomelessRepository _homelessRepository;
         private readonly UserRepository _userRepository;
-        public HomelessController(HomelessRepository homelessRepository, UserRepository userRepository)
+        private readonly IMapper _mapper;
+        public HomelessController(HomelessRepository homelessRepository, UserRepository userRepository, IMapper mapper)
         {
             _homelessRepository = homelessRepository;
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]

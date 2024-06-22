@@ -25,7 +25,7 @@ namespace HomeCompassApi.Controllers.Facilities
         public async Task<IActionResult> CreateAsync(Category category)
         {
             if (await _categoryRepository.NameExists(category.Name))
-                return BadRequest($"A resource with the specified name exists.");
+                return BadRequest($"A category with the specified name exists.");
 
             await _categoryRepository.Add(category);
             return CreatedAtAction(nameof(Get), new { Id = category.Id }, category);

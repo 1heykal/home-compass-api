@@ -1,23 +1,22 @@
 ﻿using HomeCompassApi.Models;
 using HomeCompassApi.Models.Feed;
-using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
 using HomeCompassApi.Services.CRUD;
-using HomeCompassApi.Services.Feed;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using System.Linq;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace HomeCompassApi.Repositories
 {
     public class PostRepository : IRepository<Post>
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public PostRepository(ApplicationDbContext context)
+        public PostRepository(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task Add(Post entity)
@@ -30,100 +29,33 @@ namespace HomeCompassApi.Repositories
 
         public async Task<List<ReadAllPostsDTO>> GetAllReduced()
         {
-            return await _context.Posts.Select(p => new ReadAllPostsDTO
-            {
-                Id = p.Id,
-                AuthorName = $"{p.User.FirstName} {p.User.LastName}",
-                Content = p.Content,
-                Title = p.Title,
-                LikesCount = p.Likes.Count,
-                AuthorPhotoUrl = p.User.PhotoUrl,
-                CommentsCount = p.Comments.Count
-
-            }).ToListAsync();
+            return await _context.Posts.ProjectTo<ReadAllPostsDTO>(_mapper.ConfigurationProvider).
+                OrderByDescending(p => p.PublisedOn).
+                ToListAsync();
         }
-
-        private static ReadAllPostsDTO PostToReadAllPostsDTO(Post p)
-        {
-            return new ReadAllPostsDTO
-            {
-                Id = p.Id,
-                AuthorName = $"{p.User.FirstName} {p.User.LastName}",
-                Content = p.Content,
-                Title = p.Title,
-                LikesCount = p.Likes.Count,
-                AuthorPhotoUrl = p.User.PhotoUrl,
-                CommentsCount = p.Comments.Count
-            };
-        }
+        
 
         public async Task<List<ReadAllPostsDTO>> GetByUserIdAsync(string id)
         {
-            return await _context.Posts.Where(p => p.UserId == id).Select(p => new ReadAllPostsDTO
-            {
-                Id = p.Id,
-                AuthorName = $"{p.User.FirstName} {p.User.LastName}",
-                Content = p.Content,
-                Title = p.Title,
-                LikesCount = p.Likes.Count,
-                AuthorPhotoUrl = p.User.PhotoUrl,
-                CommentsCount = p.Comments.Count
-
-            }).ToListAsync();
+            return await _context.Posts.Where(p => p.UserId == id)
+                .ProjectTo<ReadAllPostsDTO>(_mapper.ConfigurationProvider)
+                .OrderByDescending(p => p.PublisedOn).
+                ToListAsync();
         }
-
-
-
+        
+        public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
+        
         public async Task<Post> GetById(int id) => await _context.Posts.FindAsync(id);
 
         public async Task<List<ReadPostDTO>> GetByIdDTO(int id)
         {
-            return await _context.Posts.Where(p => p.Id == id).Select(post => new ReadPostDTO
-            {
-                Id = post.Id,
-                Content = post.Content,
-                Title = post.Title,
-                LikesCount = post.Likes.Count,
-                CommentsCount = post.Comments.Count,
-                Archived = post.Archived,
-                PublisedOn = post.PublisedOn,
-                UserId = post.UserId
-
-            }).ToListAsync();
+            return await _context.Posts.Where(p => p.Id == id).ProjectTo<ReadPostDTO>(_mapper.ConfigurationProvider).ToListAsync();
         }
-
-
-        private static ReadPostDTO PostToReadPostDTO(Post post)
-        {
-            return new ReadPostDTO
-            {
-                Id = post.Id,
-                Content = post.Content,
-                Title = post.Title,
-                LikesCount = post.Likes.Count,
-                CommentsCount = post.Comments.Count,
-                Archived = post.Archived,
-                PublisedOn = post.PublisedOn,
-                UserId = post.UserId
-            };
-        }
-
-
-
-
+        
         public async Task<List<ReadAllPostsDTO>> GetByPageAsync(PageDTO page)
         {
-            return await _context.Posts.Select(p => new ReadAllPostsDTO
-            {
-                Id = p.Id,
-                AuthorName = $"{p.User.FirstName} {p.User.LastName}",
-                Content = p.Content,
-                Title = p.Title,
-                LikesCount = p.Likes.Count,
-                AuthorPhotoUrl = p.User.PhotoUrl,
-                CommentsCount = p.Comments.Count
-
-            }).Skip((page.Index - 1) * page.Size).Take(page.Size).ToListAsync();
+            return await _context.Posts.ProjectTo<ReadAllPostsDTO>(_mapper.ConfigurationProvider)
+            .OrderByDescending(p => p.PublisedOn).Skip((page.Index - 1) * page.Size).Take(page.Size).ToListAsync();
         }
 
         public async Task Update(Post entity)
@@ -143,7 +75,6 @@ namespace HomeCompassApi.Repositories
         }
 
         public async Task<bool> IsExisted(Post post) => await _context.Posts.ContainsAsync(post);
-
         public async Task<bool> IsExisted(int id) => await _context.Posts.AnyAsync(p => p.Id == id);
 
 

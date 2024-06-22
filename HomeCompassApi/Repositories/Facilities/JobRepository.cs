@@ -1,4 +1,5 @@
-﻿using HomeCompassApi.Models;
+﻿using AutoMapper;
+using HomeCompassApi.Models;
 using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Services;
 using HomeCompassApi.Services.Facilities;
@@ -10,13 +11,20 @@ namespace HomeCompassApi.Repositories.Facilities
     public class JobRepository : IRepository<Job>
     {
         private readonly ApplicationDbContext _context;
-        public JobRepository(ApplicationDbContext context)
+        private readonly IMapper _mapper;
+        public JobRepository(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
         public async Task Add(Job entity)
         {
             await _context.Jobs.AddAsync(entity);
+            await _context.SaveChangesAsync();
+        }
+        
+        public async Task SaveChangesAsync()
+        {
             await _context.SaveChangesAsync();
         }
 
@@ -30,38 +38,12 @@ namespace HomeCompassApi.Repositories.Facilities
 
         public async Task<List<ReadJobsDTO>> GetAllReduced()
         {
-            return await _context.Jobs.Select(job => new ReadJobsDTO()
-            {
-                Id = job.Id,
-                Title = job.Title,
-                Skills = job.Skills,
-                Description = job.Description,
-                Location = job.Location,
-                ContactInformation = job.ContactInformation,
-                ContributorId = job.ContributorId,
-                CategoryId = job.CategoryId
-
-            }).ToListAsync();
+            return await _context.Jobs.Select(job =>  _mapper.Map<ReadJobsDTO>(job)).ToListAsync();
         }
 
-        private static Job JobToReadJobsDTO(Job job)
+        public async Task<List<Job>> GetByCategoryAsync(int categoryId)
         {
-            return new Job()
-            {
-                Id = job.Id,
-                Title = job.Title,
-                Skills = job.Skills,
-                Description = job.Description,
-                Location = job.Location,
-                ContactInformation = job.ContactInformation,
-                ContributorId = job.ContributorId,
-                CategoryId = job.CategoryId
-            };
-        }
-
-        public async Task<List<Facility>> GetByCategoryAsync(int categoryId)
-        {
-            return await _context.Facilities.Where(f => f.CategoryId == categoryId).ToListAsync();
+            return await _context.Jobs.Where(j => j.CategoryId == categoryId).ToListAsync();
         }
 
         public async Task<List<Job>> GetByContributorIdAsync(string id)

@@ -1,4 +1,6 @@
-﻿using HomeCompassApi.Repositories;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using HomeCompassApi.Repositories;
 using HomeCompassApi.Models;
 using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Services.Cases;
@@ -11,10 +13,12 @@ namespace HomeCompassApi.Repositories.User
     {
 
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public UserRepository(ApplicationDbContext context)
+        public UserRepository(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task Delete(string id)
@@ -35,31 +39,14 @@ namespace HomeCompassApi.Repositories.User
 
         public async Task<UserDetailsDTO> GetUserDetails(string id)
         {
-            return await _context.Users.Select(u => new UserDetailsDTO
-            {
-                Id = u.Id,
-                FirstName = u.FirstName,
-                LastName = u.LastName,
-                BirthDate = u.BirthDate,
-                Email = u.Email,
-                Gender = u.Gender,
-                PhotoURL = u.PhotoUrl
-
-            }).FirstOrDefaultAsync(u => u.Id == id);
+            return await _context.Users.ProjectTo<UserDetailsDTO>(_mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task UpdateUserDetails(string id, UpdateUserDetailsDTO userDetailsDTO)
         {
             var user = await GetById(id);
-
-            user.FirstName = userDetailsDTO.FirstName;
-            user.LastName = userDetailsDTO.LastName;
-            user.BirthDate = userDetailsDTO.BirthDate;
-            user.Email = userDetailsDTO.Email;
-            user.Gender = userDetailsDTO.Gender;
-            user.PhotoUrl = userDetailsDTO.PhotoURL;
-
-            _context.Users.Update(user);
+            _mapper.Map(userDetailsDTO, user);
             await _context.SaveChangesAsync();
         }
 

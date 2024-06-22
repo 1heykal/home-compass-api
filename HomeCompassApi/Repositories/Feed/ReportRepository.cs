@@ -71,6 +71,10 @@ namespace HomeCompassApi.Repositories.Feed
         {
             return await _context.Reports.ContainsAsync(entity);
         }
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
 
         public async Task<bool> IsExisted(int id) => await _context.Reports.AnyAsync(r => r.Id == id);
 

@@ -1,4 +1,6 @@
-﻿using HomeCompassApi.Models;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using HomeCompassApi.Models;
 using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Services;
 using HomeCompassApi.Services.Facilities;
@@ -11,10 +13,12 @@ namespace HomeCompassApi.Repositories.Facilities
     {
         private readonly ApplicationDbContext _context;
         private readonly ResourceRepository _resourceRepository;
-        public FacilityRepository(ApplicationDbContext context, ResourceRepository resourceRepository)
+        private readonly IMapper _mapper;
+        public FacilityRepository(ApplicationDbContext context, ResourceRepository resourceRepository, IMapper mapper)
         {
             _context = context;
             _resourceRepository = resourceRepository;
+            _mapper = mapper;
         }
         public async Task Add(Facility entity)
         {
@@ -26,12 +30,9 @@ namespace HomeCompassApi.Repositories.Facilities
                 {
                     await _resourceRepository.Add(r);
                     resource = await _resourceRepository.GetByName(r.Name);
-                    resources.Add(resource);
                 }
-                else
-                {
-                    resources.Add(resource);
-                }
+                resources.Add(resource);
+                
             }
             entity.Resources = resources;
             await _context.Facilities.AddAsync(entity);
@@ -47,42 +48,23 @@ namespace HomeCompassApi.Repositories.Facilities
             _context.Facilities.Remove(facility);
             await _context.SaveChangesAsync();
         }
+        
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
 
         public async Task<List<Facility>> GetAll() => await _context.Facilities.AsNoTracking().ToListAsync();
 
         public async Task<List<ReadFacilitiesDTO>> GetAllReduced()
         {
-            return await _context.Facilities.Select(facility => new ReadFacilitiesDTO()
-            {
-                Id = facility.Id,
-                Name = facility.Name,
-                ContactInformaton = facility.ContactInformaton,
-                Description = facility.Description,
-                Location = facility.Location,
-                Resources = facility.Resources,
-                PhotoUrl = facility.PhotoUrl,
-                Target = facility.Target
-            }).ToListAsync();
+            return await _context.Facilities
+                .ProjectTo<ReadFacilitiesDTO>(_mapper.ConfigurationProvider).ToListAsync();
         }
-
-        private static ReadFacilitiesDTO FacilityToReadFacilitiesDTO(Facility facility)
+        
+        public async Task<List<ReadFacilitiesDTO>> GetByCategoryAsync(int categoryId)
         {
-            return new ReadFacilitiesDTO()
-            {
-                Id = facility.Id,
-                Name = facility.Name,
-                ContactInformaton = facility.ContactInformaton,
-                Description = facility.Description,
-                Location = facility.Location,
-                Resources = facility.Resources,
-                PhotoUrl = facility.PhotoUrl,
-                Target = facility.Target
-            };
-        }
-
-        public async Task<List<Facility>> GetByCategoryAsync(int categoryId)
-        {
-            return await _context.Facilities.Where(f => f.CategoryId == categoryId).ToListAsync();
+            return await _context.Facilities.Where(f => f.CategoryId == categoryId).ProjectTo<ReadFacilitiesDTO>(_mapper.ConfigurationProvider).ToListAsync();
         }
 
         public async Task<List<Facility>> GetByContributorIdAsync(string id)
@@ -90,18 +72,9 @@ namespace HomeCompassApi.Repositories.Facilities
             return await _context.Facilities.Where(f => f.ContributorId == id).ToListAsync();
         }
 
-        public async Task<List<ReadFacilitiesDTO>> GetByPageAsync(PageDTO page) => await _context.Facilities.Select(facility => new ReadFacilitiesDTO()
-        {
-            Id = facility.Id,
-            Name = facility.Name,
-            ContactInformaton = facility.ContactInformaton,
-            Description = facility.Description,
-            Location = facility.Location,
-            Resources = facility.Resources,
-            PhotoUrl = facility.PhotoUrl,
-            Target = facility.Target
-
-        }).Skip((page.Index - 1) * page.Size).Take(page.Size).ToListAsync();
+        public async Task<List<ReadFacilitiesDTO>> GetByPageAsync(PageDTO page) => await _context.Facilities
+            .ProjectTo<ReadFacilitiesDTO>(_mapper.ConfigurationProvider)
+            .Skip((page.Index - 1) * page.Size).Take(page.Size).ToListAsync();
 
 
 
@@ -121,12 +94,9 @@ namespace HomeCompassApi.Repositories.Facilities
                 {
                     await _resourceRepository.Add(r);
                     resource = await _resourceRepository.GetByName(r.Name);
-                    resources.Add(resource);
                 }
-                else
-                {
-                    resources.Add(resource);
-                }
+                resources.Add(resource);
+                
             }
             entity.Resources = resources;
             _context.Facilities.Update(entity);

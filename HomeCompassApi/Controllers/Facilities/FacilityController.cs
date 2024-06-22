@@ -17,7 +17,8 @@ namespace HomeCompassApi.Controllers.Facilities
         private readonly UserRepository _userRepository;
         private readonly CategoryRepository _categoryRepository;
 
-        public FacilityController(FacilityRepository facilityRepository, UserRepository userRepository, CategoryRepository categoryRepository)
+        public FacilityController(FacilityRepository facilityRepository, UserRepository userRepository,
+            CategoryRepository categoryRepository)
         {
             _facilityRepository = facilityRepository;
             _userRepository = userRepository;
@@ -29,7 +30,7 @@ namespace HomeCompassApi.Controllers.Facilities
         public async Task<IActionResult> CreateAsync(Facility facility)
         {
             if (!await _userRepository.IsExisted(facility.ContributorId))
-                return NotFound($"There is no contibutor with the specified id: {facility.ContributorId}");
+                return NotFound($"There is no contributor with the specified id: {facility.ContributorId}");
 
             if (!await _categoryRepository.IsExisted(facility.CategoryId))
                 return NotFound($"There is no category with the specified Id: {facility.CategoryId}");
@@ -69,11 +70,10 @@ namespace HomeCompassApi.Controllers.Facilities
                 return NotFound($"There is no contibutor with the specified id: {id}");
 
             return Ok(await _facilityRepository.GetByContributorIdAsync(id));
-
         }
 
         [HttpGet("bycategory/{categoryId}")]
-        public async Task<ActionResult<List<Facility>>> GetByCategoryAsync(int categoryId)
+        public async Task<ActionResult<List<ReadFacilitiesDTO>>> GetByCategoryAsync(int categoryId)
         {
             return Ok(await _facilityRepository.GetByCategoryAsync(categoryId));
         }
@@ -102,7 +102,6 @@ namespace HomeCompassApi.Controllers.Facilities
 
         private static Facility UpdateFacilityDTOToFacility(Facility facility, UpdateFacilityDTO facilityDTO)
         {
-
             facility.Name = facilityDTO.Name;
             facility.Location = facilityDTO.Location;
             facility.Description = facilityDTO.Description;

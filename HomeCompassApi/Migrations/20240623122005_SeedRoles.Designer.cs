@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HomeCompassApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240401185048_SeedRoles")]
+    [Migration("20240623122005_SeedRoles")]
     partial class SeedRoles
     {
         /// <inheritdoc />

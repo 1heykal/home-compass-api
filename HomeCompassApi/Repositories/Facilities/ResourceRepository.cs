@@ -25,6 +25,11 @@ namespace HomeCompassApi.Repositories.Facilities
             _context.Resources.Remove(await GetById(id));
             await _context.SaveChangesAsync();
         }
+        
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
 
         public async Task<List<Resource>> GetAll() => await _context.Resources.AsNoTracking().ToListAsync();
 
@@ -37,15 +42,7 @@ namespace HomeCompassApi.Repositories.Facilities
 
             }).ToListAsync();
 
-        private static ResourceDTO ResourceToResourceDTO(Resource resource)
-        {
-            return new ResourceDTO()
-            {
-                Id = resource.Id,
-                Name = resource.Name,
-                IsAvailable = resource.IsAvailable
-            };
-        }
+
 
         public async Task<List<ResourceDTO>> GetByPageAsync(PageDTO page)
         {

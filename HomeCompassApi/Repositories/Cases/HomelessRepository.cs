@@ -1,4 +1,6 @@
-﻿using HomeCompassApi.Models;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using HomeCompassApi.Models;
 using HomeCompassApi.Models.Cases;
 using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
@@ -11,9 +13,11 @@ namespace HomeCompassApi.Repositories.Cases
     public class HomelessRepository : IRepository<Homeless>
     {
         private readonly ApplicationDbContext _context;
-        public HomelessRepository(ApplicationDbContext context)
+        private readonly IMapper _mapper;
+        public HomelessRepository(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
         public async Task Add(Homeless entity)
         {
@@ -31,52 +35,25 @@ namespace HomeCompassApi.Repositories.Cases
 
         public async Task<List<HomelessDTO>> GetAllReduced()
         {
-            return await _context.Homeless.Select(homeless => new HomelessDTO()
-            {
-                Id = homeless.Id,
-                Name = homeless.FullName,
-                Address = homeless.CurrentLocation,
-                Description = homeless.AdditionalDetails,
-                PhotoURL = homeless.PhotoUrl
-
-            }).ToListAsync();
+            return await _context.Homeless.ProjectTo<HomelessDTO>(_mapper.ConfigurationProvider).ToListAsync();
+        }
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<HomelessDTO>> GetByPageAsync(PageDTO page) =>
-            await _context.Homeless.Select(homeless => new HomelessDTO()
-            {
-                Id = homeless.Id,
-                Name = homeless.FullName,
-                Address = homeless.CurrentLocation,
-                Description = homeless.AdditionalDetails,
-                PhotoURL = homeless.PhotoUrl
-
-            }).Skip((page.Index - 1) * page.Size).Take(page.Size).ToListAsync();
+            await _context.Homeless.ProjectTo<HomelessDTO>(_mapper.ConfigurationProvider)
+                .Skip((page.Index - 1) * page.Size).Take(page.Size).ToListAsync();
 
         public async Task<List<HomelessDTO>> GetByReporterId(string id)
         {
-            return await _context.Homeless.Where(homeless => homeless.ReporterId == id).Select(homeless => new HomelessDTO()
-            {
-                Id = homeless.Id,
-                Name = homeless.FullName,
-                Address = homeless.CurrentLocation,
-                Description = homeless.AdditionalDetails,
-                PhotoURL = homeless.PhotoUrl
-
-            }).ToListAsync();
+            return await _context.Homeless.Where(homeless => homeless.ReporterId == id)
+                .ProjectTo<HomelessDTO>(_mapper.ConfigurationProvider)
+                .ToListAsync();
         }
 
-        private static HomelessDTO HomelessToHomelessDTO(Homeless homeless)
-        {
-            return new HomelessDTO()
-            {
-                Id = homeless.Id,
-                Name = homeless.FullName,
-                Address = homeless.CurrentLocation,
-                Description = homeless.AdditionalDetails,
-                PhotoURL = homeless.PhotoUrl
-            };
-        }
+      
         public async Task<Homeless> GetById(int id) => await _context.Homeless.FindAsync(id);
 
         public async Task<bool> IsExisted(Homeless homeless) => await _context.Homeless.ContainsAsync(homeless);

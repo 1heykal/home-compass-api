@@ -1,3 +1,4 @@
+using System;
 using HomeCompassApi.Repositories;
 using HomeCompassApi.Repositories.Cases;
 using HomeCompassApi.Repositories.Facilities;
@@ -12,21 +13,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using HomeCompassApi.Services.EmailService;
-using Microsoft.OpenApi.Models;
 using HomeCompassApi.Services;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-{
-    options.SignIn.RequireConfirmedEmail = true;
-
-})
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => { options.SignIn.RequireConfirmedEmail = true; })
     .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
-
-
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Add services to the container.
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
@@ -34,15 +32,14 @@ builder.Services.AddOptions<EmailSettings>().BindConfiguration(nameof(EmailSetti
 builder.Services.AddSingleton<EmailService>();
 
 
-
 // JWT
 builder.Services.AddScoped<AuthService, AuthService>();
 builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
 builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
     .AddJwtBearer(options =>
     {
         options.RequireHttpsMetadata = false;
@@ -58,10 +55,9 @@ builder.Services.AddAuthentication(options =>
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
             ClockSkew = TimeSpan.Zero
         };
-
     });
 
-string ConnectionString = builder.Configuration.GetConnectionString("SqlServer");
+string ConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(ConnectionString));
 
 // User
@@ -129,6 +125,13 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
+app.UseCors(options =>
+{
+    options.AllowAnyOrigin();
+    options.AllowAnyHeader();
+    options.AllowAnyMethod();
+});
+
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -138,7 +141,6 @@ app.UseSwaggerUI(c =>
 
 
 app.MapSwagger();
-
 
 
 app.UseHttpsRedirection();

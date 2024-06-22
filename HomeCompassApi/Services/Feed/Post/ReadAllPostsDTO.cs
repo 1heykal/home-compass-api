@@ -9,6 +9,7 @@
         public string AuthorPhotoUrl { get; set; }
         public int CommentsCount { get; set; }
         public int LikesCount { get; set; }
+        public DateTime PublisedOn { get; set; }
 
     }
 }

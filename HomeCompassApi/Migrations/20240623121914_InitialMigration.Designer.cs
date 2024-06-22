@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HomeCompassApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240401183914_mssql_migration_547")]
-    partial class mssql_migration_547
+    [Migration("20240623121914_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

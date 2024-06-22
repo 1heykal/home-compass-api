@@ -14,13 +14,13 @@ namespace HomeCompassApi.Migrations
                 table: "AspNetRoles",
                 columns: ["Id", "Name", "NormalizedName", "ConcurrencyStamp"],
                 values: [Guid.NewGuid().ToString(), "Admin", "Admin".ToUpper(), Guid.NewGuid().ToString()]
-                );
+            );
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: ["Id", "Name", "NormalizedName", "ConcurrencyStamp"],
                 values: [Guid.NewGuid().ToString(), "User", "User".ToUpper(), Guid.NewGuid().ToString()]
-                );
+            );
         }
 
         /// <inheritdoc />

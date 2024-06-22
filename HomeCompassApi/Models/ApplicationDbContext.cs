@@ -8,7 +8,6 @@ namespace HomeCompassApi.Models
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-
         // Cases
         public virtual DbSet<Homeless> Homeless { get; set; }
         public virtual DbSet<Missing> Missings { get; set; }
@@ -32,8 +31,12 @@ namespace HomeCompassApi.Models
 
         private readonly IConfiguration _configuration;
 
-        public ApplicationDbContext() { }
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration) : base(options)
+        public ApplicationDbContext()
+        {
+        }
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration) :
+            base(options)
         {
             _configuration = configuration;
         }
@@ -49,7 +52,7 @@ namespace HomeCompassApi.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                string connectionString = _configuration.GetConnectionString("SqlServer");
+                string connectionString = _configuration.GetConnectionString("DefaultConnection");
                 optionsBuilder.UseSqlServer(connectionString);
                 base.OnConfiguring(optionsBuilder);
             }

@@ -1,12 +1,14 @@
-﻿namespace HomeCompassApi.Services.Cases
+﻿using System;
+
+namespace HomeCompassApi.Services.Cases
 {
     public class MissingDTO
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public DateTime MissingDate { get; set; }
-        public string Description { get; set; }
-        public string Address { get; set; }
-        public string PhotoURL { get; set; }
+        public string FullName { get; set; }
+        public DateTime DateOfDisappearance { get; set; }
+        public string PhysicalDescription { get; set; }
+        public string HomeAddress { get; set; }
+        public string PhotoUrl { get; set; }
     }
 }

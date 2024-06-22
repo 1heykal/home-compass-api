@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="7bdb61b3-b6a7-4d30-b15c-f0e78ac8e53b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../.vs/HomeCompassApi/DesignTimeBuild/.dtbcache.v2" beforeDir="false" afterPath="$PROJECT_DIR$/../.vs/HomeCompassApi/DesignTimeBuild/.dtbcache.v2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.vs/HomeCompassApi/v17/.futdcache.v2" beforeDir="false" afterPath="$PROJECT_DIR$/../.vs/HomeCompassApi/v17/.futdcache.v2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.vs/HomeCompassApi/v17/.suo" beforeDir="false" afterPath="$PROJECT_DIR$/../.vs/HomeCompassApi/v17/.suo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.vs/ProjectEvaluation/homecompassapi.metadata.v7.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../.vs/ProjectEvaluation/homecompassapi.metadata.v7.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.vs/ProjectEvaluation/homecompassapi.projects.v7.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../.vs/ProjectEvaluation/homecompassapi.projects.v7.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/AuthController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/AuthController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HomeCompassApi.csproj.user" beforeDir="false" afterPath="$PROJECT_DIR$/HomeCompassApi.csproj.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/20240401183914_mssql_migration_547.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/20240401183914_mssql_migration_547.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/20240401185048_SeedRoles.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/20240401185048_SeedRoles.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/ApplicationDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/ApplicationDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Debug/net8.0/HomeCompassApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net8.0/HomeCompassApi.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Debug/net8.0/HomeCompassApi.exe" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net8.0/HomeCompassApi.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Debug/net8.0/HomeCompassApi.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net8.0/HomeCompassApi.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Debug/net8.0/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net8.0/appsettings.Development.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Debug/net8.0/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net8.0/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Release/net8.0/HomeCompassApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Release/net8.0/HomeCompassApi.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Release/net8.0/HomeCompassApi.exe" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Release/net8.0/HomeCompassApi.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Release/net8.0/HomeCompassApi.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Release/net8.0/HomeCompassApi.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Release/net8.0/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Release/net8.0/appsettings.Development.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Release/net8.0/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Release/net8.0/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migration_script.sql" beforeDir="false" afterPath="$PROJECT_DIR$/migration_script.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net8.0/HomeCompassApi.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net8.0/HomeCompassApi.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net8.0/HomeCompassApi.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net8.0/HomeCompassApi.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net8.0/HomeCompassApi.MvcApplicationPartsAssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net8.0/HomeCompassApi.MvcApplicationPartsAssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net8.0/HomeCompassApi.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net8.0/HomeCompassApi.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net8.0/HomeCompassApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net8.0/HomeCompassApi.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net8.0/HomeCompassApi.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net8.0/HomeCompassApi.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net8.0/HomeCompassApi.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net8.0/HomeCompassApi.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net8.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net8.0/apphost.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net8.0/ref/HomeCompassApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net8.0/ref/HomeCompassApi.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net8.0/refint/HomeCompassApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net8.0/refint/HomeCompassApi.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Release/net8.0/HomeCompassApi.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net8.0/HomeCompassApi.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Release/net8.0/HomeCompassApi.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net8.0/HomeCompassApi.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Release/net8.0/HomeCompassApi.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net8.0/HomeCompassApi.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Release/net8.0/HomeCompassApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net8.0/HomeCompassApi.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Release/net8.0/HomeCompassApi.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net8.0/HomeCompassApi.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Release/net8.0/HomeCompassApi.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net8.0/HomeCompassApi.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Release/net8.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net8.0/apphost.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Release/net8.0/ref/HomeCompassApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net8.0/ref/HomeCompassApi.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Release/net8.0/refint/HomeCompassApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net8.0/refint/HomeCompassApi.dll" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 6
+}]]></component>
+  <component name="ProjectId" id="2jjjLKwNiuxU5YCpNBvSBN3dJ2K" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7bdb61b3-b6a7-4d30-b15c-f0e78ac8e53b" name="Changes" comment="" />
+      <created>1721907328548</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1721907328548</updated>
+      <workItem from="1721907331508" duration="57000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+</project>

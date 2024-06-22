@@ -29,6 +29,11 @@ namespace HomeCompassApi.Repositories.Facilities
 
             await _context.SaveChangesAsync();
         }
+        
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
 
         public async Task<List<Category>> GetAll() => await _context.Categories.AsNoTracking().ToListAsync();
 
