@@ -33,7 +33,6 @@ namespace HomeCompassApi.Repositories
                 OrderByDescending(p => p.PublisedOn).
                 ToListAsync();
         }
-        
 
         public async Task<List<ReadAllPostsDTO>> GetByUserIdAsync(string id)
         {
