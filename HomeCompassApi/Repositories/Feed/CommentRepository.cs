@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using HomeCompassApi.DbContexts;
+using HomeCompassApi.Entities;
+using HomeCompassApi.Entities.Feed;
 using HomeCompassApi.Models;
 using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Services;
-using HomeCompassApi.Services.Feed;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace HomeCompassApi.Repositories
+namespace HomeCompassApi.Repositories.Feed
 {
     public class CommentRepository : IRepository<Comment>
     {

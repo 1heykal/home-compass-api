@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using HomeCompassApi.DbContexts;
+using HomeCompassApi.Entities;
+using HomeCompassApi.Entities.Cases;
 using HomeCompassApi.Models;
-using HomeCompassApi.Models.Cases;
+using HomeCompassApi.Models.Cases.Homeless;
 using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
-using HomeCompassApi.Services.Cases.Homeless;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

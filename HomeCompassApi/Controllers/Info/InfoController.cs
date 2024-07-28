@@ -1,7 +1,8 @@
-﻿using HomeCompassApi.Repositories;
+﻿using HomeCompassApi.Models;
+using HomeCompassApi.Models.Feed;
+using HomeCompassApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using HomeCompassApi.Services;
-using HomeCompassApi.Services.Feed;
 
 namespace HomeCompassApi.Controllers.Info
 {
@@ -23,7 +24,7 @@ namespace HomeCompassApi.Controllers.Info
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Models.Info>> Get(int id)
+        public async Task<ActionResult<Entities.Info>> Get(int id)
         {
             if (id <= 0)
                 return BadRequest();
@@ -36,7 +37,7 @@ namespace HomeCompassApi.Controllers.Info
         }
 
         [HttpGet("bycategory/category")]
-        public async Task<ActionResult<List<Models.Info>>> GetByCategoryAsync(string category)
+        public async Task<ActionResult<List<Entities.Info>>> GetByCategoryAsync(string category)
         {
             if (category is null || category == string.Empty)
                 return BadRequest();
@@ -51,14 +52,14 @@ namespace HomeCompassApi.Controllers.Info
         }
 
         [HttpPost("page")]
-        public async Task<ActionResult<List<Models.Info>>> GetByPageAsync([FromBody] PageDTO page)
+        public async Task<ActionResult<List<Entities.Info>>> GetByPageAsync([FromBody] PageDTO page)
         {
             return Ok(await _infoRepository.GetByPageAsync(page));
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(Models.Info info)
+        public async Task<IActionResult> CreateAsync(Entities.Info info)
         {
             await _infoRepository.Add(info);
 
@@ -66,7 +67,7 @@ namespace HomeCompassApi.Controllers.Info
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync(int id, Models.Info info)
+        public async Task<IActionResult> UpdateAsync(int id, Entities.Info info)
         {
             if (id <= 0)
                 return BadRequest("Id must be greater than Zero.");

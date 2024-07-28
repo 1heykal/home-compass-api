@@ -1,6 +1,6 @@
 using AutoMapper;
-using HomeCompassApi.Models;
-using HomeCompassApi.Services.User;
+using HomeCompassApi.Entities;
+using HomeCompassApi.Models.User;
 
 namespace HomeCompassApi.Profiles;
 

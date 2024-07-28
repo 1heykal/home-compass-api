@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using HomeCompassApi.DbContexts;
+using HomeCompassApi.Entities;
+using HomeCompassApi.Models.User;
 using HomeCompassApi.Repositories;
-using HomeCompassApi.Models;
-using HomeCompassApi.Models.Feed;
-using HomeCompassApi.Services.Cases;
 using Microsoft.EntityFrameworkCore;
-using HomeCompassApi.Services.User;
 
 namespace HomeCompassApi.Repositories.User
 {

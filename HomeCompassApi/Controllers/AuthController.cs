@@ -1,14 +1,11 @@
-﻿using HomeCompassApi.Models;
-using HomeCompassApi.Models.Auth;
-using HomeCompassApi.Repositories.User;
-using HomeCompassApi.Services.Auth;
+﻿using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services.EmailService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
-using System.Security;
 using System.Security.Cryptography;
+using HomeCompassApi.Entities;
+using HomeCompassApi.Entities.Auth;
+using HomeCompassApi.Services.Auth;
 
 namespace HomeCompassApi.Controllers
 {

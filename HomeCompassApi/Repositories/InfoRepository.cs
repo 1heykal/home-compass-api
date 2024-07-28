@@ -1,7 +1,9 @@
-﻿using HomeCompassApi.Repositories;
+﻿using HomeCompassApi.DbContexts;
+using HomeCompassApi.Entities;
 using HomeCompassApi.Models;
+using HomeCompassApi.Models.Feed;
+using HomeCompassApi.Repositories;
 using HomeCompassApi.Services;
-using HomeCompassApi.Services.Feed;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -53,7 +55,7 @@ namespace HomeCompassApi.Repositories
             }).ToListAsync();
         }
 
-        public async Task<List<Models.Info>> GetByPageAsync(PageDTO page)
+        public async Task<List<Info>> GetByPageAsync(PageDTO page)
         {
             return await _context.Info.Skip((page.Index - 1) * page.Size).Take(page.Size).ToListAsync();
         }

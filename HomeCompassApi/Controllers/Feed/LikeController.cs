@@ -1,5 +1,6 @@
-﻿using HomeCompassApi.Repositories;
-using HomeCompassApi.Models.Feed;
+﻿using HomeCompassApi.Entities.Feed;
+using HomeCompassApi.Models;
+using HomeCompassApi.Repositories;
 using HomeCompassApi.Repositories.Feed;
 using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;

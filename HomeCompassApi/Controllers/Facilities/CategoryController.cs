@@ -1,12 +1,11 @@
 ﻿using Elfie.Serialization;
 using HomeCompassApi.Repositories;
 using HomeCompassApi.Repositories.Facilities;
-using HomeCompassApi.Models.Facilities;
-using HomeCompassApi.Models.Feed;
-using HomeCompassApi.Services.Facilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using HomeCompassApi.Entities.Facilities;
+using HomeCompassApi.Models.Facilities;
 
 namespace HomeCompassApi.Controllers.Facilities
 {

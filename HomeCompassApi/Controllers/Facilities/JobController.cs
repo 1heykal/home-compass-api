@@ -1,10 +1,11 @@
 ﻿using HomeCompassApi.Repositories.Facilities;
-using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
 using Microsoft.AspNetCore.Mvc;
-using HomeCompassApi.Services.Facilities;
 using System.Configuration;
+using HomeCompassApi.Entities.Facilities;
+using HomeCompassApi.Models;
+using HomeCompassApi.Models.Facilities;
 
 namespace HomeCompassApi.Controllers.Facilities
 {

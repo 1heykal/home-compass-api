@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using HomeCompassApi.DbContexts;
+using HomeCompassApi.Entities;
+using HomeCompassApi.Entities.Facilities;
 using HomeCompassApi.Models;
 using HomeCompassApi.Models.Facilities;
 using HomeCompassApi.Services;
-using HomeCompassApi.Services.Facilities;
 using Microsoft.EntityFrameworkCore;
 
 

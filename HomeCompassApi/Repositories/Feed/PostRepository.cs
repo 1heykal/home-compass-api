@@ -1,12 +1,14 @@
-﻿using HomeCompassApi.Models;
-using HomeCompassApi.Models.Feed;
-using HomeCompassApi.Services;
-using HomeCompassApi.Services.CRUD;
-using Microsoft.EntityFrameworkCore;
-using AutoMapper;
+﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using HomeCompassApi.DbContexts;
+using HomeCompassApi.Entities;
+using HomeCompassApi.Entities.Feed;
+using HomeCompassApi.Models;
+using HomeCompassApi.Models.Feed.Post;
+using HomeCompassApi.Services;
+using Microsoft.EntityFrameworkCore;
 
-namespace HomeCompassApi.Repositories
+namespace HomeCompassApi.Repositories.Feed
 {
     public class PostRepository : IRepository<Post>
     {

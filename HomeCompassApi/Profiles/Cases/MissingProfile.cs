@@ -1,6 +1,7 @@
 using AutoMapper;
+using HomeCompassApi.Entities.Cases;
 using HomeCompassApi.Models.Cases;
-using HomeCompassApi.Services.Cases;
+using HomeCompassApi.Models.Cases.Missing;
 
 namespace HomeCompassApi.Profiles.Cases;
 

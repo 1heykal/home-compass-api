@@ -1,15 +1,14 @@
-﻿using HomeCompassApi.Helpers;
-using HomeCompassApi.Models;
-using HomeCompassApi.Models.Auth;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
+using HomeCompassApi.Entities;
+using HomeCompassApi.Entities.Auth;
+using HomeCompassApi.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace HomeCompassApi.Services.Auth
 {

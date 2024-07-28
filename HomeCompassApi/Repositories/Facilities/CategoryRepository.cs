@@ -1,6 +1,7 @@
-﻿using HomeCompassApi.Models;
+﻿using HomeCompassApi.DbContexts;
+using HomeCompassApi.Entities;
+using HomeCompassApi.Entities.Facilities;
 using HomeCompassApi.Models.Facilities;
-using HomeCompassApi.Services.Facilities;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeCompassApi.Repositories.Facilities

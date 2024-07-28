@@ -1,8 +1,9 @@
-﻿using HomeCompassApi.Repositories.Facilities;
+﻿using HomeCompassApi.Entities.Facilities;
+using HomeCompassApi.Models;
 using HomeCompassApi.Models.Facilities;
+using HomeCompassApi.Repositories.Facilities;
 using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
-using HomeCompassApi.Services.Facilities;
 using Microsoft.AspNetCore.Mvc;
 using Humanizer.Localisation;
 using Org.BouncyCastle.Asn1.X509;

@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using HomeCompassApi.DbContexts;
+using HomeCompassApi.Entities;
+using HomeCompassApi.Entities.Cases;
 using HomeCompassApi.Models;
 using HomeCompassApi.Models.Cases;
+using HomeCompassApi.Models.Cases.Missing;
 using HomeCompassApi.Services;
-using HomeCompassApi.Services.Cases;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeCompassApi.Repositories.Cases

@@ -1,9 +1,10 @@
-﻿using HomeCompassApi.Repositories.Cases;
+﻿using HomeCompassApi.Entities.Cases;
 using HomeCompassApi.Models;
 using HomeCompassApi.Models.Cases;
+using HomeCompassApi.Models.Cases.Missing;
+using HomeCompassApi.Repositories.Cases;
 using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
-using HomeCompassApi.Services.Cases;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

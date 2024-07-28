@@ -1,6 +1,6 @@
 using AutoMapper;
-using HomeCompassApi.Models.Feed;
-using HomeCompassApi.Services.CRUD;
+using HomeCompassApi.Entities.Feed;
+using HomeCompassApi.Models.Feed.Post;
 
 namespace HomeCompassApi.Profiles.Feed;
 

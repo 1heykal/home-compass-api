@@ -1,10 +1,12 @@
-﻿using HomeCompassApi.Repositories;
+﻿using HomeCompassApi.DbContexts;
+using HomeCompassApi.Entities;
+using HomeCompassApi.Entities.Feed;
 using HomeCompassApi.Models;
 using HomeCompassApi.Models.Feed;
+using HomeCompassApi.Repositories;
 using HomeCompassApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using HomeCompassApi.Services.Feed;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
 namespace HomeCompassApi.Repositories.Feed

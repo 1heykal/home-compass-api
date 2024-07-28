@@ -1,11 +1,12 @@
 ﻿using HomeCompassApi.Repositories.Cases;
-using HomeCompassApi.Models.Cases;
 using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
-using HomeCompassApi.Services.Cases.Homeless;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
+using HomeCompassApi.Entities.Cases;
+using HomeCompassApi.Models;
+using HomeCompassApi.Models.Cases.Homeless;
 
 namespace HomeCompassApi.Controllers.Cases
 {

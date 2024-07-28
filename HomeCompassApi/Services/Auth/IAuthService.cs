@@ -1,4 +1,4 @@
-﻿using HomeCompassApi.Models.Auth;
+﻿using HomeCompassApi.Entities.Auth;
 
 namespace HomeCompassApi.Services.Auth
 {

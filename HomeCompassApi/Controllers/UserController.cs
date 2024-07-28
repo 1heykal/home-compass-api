@@ -1,6 +1,5 @@
-﻿using HomeCompassApi.Models;
+﻿using HomeCompassApi.Models.User;
 using HomeCompassApi.Repositories.User;
-using HomeCompassApi.Services.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

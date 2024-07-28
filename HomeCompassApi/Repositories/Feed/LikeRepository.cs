@@ -1,7 +1,8 @@
-﻿using HomeCompassApi.Repositories;
+﻿using HomeCompassApi.DbContexts;
+using HomeCompassApi.Entities;
+using HomeCompassApi.Entities.Feed;
 using HomeCompassApi.Models;
-using HomeCompassApi.Models.Feed;
-using HomeCompassApi.Services.CRUD;
+using HomeCompassApi.Repositories;
 using HomeCompassApi.Services;
 using Microsoft.EntityFrameworkCore;
 

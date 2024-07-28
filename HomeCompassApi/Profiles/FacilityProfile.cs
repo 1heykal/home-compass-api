@@ -1,6 +1,6 @@
 using AutoMapper;
+using HomeCompassApi.Entities.Facilities;
 using HomeCompassApi.Models.Facilities;
-using HomeCompassApi.Services.Facilities;
 
 namespace HomeCompassApi.Profiles;
 

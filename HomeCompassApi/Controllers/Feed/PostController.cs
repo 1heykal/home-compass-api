@@ -1,16 +1,15 @@
 ﻿using HomeCompassApi.Repositories;
-using HomeCompassApi.Models.Cases;
-using HomeCompassApi.Models.Feed;
 using HomeCompassApi.Repositories.Feed;
 using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
-using HomeCompassApi.Services.CRUD;
-using HomeCompassApi.Services.Feed;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using AutoMapper;
+using HomeCompassApi.Entities.Feed;
+using HomeCompassApi.Models;
+using HomeCompassApi.Models.Feed.Post;
 
 namespace HomeCompassApi.Controllers.Feed
 {

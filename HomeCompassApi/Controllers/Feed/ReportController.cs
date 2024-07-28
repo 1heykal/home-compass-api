@@ -1,10 +1,10 @@
-﻿using HomeCompassApi.Repositories;
-using HomeCompassApi.Models.Facilities;
+﻿using HomeCompassApi.Entities.Feed;
+using HomeCompassApi.Models;
 using HomeCompassApi.Models.Feed;
+using HomeCompassApi.Repositories;
 using HomeCompassApi.Repositories.Feed;
 using HomeCompassApi.Repositories.User;
 using HomeCompassApi.Services;
-using HomeCompassApi.Services.Feed;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
